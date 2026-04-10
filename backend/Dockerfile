@@ -1,20 +1,10 @@
-# Используем стабильную версию Node.js
 FROM node:18-slim
-
-# Устанавливаем рабочую директорию
 WORKDIR /app
-
-# Копируем файлы зависимостей
-COPY package*.json ./
-
-# Устанавливаем библиотеки
+# Копируем package.json из папки backend
+COPY backend/package*.json ./
 RUN npm install --production
-
-# Копируем весь остальной код бэкенда
+# Копируем ВООБЩЕ ВСЁ из проекта
 COPY . .
-
-# Открываем порт (тот же, что в твоих настройках Railway)
 EXPOSE 4000
-
-# Команда запуска сервера
-CMD ["node", "server.js"]
+# Запускаем сервер, указывая путь к нему
+CMD ["node", "backend/server.js"]
