@@ -239,7 +239,7 @@ contactSchema.pre('save', function(next) {
   next();
 });
 
-const Contact = mongoose.model('Contact', contactSchema);
+const Contact = mongoose.model('Contact', contactSchema); 
 
 // ============================================
 // ПЕРЕДАЁМ МОДЕЛЬ В TELEGRAM БОТА
@@ -559,36 +559,48 @@ app.use((err, req, res, next) => {
 });
 
 // ============================================
-// ЗАПУСК СЕРВЕРА
+// ЗАПУСК СЕРВЕРА [PRODUCTION READY]
 // ============================================
+
 const startServer = async () => {
   try {
+    // 1. Инициализация БД
     await connectDB();
     
-    app.listen(PORT, () => {
-      console.log('\n' + '='.repeat(50));
-      console.log('🚀 СЕРВЕР COLLEPSE ЗАПУЩЕН');
-      console.log('='.repeat(50));
-      console.log(`📍 Локальный адрес: http://localhost:${PORT}`);
-      console.log(`🌐 Сайт: http://localhost:${PORT}`);
-      console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-      console.log(`📝 API заявок: http://localhost:${PORT}/api/contact`);
-      console.log(`📁 Фронтенд: ${FRONTEND_PATH}`);
-      console.log(`🔧 Режим: ${NODE_ENV}`);
-      console.log('='.repeat(50));
+    // 2. Привязка к порту и адресу 0.0.0.0 (Критично для Railway/Cloud)
+    // Мы используем 0.0.0.0 чтобы сервер принимал внешние запросы
+    const HOST = '0.0.0.0'; 
+    
+    app.listen(PORT, HOST, () => {
+      const serverUrl = process.env.RAILWAY_STATIC_URL 
+        ? `https://${process.env.RAILWAY_STATIC_URL}` 
+        : `http://localhost:${PORT}`;
+
+      console.log('\n' + '█'.repeat(50));
+      console.log('█  COLLEPSE SYSTEM V.2 — ONLINE');
+      console.log('█'.repeat(50));
+      console.log(`[STATUS]  MODE: ${NODE_ENV.toUpperCase()}`);
+      console.log(`[NETWORK] HOST: ${HOST}`);
+      console.log(`[NETWORK] PORT: ${PORT}`);
+      console.log(`[NETWORK] URL:  ${serverUrl}`);
+      console.log(`[HEALTH]  CHECK: ${serverUrl}/api/health`);
       
       const indexPath = path.join(FRONTEND_PATH, 'index.html');
       if (fs.existsSync(indexPath)) {
-        console.log('✅ index.html найден');
+        console.log(`[ASSETS]  FRONTEND: FOUND AT ${FRONTEND_PATH}`);
       } else {
-        console.warn('⚠️ index.html не найден в:', FRONTEND_PATH);
+        console.log(`[WARN]    FRONTEND: index.html MISSING IN ${FRONTEND_PATH}`);
       }
       
+      console.log('█'.repeat(50) + '\n');
+      
+      // 3. Запуск бота после успешного поднятия сервера
       initializeTelegramBot();
     });
     
   } catch (error) {
-    console.error('❌ Ошибка запуска сервера:', error);
+    console.error('█ [CRITICAL ERROR] FAILED TO START SYSTEM');
+    console.error(error);
     process.exit(1);
   }
 };
