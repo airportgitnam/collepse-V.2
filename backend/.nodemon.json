@@ -1,0 +1,9 @@
+{
+  "ignore": [
+    "*.json",
+    "data/*.json",
+    "lastUpdateId.txt",
+    "subscribers.json"
+  ],
+  "ext": "js,mjs,cjs"
+}

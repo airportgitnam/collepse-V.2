@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collepse | Инновационная IT-команда</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  :root {
+    --bg-primary: #fafbfc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f5f7fa;
+    --bg-dark: #1a2332;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #06b6d4;
+    --accent-soft: #e0f2fe;
+    --accent-mint: #14b8a6;
+    --border-light: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── СКРОЛЛБАР ─── */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ─── ВЫДЕЛЕНИЕ ТЕКСТА ─── */
+  ::selection {
+    background: var(--accent-primary);
+    color: white;
+  }
+
+  /* ─── НАВИГАЦИЯ ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 6%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  nav.scrolled {
+    box-shadow: var(--shadow-md);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--accent-primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    border-radius: 1px;
+    transition: var(--transition);
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-primary);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    background: var(--accent-primary);
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  }
+
+  .nav-cta::after {
+    display: none !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: var(--transition);
+  }
+
+  /* ─── МОБИЛЬНОЕ МЕНЮ ─── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid var(--border-light);
+    padding: 1.5rem 6%;
+    z-index: 99;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-menu a:hover {
+    color: var(--accent-primary);
+    padding-left: 8px;
+  }
+
+  /* ─── ГЕРОЙ СЕКЦИЯ ─── */
+  #hero {
+    min-height: 100vh;
+    padding: 0 6%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-bg-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 80px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    color: var(--accent-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 30px;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-tag .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-mint);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5.5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  .hero-title .accent {
+    color: var(--accent-primary);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title .accent::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: var(--accent-soft);
+    z-index: -1;
+    border-radius: 4px;
+  }
+
+  .hero-slogan {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+  }
+
+  .hero-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.65s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent-primary);
+    color: white;
+    padding: 15px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(6, 182, 212, 0.3);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: var(--text-primary);
+    padding: 15px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: var(--transition);
+    border: 1px solid var(--border-light);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ─── СТАТИСТИКА ГЕРОЯ ─── */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+    margin-top: 3rem;
+  }
+
+  .stat-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1rem;
+    transition: var(--transition);
+    text-align: center;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-soft);
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* ─── ВИЗУАЛЬНАЯ ЧАСТЬ ГЕРОЯ ─── */
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    opacity: 0;
+    animation: fadeRight 0.8s 0.5s forwards;
+  }
+
+  .card-float {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+  }
+
+  .card-float:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .card-float-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .icon-blue { background: #eff6ff; color: var(--accent-primary); }
+  .icon-teal { background: #f0fdfa; color: var(--accent-mint); }
+  .icon-purple { background: #f5f3ff; color: #8b5cf6; }
+
+  .card-float-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .card-float-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    animation: fillBar 1.5s 1s ease-out forwards;
+    width: 0;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .tag {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+  }
+
+  /* ─── СЕКЦИИ ─── */
+  section {
+    padding: 100px 6%;
+  }
+
+  .section-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+
+  .section-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 3.5rem;
+  }
+
+  /* ─── УСЛУГИ ─── */
+  #services {
+    background: var(--bg-secondary);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    transform: scaleX(0);
+    transition: var(--transition);
+    transform-origin: left;
+  }
+
+  .service-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-4px);
+    border-color: transparent;
+  }
+
+  .service-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .service-emoji {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .service-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-stats {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .service-stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    background: var(--accent-soft);
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* ─── КОМАНДА ─── */
+  #team {
+    background: var(--bg-tertiary);
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+
+  .team-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+  }
+
+  .team-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent-primary);
+  }
+
+  .team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1.2rem;
+    position: relative;
+    color: white;
+  }
+
+  .team-avatar::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    z-index: -1;
+    opacity: 0.2;
+    transition: var(--transition);
+  }
+
+  .team-card:hover .team-avatar::after {
+    opacity: 0.4;
+    inset: -6px;
+  }
+
+  .team-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .team-role {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.2rem;
+  }
+
+  .team-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .skill-tag {
+    font-size: 0.7rem;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border-light);
+  }
+
+  /* ─── ПРОЕКТЫ ─── */
+  #projects {
+    background: var(--bg-dark);
+  }
+
+  #projects .section-label {
+    color: var(--accent-mint);
+  }
+
+  #projects .section-title {
+    color: white;
+  }
+
+  #projects .section-desc {
+    color: var(--text-light);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: var(--transition);
+    text-decoration: none;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(20, 184, 166, 0.05));
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .project-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .project-card:hover::after {
+    opacity: 1;
+  }
+
+  .project-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 1.8rem;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent-mint);
+    letter-spacing: 0.03em;
+    transition: var(--transition);
+  }
+
+  .project-card:hover .project-link {
+    gap: 12px;
+    color: white;
+  }
+
+  /* ─── ОТЗЫВЫ ─── */
+  #testimonials {
+    background: var(--bg-secondary);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    position: relative;
+    transition: var(--transition);
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .testimonial-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 6rem;
+    line-height: 1;
+    color: var(--border-light);
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    pointer-events: none;
+  }
+
+  .stars {
+    color: #fbbf24;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  .testimonial-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    flex-shrink: 0;
+  }
+
+  .author-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+
+  .author-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ─── КОНТАКТЫ ─── */
+  #contact {
+    background: var(--bg-tertiary);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .contact-info p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .contact-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .contact-value a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  .contact-value a:hover {
+    color: var(--accent-secondary);
+  }
+
+  /* ─── ФОРМА ─── */
+  .contact-form {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    background: white;
+    transition: var(--transition);
+    outline: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-submit {
+    width: 100%;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: 16px 28px;
+    border-radius: 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+  }
+
+  .form-submit:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(6, 182, 212, 0.3);
+  }
+
+  .form-status {
+    margin-top: 1.2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    text-align: center;
+  }
+
+  /* ─── ФУТЕР ─── */
+  footer {
+    background: var(--bg-dark);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2.5rem 6%;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  footer .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+
+  footer .footer-logo span {
+    color: var(--accent-mint);
+  }
+
+  footer p {
+    margin-top: 0.75rem;
+  }
+
+  /* ─── АНИМАЦИИ ─── */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.8);
+    }
+  }
+
+  @keyframes fillBar {
+    from {
+      width: 0;
+    }
+    to {
+      width: var(--fill-width, 85%);
+    }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ─── АДАПТИВНОСТЬ ─── */
+  @media (max-width: 1200px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+    .hero-visual {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .team-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .hero-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+    }
+    section {
+      padding: 70px 5%;
+    }
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+    .hero-visual {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .team-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-stats {
+      grid-template-columns: 1fr;
+    }
+    .hero-actions {
+      flex-direction: column;
+    }
+    .btn-primary, .btn-ghost {
+      justify-content: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Collepse<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Услуги</a></li>
+    <li><a href="#team">Команда</a></li>
+    <li><a href="#projects">Проекты</a></li>
+    <li><a href="#testimonials">Отзывы</a></li>
+    <li><a href="#contact" class="nav-cta">Начать проект</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- МОБИЛЬНОЕ МЕНЮ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()">Услуги</a>
+  <a href="#team" onclick="closeMenu()">Команда</a>
+  <a href="#projects" onclick="closeMenu()">Проекты</a>
+  <a href="#testimonials" onclick="closeMenu()">Отзывы</a>
+  <a href="#contact" onclick="closeMenu()">Начать проект</a>
+</div>
+
+<!-- ГЕРОЙ -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-pattern"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="dot"></span> 
+        Инновационная IT-команда
+      </div>
+      <h1 class="hero-title">
+        Создаём <span class="accent">цифровое</span><br>
+        будущее уже сегодня
+      </h1>
+      <div class="hero-slogan">// Технологии · Дизайн · Результат</div>
+      <p class="hero-text">
+        Мы — команда экспертов, создающая современные веб-решения, 
+        AI-интеграции и высокопроизводительные системы для бизнеса любого масштаба.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Обсудить проект <span>→</span>
+        </a>
+        <a href="#projects" class="btn-ghost">
+          Портфолио
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Веб-проектов</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">20+</div>
+          <div class="stat-label">AI-интеграций</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">10M</div>
+          <div class="stat-label">API запросов</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100+</div>
+          <div class="stat-label">ПК сборок</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="card-float">
+        <div class="card-float-header">
+          <div class="card-icon icon-blue">🤖</div>
+          <div>
+            <div class="card-float-title">AI & Backend</div>
+            <div class="card-float-sub">Node.js · Python · LLM</div>
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">GPT-4</span>
+          <span class="tag">REST API</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">Telegram Bot</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="--fill-width: 92%"></div>
+        </div>
+      </div>
+
+      <div class="card-float">
+        <div class="card-float-header">
+          <div class="card-icon icon-teal">✨</div>
+          <div>
+            <div class="card-float-title">Frontend & Web3</div>
+            <div class="card-float-sub">React · Vue · Web3.js</div>
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">UI/UX</span>
+          <span class="tag">Web3</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="--fill-width: 95%"></div>
+        </div>
+      </div>
+
+      <div class="card-float">
+        <div class="card-float-header">
+          <div class="card-icon icon-purple">🎮</div>
+          <div>
+            <div class="card-float-title">Game Development</div>
+            <div class="card-float-sub">Unity · Unreal · C#</div>
+          </div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">Unity</span>
+          <span class="tag">C#</span>
+          <span class="tag">3D Modeling</span>
+          <span class="tag">Multiplayer</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="--fill-width: 88%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- УСЛУГИ -->
+<section id="services">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Наши компетенции</div>
+      <h2 class="section-title">Что мы предлагаем</h2>
+      <p class="section-desc">Полный цикл разработки — от идеи до масштабирования. Качественно и в срок.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-emoji">✨</span>
+        <div class="service-name">Web & Frontend</div>
+        <p class="service-desc">Современные веб-приложения с продуманным UX и плавными анимациями</p>
+        <div class="service-stats">
+          <span class="service-stat">15+ проектов</span>
+          <span class="service-stat">99% Lighthouse</span>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-emoji">🎮</span>
+        <div class="service-name">Game Development</div>
+        <p class="service-desc">Разработка игр любой сложности с уникальным геймдизайном и мультиплеером</p>
+        <div class="service-stats">
+          <span class="service-stat">8+ игр</span>
+          <span class="service-stat">5 наград</span>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-emoji">🤖</span>
+        <div class="service-name">AI & Backend</div>
+        <p class="service-desc">Интеграция нейросетей, разработка API и высоконагруженных систем</p>
+        <div class="service-stats">
+          <span class="service-stat">20+ ботов</span>
+          <span class="service-stat">10M запросов</span>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-emoji">💻</span>
+        <div class="service-name">PC Optimization</div>
+        <p class="service-desc">Профессиональная сборка и настройка ПК для работы и киберспорта</p>
+        <div class="service-stats">
+          <span class="service-stat">100+ сборок</span>
+          <span class="service-stat">+40% FPS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КОМАНДА -->
+<section id="team">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Кто мы</div>
+      <h2 class="section-title">Команда экспертов</h2>
+      <p class="section-desc">Каждый из нас — специалист высокого уровня в своей области.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">🎮</div>
+        <div class="team-name">Шохруз</div>
+        <div class="team-role">GameDev Lead</div>
+        <div class="team-skills">
+          <span class="skill-tag">Unity</span>
+          <span class="skill-tag">Unreal</span>
+          <span class="skill-tag">C#</span>
+          <span class="skill-tag">Game Design</span>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">💻</div>
+        <div class="team-name">Бехруз</div>
+        <div class="team-role">Hardware Expert</div>
+        <div class="team-skills">
+          <span class="skill-tag">PC Build</span>
+          <span class="skill-tag">Overclocking</span>
+          <span class="skill-tag">Diagnostics</span>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">🎨</div>
+        <div class="team-name">Нурфайз</div>
+        <div class="team-role">UI/UX Designer</div>
+        <div class="team-skills">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Animation</span>
+          <span class="skill-tag">Design Systems</span>
+        </div>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">🧠</div>
+        <div class="team-name">Исфандиёр</div>
+        <div class="team-role">Lead Developer</div>
+        <div class="team-skills">
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">AI/ML</span>
+          <span class="skill-tag">Architecture</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРОЕКТЫ -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Портфолио</div>
+      <h2 class="section-title">Избранные проекты</h2>
+      <p class="section-desc">Реальные кейсы, которыми мы гордимся.</p>
+    </div>
+    <div class="projects-grid">
+      <a href="https://lingo-nova-ai.netlify.app" class="project-card reveal" target="_blank">
+        <div class="project-num">01 / Образование</div>
+        <div class="project-name">Lingo Nova</div>
+        <p class="project-desc">Интеллектуальная платформа для изучения языков с AI-тьютором</p>
+      </a>
+      <a href="https://cs-elite.netlify.app" class="project-card reveal" target="_blank">
+        <div class="project-num">02 / GameDev</div>
+        <div class="project-name">Cyber Strike</div>
+        <p class="project-desc">Мультиплеерный шутер с продвинутой физикой и процедурной генерацией</p>
+      </a>
+      <a href="https://d3vhub.netlify.app" class="project-card reveal" target="_blank">
+        <div class="project-num">03 / Аналитика</div>
+        <div class="project-name">DevMetrics</div>
+        <p class="project-desc">Платформа для анализа кода и производительности команд разработки</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Отзывы клиентов</div>
+      <h2 class="section-title">Что о нас говорят</h2>
+      <p class="section-desc">Доверие и репутация — наш главный капитал.</p>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Команда Collepse превзошла все ожидания. Проект был сдан раньше срока, качество кода на высоте. Обязательно будем работать.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">А</div>
+          <div>
+            <div class="author-name">Нафиса Низамова</div>
+            <div class="author-title">CEO, EdTech Startup</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">Отличный подход к разработке. Ребята действительно понимают современные технологии и всегда на связи.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">Д</div>
+          <div>
+            <div class="author-name">Абдуллаев Дилшод</div>
+            <div class="author-title">CTO, FinTech Company</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КОНТАКТЫ -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Связаться с нами</div>
+      <h2 class="section-title">Начнём сотрудничество</h2>
+      <p class="section-desc">Оставьте заявку — мы свяжемся с вами в течение часа.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <h3>Контактная информация</h3>
+        <p>Работаем удалённо по всему миру. Всегда на связи для ваших проектов.</p>
+
+        <div class="contact-item">
+          <div class="contact-icon">⏱️</div>
+          <div>
+            <div class="contact-label">Время работы</div>
+            <div class="contact-value">Пн–Вс / 10:00 – 22:00 (МСК)</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Локация</div>
+            <div class="contact-value">Россия / Удалённо по всему миру</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div>
+            <div class="contact-label">Telegram</div>
+            <div class="contact-value">
+              <a href="https://t.me/collepse_official" target="_blank">@collepse_official</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal">
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Ваше имя</label>
+              <input type="text" id="name" name="name" placeholder="Иван Петров" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="ivan@example.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="service">Интересующая услуга</label>
+            <select id="service" name="service">
+              <option value="">Выберите из списка</option>
+              <option value="Web">Веб-разработка</option>
+              <option value="GameDev">Разработка игр</option>
+              <option value="AI">AI и бэкенд</option>
+              <option value="PC">Оптимизация ПК</option>
+              <option value="Other">Другое</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Опишите задачу</label>
+            <textarea id="message" name="message" placeholder="Расскажите подробнее о вашем проекте..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">
+            <span>Отправить заявку</span>
+            <span>→</span>
+          </button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ФУТЕР -->
+<footer>
+  <div class="footer-logo">Collepse<span>.</span></div>
+  <p>Создаём цифровое будущее — технологии, дизайн, результат</p>
+  <p>© 2024 Collepse. Все права защищены.</p>
+</footer>
+
+<script>
+  // Навигация при скролле
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Мобильное меню
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+  }
+
+  // Закрытие меню при клике на ссылку
+  document.querySelectorAll('.mobile-menu a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Анимация появления элементов при скролле
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 50);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+
+  revealElements.forEach(el => observer.observe(el));
+
+  // Последовательная анимация для карточек
+  document.querySelectorAll('.services-grid, .team-grid, .projects-grid, .testimonials-grid').forEach(grid => {
+    grid.querySelectorAll('.reveal').forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.08}s`;
+    });
+  });
+
+  // Обработка формы
+  const form = document.getElementById('contactForm');
+  const statusDiv = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    // Валидация
+    if (!name || !email || !message) {
+      statusDiv.textContent = '⚠️ Пожалуйста, заполните все обязательные поля';
+      statusDiv.style.color = '#ef4444';
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный email';
+      statusDiv.style.color = '#ef4444';
+      return;
+    }
+
+    // UI состояния загрузки
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<span>Отправка...</span><span>⏳</span>';
+    submitBtn.disabled = true;
+    statusDiv.textContent = '';
+
+    try {
+      // Здесь должен быть URL вашего бекенда
+      const response = await fetch('http://localhost:4000/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          service: document.getElementById('service').value,
+          message
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        statusDiv.textContent = '✓ Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.';
+        statusDiv.style.color = '#10b981';
+        form.reset();
+        submitBtn.innerHTML = '<span>Отправлено</span><span>✓</span>';
+        
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          statusDiv.textContent = '';
+        }, 5000);
+      } else {
+        throw new Error(result.error || 'Произошла ошибка при отправке');
+      }
+    } catch (error) {
+      console.error('Ошибка:', error);
+      statusDiv.textContent = `⚠️ Не удалось отправить заявку. Попробуйте позже или напишите в Telegram.`;
+      statusDiv.style.color = '#ef4444';
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Плавный скролл для якорных ссылок (учитывая фиксированную шапку)
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        e.preventDefault();
+        const offset = 80;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>
