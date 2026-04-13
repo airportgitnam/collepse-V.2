@@ -1565,11 +1565,19 @@
           <div class="form-row">
             <div class="form-group">
               <label for="name">Ваше имя</label>
-              <input type="text" id="name" name="name" placeholder="Иван Петров" required>
+              <input type="text" id="name" name="name" placeholder="Name" required>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="ivan@example.com" required>
+              <input type="email" id="email" name="email" placeholder="example@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="Telegram">Telegram</label>
+              <input type="text" id="Telegram" name="Telegram" placeholder="@username" required>
+            </div>
+            <div class="form-group">
+              <label for="Phone">Телефон</label>
+              <input type="tel" id="Phone" name="Phone" placeholder="+998 (12) 345-67-87" required>
             </div>
           </div>
           <div class="form-group">
@@ -1661,10 +1669,12 @@
     
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('Phone').value.trim();
+    const telegram = document.getElementById('Telegram').value.trim();
     const message = document.getElementById('message').value.trim();
 
     // Валидация
-    if (!name || !email || !message) {
+    if (!name || !email || !phone || !telegram || !message) {
       statusDiv.textContent = '⚠️ Пожалуйста, заполните все обязательные поля';
       statusDiv.style.color = '#ef4444';
       return;
@@ -1676,6 +1686,21 @@
       statusDiv.style.color = '#ef4444';
       return;
     }
+
+    const phoneRegex = /^\+?\d{10,15}$/;
+    if (!phoneRegex.test(phone)) {
+      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный телефонный номер';
+      statusDiv.style.color = '#ef4444';
+      return;
+    }
+
+    const telegramRegex = /^@[a-zA-Z0-9_]{3,32}$/;
+    if (!telegramRegex.test(telegram)) {
+      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный никнейм в Telegram';
+      statusDiv.style.color = '#ef4444';
+      return;
+    }
+
 
     // UI состояния загрузки
     const originalText = submitBtn.innerHTML;
@@ -1744,3 +1769,4 @@
 </script>
 </body>
 </html>
+  

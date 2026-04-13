@@ -27,6 +27,18 @@ const validateContact = [
     .notEmpty().withMessage('Сообщение обязательно')
     .isLength({ min: 10, max: 2000 }).withMessage('Сообщение должно быть от 10 до 2000 символов')
     .escape(),
+  
+  body('Telegram')
+    .trim()
+    .notEmpty().withMessage('Telegram обязателен')
+    .matches(/^@?[a-zA-Z0-9_]{5,32}$/).withMessage('Введите корректный Telegram username')
+    .escape(),
+  
+  body('Phone')
+    .trim()
+    .notEmpty().withMessage('Номер телефона обязателен')
+    .matches(/^\+?[\d\s\-().]{10,20}$/).withMessage('Введите корректный номер телефона')
+    .escape(),
 ];
 
 // Middleware для проверки результатов валидации

@@ -32,6 +32,18 @@ const contactSchema = new mongoose.Schema({
     minlength: [10, 'Сообщение должно быть не менее 10 символов'],
     maxlength: [2000, 'Сообщение не может превышать 2000 символов'],
   },
+  telegram: {
+    type: String,
+    required: [true, 'Telegram обязателен'],
+    trim: true,
+    match: [/^@[a-zA-Z0-9_]{5,32}$|^[a-zA-Z0-9_]{5,32}$/, 'Пожалуйста, введите корректный Telegram username'],
+  },
+  phone: {
+    type: String,
+    required: [true, 'Номер телефона обязателен'],
+    trim: true,
+    match: [/^\+?[\d\s\-().]{10,20}$/, 'Пожалуйста, введите корректный номер телефона'],
+  },
   status: {
     type: String,
     enum: ['new', 'processing', 'completed', 'archived'],

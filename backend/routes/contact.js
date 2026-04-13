@@ -10,7 +10,7 @@ const logger = require('../utils/logger');
 // @access  Public
 router.post('/', validateContact, validate, async (req, res, next) => {
   try {
-    const { name, email, service, message } = req.body;
+    const { name, email, service, message, Telegram, Phone } = req.body;
     
     // Получаем IP и User-Agent
     const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -39,6 +39,8 @@ router.post('/', validateContact, validate, async (req, res, next) => {
       email: email.toLowerCase(),
       service: service || '',
       message,
+      telegram: Telegram,
+      phone: Phone,
       ipAddress,
       userAgent,
     });
