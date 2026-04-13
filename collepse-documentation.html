@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collepse | Документация и условия договора</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  :root {
+    --bg-primary: #fafbfc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f5f7fa;
+    --bg-dark: #1a2332;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #06b6d4;
+    --accent-soft: #e0f2fe;
+    --accent-mint: #14b8a6;
+    --border-light: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  ::selection {
+    background: var(--accent-primary);
+    color: white;
+  }
+
+  /* ─── НАВИГАЦИЯ ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 6%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  nav.scrolled {
+    box-shadow: var(--shadow-md);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--accent-primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    border-radius: 1px;
+    transition: var(--transition);
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-primary);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    background: var(--accent-primary);
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  }
+
+  .nav-cta::after {
+    display: none !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: var(--transition);
+  }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid var(--border-light);
+    padding: 1.5rem 6%;
+    z-index: 99;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-menu a:hover {
+    color: var(--accent-primary);
+    padding-left: 8px;
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 6px;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 5px 8px;
+    margin-left: 1rem;
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .lang-btn.active {
+    background: var(--accent-primary);
+    color: white;
+  }
+  .lang-btn:hover:not(.active) {
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+  }
+
+  @media (max-width: 768px) {
+    .lang-switch { margin-left: auto; margin-right: 1rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+  }
+
+  /* Документация */
+  .docs-hero {
+    padding: 140px 6% 60px;
+    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+    text-align: center;
+  }
+  .docs-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .docs-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+  }
+
+  .docs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 6% 80px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 3rem;
+  }
+
+  .docs-sidebar {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+  }
+  .sidebar-title {
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-primary);
+  }
+  .docs-sidebar ul {
+    list-style: none;
+    border-left: 2px solid var(--border-light);
+  }
+  .docs-sidebar li {
+    margin-bottom: 0.8rem;
+  }
+  .docs-sidebar a {
+    display: block;
+    padding-left: 1.2rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+    margin-left: -2px;
+  }
+  .docs-sidebar a:hover, .docs-sidebar a.active {
+    color: var(--accent-primary);
+    border-left-color: var(--accent-primary);
+    padding-left: 1.5rem;
+  }
+
+  .docs-content {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem 2.5rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+  }
+  .doc-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 100px;
+  }
+  .doc-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-soft);
+  }
+  .doc-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.8rem;
+    color: var(--accent-primary);
+  }
+  .doc-section p {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+  }
+  .doc-section ul, .doc-section ol {
+    margin: 1rem 0 1rem 1.8rem;
+    color: var(--text-secondary);
+  }
+  .doc-section li {
+    margin-bottom: 0.5rem;
+  }
+  .highlight {
+    background: var(--accent-soft);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--accent-primary);
+    margin: 1rem 0;
+  }
+
+  .pdf-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-dark);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-pdf:hover {
+    background: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(59,130,246,0.3);
+  }
+
+  footer {
+    background: var(--bg-dark);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2.5rem 6%;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  footer .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+  footer .footer-logo span { color: var(--accent-mint); }
+
+  @media (max-width: 900px) {
+    .docs-container {
+      grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+      position: static;
+      margin-bottom: 2rem;
+    }
+    .docs-content {
+      padding: 1.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Collepse</a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
+    <li><a href="index.html#services" data-i18n="nav_services">Услуги</a></li>
+    <li><a href="index.html#team" data-i18n="nav_team">Команда</a></li>
+    <li><a href="index.html#projects" data-i18n="nav_projects">Проекты</a></li>
+    <li><a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a></li>
+    <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация collepse</a></li>
+    <li><a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
+  </ul>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">РУ</button>
+    <button class="lang-btn" data-lang="uz">UZ</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#services" data-i18n="nav_services">Услуги</a>
+  <a href="index.html#team" data-i18n="nav_team">Команда</a>
+  <a href="index.html#projects" data-i18n="nav_projects">Проекты</a>
+  <a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a>
+  <a href="collepse-documentation.html" data-i18n="nav_docs">Документация</a>
+</div>
+
+<section class="docs-hero">
+  <h1 data-i18n="docs_title">Документация Collepse</h1>
+  <p data-i18n="docs_subtitle">Техническая документация, API справочники и официальные условия договора</p>
+</section>
+
+<div class="docs-container">
+  <aside class="docs-sidebar">
+    <div class="sidebar-title" data-i18n="sidebar_title">Содержание</div>
+    <ul>
+      <li><a href="#intro" data-i18n="link_intro">Введение</a></li>
+      <li><a href="#tech" data-i18n="link_tech">Технологический стек</a></li>
+      <li><a href="#api" data-i18n="link_api">API соглашения</a></li>
+      <li><a href="#terms" data-i18n="link_terms">Условия договора</a></li>
+      <li><a href="#liability" data-i18n="link_liability">Ответственность сторон</a></li>
+      <li><a href="#payment" data-i18n="link_payment">Порядок оплаты</a></li>
+      <li><a href="#confidentiality" data-i18n="link_confidentiality">Конфиденциальность</a></li>
+      <li><a href="#sign" data-i18n="link_sign">Реквизиты и подписи</a></li>
+    </ul>
+  </aside>
+
+  <main class="docs-content" id="docsContent">
+    <div id="intro" class="doc-section">
+      <h2 data-i18n="intro_title">1. Введение</h2>
+      <p data-i18n="intro_text1">Настоящий документ определяет условия сотрудничества между Collepse (далее — «Исполнитель») и Заказчиком, а также технические стандарты, которым следуют все разрабатываемые продукты. Документация является неотъемлемой частью договора оказания услуг.</p>
+      <p data-i18n="intro_text2">Collepse предоставляет услуги в сфере веб-разработки, создания игр, AI-интеграций, а также профессиональной сборки и оптимизации ПК. Все проекты выполняются в соответствии с согласованным техническим заданием.</p>
+    </div>
+
+    <div id="tech" class="doc-section">
+      <h2 data-i18n="tech_title">2. Технологический стек</h2>
+      <p data-i18n="tech_text">При разработке мы используем современные и проверенные технологии:</p>
+      <ul>
+        <li data-i18n="tech_item1">Frontend: React, Vue.js, TypeScript, TailwindCSS</li>
+        <li data-i18n="tech_item2">Backend: Node.js, Python (Django/FastAPI), Go</li>
+        <li data-i18n="tech_item3">Базы данных: PostgreSQL, MongoDB, Redis</li>
+        <li data-i18n="tech_item4">GameDev: Unity (C#), Unreal Engine 5</li>
+        <li data-i18n="tech_item5">AI/ML: GPT-4, Llama, TensorFlow, PyTorch</li>
+        <li data-i18n="tech_item6">Инфраструктура: Docker, Kubernetes, AWS, Netlify</li>
+      </ul>
+      <div class="highlight" data-i18n="tech_note">✅ Исполнитель гарантирует актуальность версий и безопасность используемых решений.</div>
+    </div>
+
+    <div id="api" class="doc-section">
+      <h2 data-i18n="api_title">3. API соглашения</h2>
+      <p data-i18n="api_text1">Все API, разработанные Collepse, соответствуют стандартам RESTful или GraphQL. Ответы возвращаются в формате JSON. Время ответа сервера не превышает 200 мс при штатной нагрузке.</p>
+      <p data-i18n="api_text2">Документация к каждому API предоставляется в формате Swagger/OpenAPI. Доступ к песочнице выдается после подписания NDA.</p>
+    </div>
+
+    <div id="terms" class="doc-section">
+      <h2 data-i18n="terms_title">4. Условия договора (публичная оферта)</h2>
+      <p data-i18n="terms_text1">4.1. Настоящий договор считается заключенным с момента акцепта Заказчиком коммерческого предложения или подписания акта о начале работ.</p>
+      <p data-i18n="terms_text2">4.2. Сроки выполнения работ фиксируются в календарном плане (Приложение №1). Задержки более чем на 5 рабочих дней дают Заказчику право требовать неустойку в размере 0,5% от суммы этапа за каждый день просрочки.</p>
+      <p data-i18n="terms_text3">4.3. Приемка результатов осуществляется по акту приема-передачи в течение 5 рабочих дней. При отсутствии замечаний работа считается принятой.</p>
+    </div>
+
+    <div id="liability" class="doc-section">
+      <h2 data-i18n="liability_title">5. Ответственность сторон</h2>
+      <p data-i18n="liability_text1">5.1. Исполнитель несет ответственность за качество предоставляемых услуг в соответствии с техническим заданием. Гарантийный срок — 90 дней с момента подписания акта.</p>
+      <p data-i18n="liability_text2">5.2. Заказчик обязуется своевременно предоставлять материалы, доступы и обратную связь. Задержка со стороны Заказчика сдвигает сроки пропорционально.</p>
+      <p data-i18n="liability_text3">5.3. Суммарная ответственность Исполнителя ограничена стоимостью оказанных услуг по конкретному этапу.</p>
+    </div>
+
+    <div id="payment" class="doc-section">
+      <h2 data-i18n="payment_title">6. Порядок оплаты</h2>
+      <p data-i18n="payment_text1">6.1. Предоплата составляет 50% от стоимости этапа, остаток 50% — после подписания акта выполненных работ.</p>
+      <p data-i18n="payment_text2">6.2. Оплата производится в безналичной форме на расчетный счет Исполнителя или иным способом, согласованным сторонами. Датой оплаты считается дата поступления средств.</p>
+      <p data-i18n="payment_text3">6.3. В случае расторжения договора по вине Заказчика, предоплата не возвращается.</p>
+    </div>
+
+    <div id="confidentiality" class="doc-section">
+      <h2 data-i18n="conf_title">7. Конфиденциальность</h2>
+      <p data-i18n="conf_text1">Стороны обязуются не разглашать любую информацию, полученную в рамках сотрудничества, включая исходный код, бизнес-идеи, финансовые данные. Действие пункта сохраняется в течение 3 лет после окончания договора.</p>
+    </div>
+
+    <div id="sign" class="doc-section">
+      <h2 data-i18n="sign_title">8. Реквизиты и подписи</h2>
+      <p><strong data-i18n="sign_name">Collepse (Исполнитель):</strong></p>
+      <p><strong data-i18n="sign_customer">Заказчик:</strong> <span data-i18n="sign_customer_placeholder">[ФИО / Название компании]</span></p>
+      <p data-i18n="sign_footer">Настоящий договор составлен в двух экземплярах, имеющих равную юридическую силу.</p>
+    </div>
+
+    <div class="pdf-btn-wrapper">
+      <button id="downloadPdfBtn" class="btn-pdf">
+        <span>📄</span> <span data-i18n="pdf_btn">Скачать договор (PDF)</span>
+      </button>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-logo">Collepse<span>.</span></div>
+  <p data-i18n="footer_text">Создаём цифровое будущее — технологии, дизайн, результат</p>
+  <p>© 2024 Collepse. Все права защищены.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  // навигация и скролл
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMenu() { mobileMenu.classList.remove('open'); }
+  document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
+
+  // подсветка активного пункта в сайдбаре
+  const sections = document.querySelectorAll('.doc-section');
+  const navLinks = document.querySelectorAll('.docs-sidebar a');
+  function updateActiveLink() {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 120;
+      if (pageYOffset >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+    });
+  }
+  window.addEventListener('scroll', updateActiveLink);
+  window.addEventListener('load', updateActiveLink);
+  
+  // плавный скролл для якорей
+  document.querySelectorAll('.docs-sidebar a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if(target) {
+        const offset = 80;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ---------- ПЕРЕВОД ----------
+  const translations = {
+    ru: {
+      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_home: "Главная", nav_cta: "Начать проект",
+      docs_title: "Документация Collepse", docs_subtitle: "Техническая документация, API справочники и официальные условия договора",
+      sidebar_title: "Содержание", link_intro: "Введение", link_tech: "Технологический стек", link_api: "API соглашения", link_terms: "Условия договора", link_liability: "Ответственность сторон", link_payment: "Порядок оплаты", link_confidentiality: "Конфиденциальность", link_sign: "Реквизиты и подписи",
+      intro_title: "1. Введение", intro_text1: "Настоящий документ определяет условия сотрудничества между Collepse (далее — «Исполнитель») и Заказчиком, а также технические стандарты, которым следуют все разрабатываемые продукты. Документация является неотъемлемой частью договора оказания услуг.",
+      intro_text2: "Collepse предоставляет услуги в сфере веб-разработки, создания игр, AI-интеграций, а также профессиональной сборки и оптимизации ПК. Все проекты выполняются в соответствии с согласованным техническим заданием.",
+      tech_title: "2. Технологический стек", tech_text: "При разработке мы используем современные и проверенные технологии:",
+      tech_item1: "Frontend: React, Vue.js, TypeScript, TailwindCSS", tech_item2: "Backend: Node.js, Python (Django/FastAPI), Go", tech_item3: "Базы данных: PostgreSQL, MongoDB, Redis", tech_item4: "GameDev: Unity (C#), Unreal Engine 5", tech_item5: "AI/ML: GPT-4, Llama, TensorFlow, PyTorch", tech_item6: "Инфраструктура: Docker, Kubernetes, AWS, Netlify", tech_note: "✅ Исполнитель гарантирует актуальность версий и безопасность используемых решений.",
+      api_title: "3. API соглашения", api_text1: "Все API, разработанные Collepse, соответствуют стандартам RESTful или GraphQL. Ответы возвращаются в формате JSON. Время ответа сервера не превышает 200 мс при штатной нагрузке.", api_text2: "Документация к каждому API предоставляется в формате Swagger/OpenAPI. Доступ к песочнице выдается после подписания NDA.",
+      terms_title: "4. Условия договора (публичная оферта)", terms_text1: "4.1. Настоящий договор считается заключенным с момента акцепта Заказчиком коммерческого предложения или подписания акта о начале работ.", terms_text2: "4.2. Сроки выполнения работ фиксируются в календарном плане (Приложение №1). Задержки более чем на 5 рабочих дней дают Заказчику право требовать неустойку в размере 0,5% от суммы этапа за каждый день просрочки.", terms_text3: "4.3. Приемка результатов осуществляется по акту приема-передачи в течение 5 рабочих дней. При отсутствии замечаний работа считается принятой.",
+      liability_title: "5. Ответственность сторон", liability_text1: "5.1. Исполнитель несет ответственность за качество предоставляемых услуг в соответствии с техническим заданием. Гарантийный срок — 90 дней с момента подписания акта.", liability_text2: "5.2. Заказчик обязуется своевременно предоставлять материалы, доступы и обратную связь. Задержка со стороны Заказчика сдвигает сроки пропорционально.", liability_text3: "5.3. Суммарная ответственность Исполнителя ограничена стоимостью оказанных услуг по конкретному этапу.",
+      payment_title: "6. Порядок оплаты", payment_text1: "6.1. Предоплата составляет 50% от стоимости этапа, остаток 50% — после подписания акта выполненных работ.", payment_text2: "6.2. Оплата производится в безналичной форме на расчетный счет Исполнителя или иным способом, согласованным сторонами. Датой оплаты считается дата поступления средств.", payment_text3: "6.3. В случае расторжения договора по вине Заказчика, предоплата не возвращается.",
+      conf_title: "7. Конфиденциальность", conf_text1: "Стороны обязуются не разглашать любую информацию, полученную в рамках сотрудничества, включая исходный код, бизнес-идеи, финансовые данные. Действие пункта сохраняется в течение 3 лет после окончания договора.",
+      sign_title: "8. Реквизиты и подписи", sign_name: "Collepse (Исполнитель):", sign_details: "ИНН: 123456789, ОГРН: 9876543210\nЮридический адрес: г. Ташкент, ул. Мирабадская, 15\nE-mail: legal@collepse.com | Тел: +998 71 123 45 67", sign_customer: "Заказчик:", sign_customer_placeholder: "[ФИО / Название компании]", sign_footer: "Настоящий договор составлен в двух экземплярах, имеющих равную юридическую силу.",
+      pdf_btn: "Скачать договор (PDF)", footer_text: "Создаём цифровое будущее — технологии, дизайн, результат"
+    },
+    uz: {
+      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Hujjatlar", nav_home: "Bosh sahifa", nav_cta: "Loyihani boshlash",
+      docs_title: "Collepse hujjatlari", docs_subtitle: "Texnik hujjatlar, API ma'lumotnomalari va shartnoma shartlari",
+      sidebar_title: "Mundarija", link_intro: "Kirish", link_tech: "Texnologik stek", link_api: "API kelishuvlari", link_terms: "Shartnoma shartlari", link_liability: "Tomonlarning javobgarligi", link_payment: "To'lov tartibi", link_confidentiality: "Maxfiylik", link_sign: "Rezavorlar va imzolar",
+      intro_title: "1. Kirish", intro_text1: "Ushbu hujjat Collepse (keyingi o‘rinlarda «Ijrochi») va Buyurtmachi o‘rtasidagi hamkorlik shartlarini, shuningdek barcha ishlab chiqilayotgan mahsulotlar uchun texnik standartlarni belgilaydi. Hujjat xizmat ko‘rsatish shartnomasining ajralmas qismidir.",
+      intro_text2: "Collepse veb-ishlab chiqish, o‘yin yaratish, AI-integratsiyalar hamda kompyuterlarni professional yig‘ish va optimallashtirish sohasida xizmatlar ko‘rsatadi. Barcha loyihalar kelishilgan texnik topshiriq asosida amalga oshiriladi.",
+      tech_title: "2. Texnologik stek", tech_text: "Ishlab chiqishda biz zamonaviy va tasdiqlangan texnologiyalardan foydalanamiz:", tech_item1: "Frontend: React, Vue.js, TypeScript, TailwindCSS", tech_item2: "Backend: Node.js, Python (Django/FastAPI), Go", tech_item3: "Maʼlumotlar bazalari: PostgreSQL, MongoDB, Redis", tech_item4: "GameDev: Unity (C#), Unreal Engine 5", tech_item5: "AI/ML: GPT-4, Llama, TensorFlow, PyTorch", tech_item6: "Infratuzilma: Docker, Kubernetes, AWS, Netlify", tech_note: "✅ Ijrochi versiyalarning dolzarbligi va qo'llaniladigan yechimlar xavfsizligini kafolatlaydi.",
+      api_title: "3. API kelishuvlari", api_text1: "Collepse tomonidan ishlab chiqilgan barcha API'lar RESTful yoki GraphQL standartlariga mos keladi. Javoblar JSON formatida qaytariladi. Oddiy yuklama vaqtida server javob vaqti 200 ms dan oshmaydi.", api_text2: "Har bir API uchun hujjatlar Swagger/OpenAPI formatida taqdim etiladi. NDA imzolangandan so‘ng qumquti (sandbox) ga kirish beriladi.",
+      terms_title: "4. Shartnoma shartlari (ommaviy oferta)", terms_text1: "4.1. Ushbu shartnoma Buyurtmachi tomonidan tijorat taklifi aksept qilingan yoki ish boshlanganligi to‘g‘risidagi dalolatnoma imzolangan paytdan eʼtiboran tuzilgan hisoblanadi.", terms_text2: "4.2. Ishlarni bajarish muddatlari kalendar rejasida belgilanadi (1-ilova). 5 ish kunidan ortiq kechikishlar Buyurtmachiga har bir kechiktirilgan kun uchun bosqich summasining 0,5% miqdorida penya talab qilish huquqini beradi.", terms_text3: "4.3. Natijalarni qabul qilish topshirish-qabul qilish dalolatnomasi bo‘yicha 5 ish kuni ichida amalga oshiriladi. Izohlar bo‘lmagan taqdirda ish qabul qilingan hisoblanadi.",
+      liability_title: "5. Tomonlarning javobgarligi", liability_text1: "5.1. Ijrochi texnik topshiriqga muvofiq ko‘rsatilayotgan xizmatlar sifati uchun javobgar. Kafolat muddati — dalolatnoma imzolangan kundan boshlab 90 kun.", liability_text2: "5.2. Buyurtmachi materiallar, ruxsatnomalar va fikr-mulohazalarni o‘z vaqtida taqdim etishga majbur. Buyurtmachi tomonidan kechikish muddatlarni mutanosib ravishda surishtiradi.", liability_text3: "5.3. Ijrochining umumiy javobgarligi muayyan bosqich bo‘yicha ko‘rsatilgan xizmatlar qiymati bilan cheklangan.",
+      payment_title: "6. To'lov tartibi", payment_text1: "6.1. Oldindan to‘lov bosqich qiymatining 50% ni tashkil qiladi, qolgan 50% esa bajarilgan ishlar dalolatnomasi imzolangandan keyin to‘lanadi.", payment_text2: "6.2. To‘lov Ijrochining hisob-kitob raqamiga yoki tomonlar kelishgan boshqa usulda naqd pulsiz shaklda amalga oshiriladi. To‘lov sanasi deb mablag‘ kelib tushgan sana hisoblanadi.", payment_text3: "6.3. Shartnoma Buyurtmachining aybi bilan bekor qilingan taqdirda, oldindan to‘lov qaytarilmaydi.",
+      conf_title: "7. Maxfiylik", conf_text1: "Tomonlar hamkorlik doirasida olingan har qanday maʼlumotni, jumladan manba kod, biznes g‘oyalar, moliyaviy maʼlumotlarni oshkor qilmaslikka majbur. Ushbu bandning amal qilish muddati shartnoma tugaganidan keyin 3 yil davom etadi.",
+      sign_title: "8. Rezavorlar va imzolar", sign_name: "Collepse (Ijrochi):", sign_details: "STIR: 123456789, OGRN: 9876543210\nYuridik manzil: Toshkent sh., Mirobod ko‘chasi, 15\nE-mail: legal@collepse.com | Tel: +998 71 123 45 67", sign_customer: "Buyurtmachi:", sign_customer_placeholder: "[FISH / Kompaniya nomi]", sign_footer: "Ushbu shartnoma teng yuridik kuchga ega bo‘lgan ikki nusxada tuzilgan.",
+      pdf_btn: "Shartnomani yuklab olish (PDF)", footer_text: "Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija"
+    },
+    en: {
+      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_home: "Home", nav_cta: "Start a project",
+      docs_title: "Collepse Documentation", docs_subtitle: "Technical docs, API references and official contract terms",
+      sidebar_title: "Contents", link_intro: "Introduction", link_tech: "Tech stack", link_api: "API agreements", link_terms: "Contract terms", link_liability: "Liability", link_payment: "Payment procedure", link_confidentiality: "Confidentiality", link_sign: "Details & signatures",
+      intro_title: "1. Introduction", intro_text1: "This document defines the terms of cooperation between Collepse (hereinafter referred to as the 'Contractor') and the Customer, as well as the technical standards followed by all developed products. The documentation is an integral part of the service agreement.",
+      intro_text2: "Collepse provides services in web development, game creation, AI integrations, as well as professional PC assembly and optimization. All projects are executed in accordance with the agreed technical specifications.",
+      tech_title: "2. Technology stack", tech_text: "We use modern and proven technologies:", tech_item1: "Frontend: React, Vue.js, TypeScript, TailwindCSS", tech_item2: "Backend: Node.js, Python (Django/FastAPI), Go", tech_item3: "Databases: PostgreSQL, MongoDB, Redis", tech_item4: "GameDev: Unity (C#), Unreal Engine 5", tech_item5: "AI/ML: GPT-4, Llama, TensorFlow, PyTorch", tech_item6: "Infrastructure: Docker, Kubernetes, AWS, Netlify", tech_note: "✅ The Contractor guarantees the relevance of versions and security of the solutions used.",
+      api_title: "3. API agreements", api_text1: "All APIs developed by Collepse comply with RESTful or GraphQL standards. Responses are returned in JSON format. Server response time does not exceed 200 ms under normal load.", api_text2: "Documentation for each API is provided in Swagger/OpenAPI format. Access to the sandbox is granted after signing an NDA.",
+      terms_title: "4. Contract terms (public offer)", terms_text1: "4.1. This contract is considered concluded from the moment the Customer accepts the commercial offer or signs the work commencement act.", terms_text2: "4.2. Deadlines for the performance of work are fixed in the schedule (Appendix No. 1). Delays of more than 5 business days entitle the Customer to claim a penalty of 0.5% of the stage amount for each day of delay.", terms_text3: "4.3. Acceptance of results is carried out by the acceptance certificate within 5 business days. If there are no comments, the work is deemed accepted.",
+      liability_title: "5. Liability of the parties", liability_text1: "5.1. The Contractor is responsible for the quality of services provided in accordance with the technical specifications. Warranty period is 90 days from the date of signing the act.", liability_text2: "5.2. The Customer undertakes to provide materials, accesses and feedback in a timely manner. Delay on the part of the Customer shifts the deadlines proportionally.", liability_text3: "5.3. The total liability of the Contractor is limited to the cost of services rendered for a specific stage.",
+      payment_title: "6. Payment procedure", payment_text1: "6.1. The prepayment is 50% of the stage cost, the remaining 50% — after signing the work completion certificate.", payment_text2: "6.2. Payment is made by bank transfer to the Contractor's settlement account or in another manner agreed by the parties. The date of payment is the date of receipt of funds.", payment_text3: "6.3. In case of termination of the contract due to the Customer's fault, the prepayment is not refundable.",
+      conf_title: "7. Confidentiality", conf_text1: "The parties undertake not to disclose any information obtained during the cooperation, including source code, business ideas, financial data. This clause remains in effect for 3 years after the termination of the contract.",
+      sign_title: "8. Details and signatures", sign_name: "Collepse (Contractor):", sign_details: "TIN: 123456789, PSRN: 9876543210\nLegal address: Tashkent, Mirabad street, 15\nE-mail: legal@collepse.com | Tel: +998 71 123 45 67", sign_customer: "Customer:", sign_customer_placeholder: "[Full name / Company name]", sign_footer: "This contract is made in two copies having equal legal force.",
+      pdf_btn: "Download contract (PDF)", footer_text: "Building digital future — technology, design, result"
+    }
+  };
+
+  function setLanguage(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+          if (el.placeholder) el.placeholder = translations[lang][key];
+        } else {
+          el.innerHTML = translations[lang][key];
+        }
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+    localStorage.setItem('collepse_docs_lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+  });
+  const savedLang = localStorage.getItem('collepse_docs_lang') || 'ru';
+  setLanguage(savedLang);
+
+  // PDF скачивание
+  const downloadBtn = document.getElementById('downloadPdfBtn');
+  downloadBtn.addEventListener('click', () => {
+    const element = document.getElementById('docsContent');
+    const opt = {
+      margin:        [0.5, 0.5, 0.5, 0.5],
+      filename:     'Collepse_contract.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, letterRendering: true },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  });
+</script>
+</body>
+</html>

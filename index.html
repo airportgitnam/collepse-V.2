@@ -214,6 +214,56 @@
     padding-left: 8px;
   }
 
+  /* Кнопка перевода */
+  .lang-switch {
+    display: flex;
+    gap: 6px;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 5px 8px;
+    margin-left: 1rem;
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .lang-btn.active {
+    background: var(--accent-primary);
+    color: white;
+  }
+  .lang-btn:hover:not(.active) {
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .lang-switch {
+      margin-left: 0;
+    }
+  }
+  @media (max-width: 768px) {
+    .lang-switch {
+      order: 1;
+      margin-left: auto;
+      margin-right: 1rem;
+    }
+    .nav-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+
   /* ─── ГЕРОЙ СЕКЦИЯ ─── */
   #hero {
     min-height: 100vh;
@@ -1220,14 +1270,21 @@
 
 <!-- НАВИГАЦИЯ -->
 <nav id="navbar">
-  <a href="#hero" class="nav-logo">Collepse<span>.</span></a>
+  <a href="#hero" class="nav-logo">Collepse</a>
   <ul class="nav-links">
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#team">Команда</a></li>
-    <li><a href="#projects">Проекты</a></li>
-    <li><a href="#testimonials">Отзывы</a></li>
-    <li><a href="#contact" class="nav-cta">Начать проект</a></li>
+    <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
+    <li><a href="#services" data-i18n="nav_services">Услуги</a></li>
+    <li><a href="#team" data-i18n="nav_team">Команда</a></li>
+    <li><a href="#projects" data-i18n="nav_projects">Проекты</a></li>
+    <li><a href="#testimonials" data-i18n="nav_testimonials">Отзывы</a></li>
+    <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
+    <li><a href="#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">РУ</button>
+    <button class="lang-btn" data-lang="uz">UZ</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
   <button class="hamburger" id="hamburger" aria-label="Меню">
     <span></span><span></span><span></span>
   </button>
@@ -1235,11 +1292,11 @@
 
 <!-- МОБИЛЬНОЕ МЕНЮ -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services" onclick="closeMenu()">Услуги</a>
-  <a href="#team" onclick="closeMenu()">Команда</a>
-  <a href="#projects" onclick="closeMenu()">Проекты</a>
-  <a href="#testimonials" onclick="closeMenu()">Отзывы</a>
-  <a href="#contact" onclick="closeMenu()">Начать проект</a>
+  <a href="#services" data-i18n="nav_services">Услуги</a>
+  <a href="#team" data-i18n="nav_team">Команда</a>
+  <a href="#projects" data-i18n="nav_projects">Проекты</a>
+  <a href="#testimonials" data-i18n="nav_testimonials">Отзывы</a>
+  <a href="#contact" data-i18n="nav_cta">Начать проект</a>
 </div>
 
 <!-- ГЕРОЙ -->
@@ -1251,522 +1308,209 @@
     <div class="hero-content">
       <div class="hero-tag">
         <span class="dot"></span> 
-        Инновационная IT-команда
+        <span data-i18n="hero_tag">Инновационная IT-команда</span>
       </div>
       <h1 class="hero-title">
-        Создаём <span class="accent">цифровое</span><br>
-        будущее уже сегодня
+        <span data-i18n="hero_title1">Создаём</span> <span class="accent" data-i18n="hero_title2">цифровое</span><br>
+        <span data-i18n="hero_title3">будущее уже сегодня</span>
       </h1>
-      <div class="hero-slogan">// Технологии · Дизайн · Результат</div>
-      <p class="hero-text">
+      <div class="hero-slogan" data-i18n="hero_slogan">// Технологии · Дизайн · Результат</div>
+      <p class="hero-text" data-i18n="hero_text">
         Мы — команда экспертов, создающая современные веб-решения, 
         AI-интеграции и высокопроизводительные системы для бизнеса любого масштаба.
       </p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-primary">
+        <a href="#contact" class="btn-primary" data-i18n="hero_btn1">
           Обсудить проект <span>→</span>
         </a>
-        <a href="#projects" class="btn-ghost">
+        <a href="#projects" class="btn-ghost" data-i18n="hero_btn2">
           Портфолио
         </a>
       </div>
 
       <div class="hero-stats">
-        <div class="stat-card">
-          <div class="stat-number">15+</div>
-          <div class="stat-label">Веб-проектов</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">20+</div>
-          <div class="stat-label">AI-интеграций</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">10M</div>
-          <div class="stat-label">API запросов</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">100+</div>
-          <div class="stat-label">ПК сборок</div>
-        </div>
+        <div class="stat-card"><div class="stat-number">15+</div><div class="stat-label" data-i18n="stat1">Веб-проектов</div></div>
+        <div class="stat-card"><div class="stat-number">20+</div><div class="stat-label" data-i18n="stat2">AI-интеграций</div></div>
+        <div class="stat-card"><div class="stat-number">10M</div><div class="stat-label" data-i18n="stat3">API запросов</div></div>
+        <div class="stat-card"><div class="stat-number">100+</div><div class="stat-label" data-i18n="stat4">ПК сборок</div></div>
       </div>
     </div>
 
     <div class="hero-visual">
       <div class="card-float">
-        <div class="card-float-header">
-          <div class="card-icon icon-blue">🤖</div>
-          <div>
-            <div class="card-float-title">AI & Backend</div>
-            <div class="card-float-sub">Node.js · Python · LLM</div>
-          </div>
-        </div>
-        <div class="tag-row">
-          <span class="tag">GPT-4</span>
-          <span class="tag">REST API</span>
-          <span class="tag">MongoDB</span>
-          <span class="tag">Telegram Bot</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="--fill-width: 92%"></div>
-        </div>
+        <div class="card-float-header"><div class="card-icon icon-blue">🤖</div><div><div class="card-float-title" data-i18n="card1_title">AI & Backend</div><div class="card-float-sub" data-i18n="card1_sub">Node.js · Python · LLM</div></div></div>
+        <div class="tag-row"><span class="tag">GPT-4</span><span class="tag">REST API</span><span class="tag">MongoDB</span><span class="tag">Telegram Bot</span></div><div class="progress-bar"><div class="progress-fill" style="--fill-width: 92%"></div></div>
       </div>
-
       <div class="card-float">
-        <div class="card-float-header">
-          <div class="card-icon icon-teal">✨</div>
-          <div>
-            <div class="card-float-title">Frontend & Web3</div>
-            <div class="card-float-sub">React · Vue · Web3.js</div>
-          </div>
-        </div>
-        <div class="tag-row">
-          <span class="tag">React</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">UI/UX</span>
-          <span class="tag">Web3</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="--fill-width: 95%"></div>
-        </div>
+        <div class="card-float-header"><div class="card-icon icon-teal">✨</div><div><div class="card-float-title" data-i18n="card2_title">Frontend & Web3</div><div class="card-float-sub" data-i18n="card2_sub">React · Vue · Web3.js</div></div></div>
+        <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">UI/UX</span><span class="tag">Web3</span></div><div class="progress-bar"><div class="progress-fill" style="--fill-width: 95%"></div></div>
       </div>
-
       <div class="card-float">
-        <div class="card-float-header">
-          <div class="card-icon icon-purple">🎮</div>
-          <div>
-            <div class="card-float-title">Game Development</div>
-            <div class="card-float-sub">Unity · Unreal · C#</div>
-          </div>
-        </div>
-        <div class="tag-row">
-          <span class="tag">Unity</span>
-          <span class="tag">C#</span>
-          <span class="tag">3D Modeling</span>
-          <span class="tag">Multiplayer</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" style="--fill-width: 88%"></div>
-        </div>
+        <div class="card-float-header"><div class="card-icon icon-purple">🎮</div><div><div class="card-float-title" data-i18n="card3_title">Game Development</div><div class="card-float-sub" data-i18n="card3_sub">Unity · Unreal · C#</div></div></div>
+        <div class="tag-row"><span class="tag">Unity</span><span class="tag">C#</span><span class="tag">3D Modeling</span><span class="tag">Multiplayer</span></div><div class="progress-bar"><div class="progress-fill" style="--fill-width: 88%"></div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- УСЛУГИ -->
-<section id="services">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Наши компетенции</div>
-      <h2 class="section-title">Что мы предлагаем</h2>
-      <p class="section-desc">Полный цикл разработки — от идеи до масштабирования. Качественно и в срок.</p>
-    </div>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <span class="service-emoji">✨</span>
-        <div class="service-name">Web & Frontend</div>
-        <p class="service-desc">Современные веб-приложения с продуманным UX и плавными анимациями</p>
-        <div class="service-stats">
-          <span class="service-stat">15+ проектов</span>
-          <span class="service-stat">99% Lighthouse</span>
-        </div>
-      </div>
-      <div class="service-card reveal">
-        <span class="service-emoji">🎮</span>
-        <div class="service-name">Game Development</div>
-        <p class="service-desc">Разработка игр любой сложности с уникальным геймдизайном и мультиплеером</p>
-        <div class="service-stats">
-          <span class="service-stat">8+ игр</span>
-          <span class="service-stat">5 наград</span>
-        </div>
-      </div>
-      <div class="service-card reveal">
-        <span class="service-emoji">🤖</span>
-        <div class="service-name">AI & Backend</div>
-        <p class="service-desc">Интеграция нейросетей, разработка API и высоконагруженных систем</p>
-        <div class="service-stats">
-          <span class="service-stat">20+ ботов</span>
-          <span class="service-stat">10M запросов</span>
-        </div>
-      </div>
-      <div class="service-card reveal">
-        <span class="service-emoji">💻</span>
-        <div class="service-name">PC Optimization</div>
-        <p class="service-desc">Профессиональная сборка и настройка ПК для работы и киберспорта</p>
-        <div class="service-stats">
-          <span class="service-stat">100+ сборок</span>
-          <span class="service-stat">+40% FPS</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<section id="services"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="services_label">Наши компетенции</div><h2 class="section-title" data-i18n="services_title">Что мы предлагаем</h2><p class="section-desc" data-i18n="services_desc">Полный цикл разработки — от идеи до масштабирования. Качественно и в срок.</p></div>
+<div class="services-grid"><div class="service-card reveal"><span class="service-emoji">✨</span><div class="service-name" data-i18n="service1_name">Web & Frontend</div><p class="service-desc" data-i18n="service1_desc">Современные веб-приложения с продуманным UX и плавными анимациями</p><div class="service-stats"><span class="service-stat" data-i18n="service1_stat1">15+ проектов</span><span class="service-stat" data-i18n="service1_stat2">99% Lighthouse</span></div></div>
+<div class="service-card reveal"><span class="service-emoji">🎮</span><div class="service-name" data-i18n="service2_name">Game Development</div><p class="service-desc" data-i18n="service2_desc">Разработка игр любой сложности с уникальным геймдизайном и мультиплеером</p><div class="service-stats"><span class="service-stat" data-i18n="service2_stat1">8+ игр</span><span class="service-stat" data-i18n="service2_stat2">5 наград</span></div></div>
+<div class="service-card reveal"><span class="service-emoji">🤖</span><div class="service-name" data-i18n="service3_name">AI & Backend</div><p class="service-desc" data-i18n="service3_desc">Интеграция нейросетей, разработка API и высоконагруженных систем</p><div class="service-stats"><span class="service-stat" data-i18n="service3_stat1">20+ ботов</span><span class="service-stat" data-i18n="service3_stat2">10M запросов</span></div></div>
+<div class="service-card reveal"><span class="service-emoji">💻</span><div class="service-name" data-i18n="service4_name">PC Optimization</div><p class="service-desc" data-i18n="service4_desc">Профессиональная сборка и настройка ПК для работы и киберспорта</p><div class="service-stats"><span class="service-stat" data-i18n="service4_stat1">100+ сборок</span><span class="service-stat" data-i18n="service4_stat2">+40% FPS</span></div></div></div></div></section>
 
 <!-- КОМАНДА -->
-<section id="team">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Кто мы</div>
-      <h2 class="section-title">Команда экспертов</h2>
-      <p class="section-desc">Каждый из нас — специалист высокого уровня в своей области.</p>
-    </div>
-    <div class="team-grid">
-      <div class="team-card reveal">
-        <div class="team-avatar">🎮</div>
-        <div class="team-name">Шохруз Исломов</div>
-        <div class="team-role">GameDev Lead</div>
-        <div class="team-skills">
-          <span class="skill-tag">Unity</span>
-          <span class="skill-tag">Unreal</span>
-          <span class="skill-tag">C#</span>
-          <span class="skill-tag">Game Design</span>
-        </div>
-      </div>
-      <div class="team-card reveal">
-        <div class="team-avatar">💻</div>
-        <div class="team-name">Бехруз Давлаталиев</div>
-        <div class="team-role">Hardware Expert</div>
-        <div class="team-skills">
-          <span class="skill-tag">PC Build</span>
-          <span class="skill-tag">Overclocking</span>
-          <span class="skill-tag">Diagnostics</span>
-        </div>
-      </div>
-      <div class="team-card reveal">
-        <div class="team-avatar">🎨</div>
-        <div class="team-name">Нурфайз Шодмонкулов</div>
-        <div class="team-role">UI/UX Designer</div>
-        <div class="team-skills">
-          <span class="skill-tag">Figma</span>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">Animation</span>
-          <span class="skill-tag">Design Systems</span>
-        </div>
-      </div>
-      <div class="team-card reveal">
-        <div class="team-avatar">🧠</div>
-        <div class="team-name">Исфандиёр Вохидов</div>
-        <div class="team-role">Lead Developer</div>
-        <div class="team-skills">
-          <span class="skill-tag">Node.js</span>
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">AI/ML</span>
-          <span class="skill-tag">Architecture</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<section id="team"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="team_label">Кто мы</div><h2 class="section-title" data-i18n="team_title">Команда экспертов</h2><p class="section-desc" data-i18n="team_desc">Каждый из нас — специалист высокого уровня в своей области.</p></div>
+<div class="team-grid"><div class="team-card reveal"><div class="team-avatar">🎮</div><div class="team-name" data-i18n="team1_name">Шохруз Исломов</div><div class="team-role" data-i18n="team1_role">GameDev Lead</div><div class="team-skills"><span class="skill-tag">Unity</span><span class="skill-tag">Unreal</span><span class="skill-tag">C#</span><span class="skill-tag">Game Design</span></div></div>
+<div class="team-card reveal"><div class="team-avatar">💻</div><div class="team-name" data-i18n="team2_name">Бехруз Давлаталиев</div><div class="team-role" data-i18n="team2_role">Hardware Expert</div><div class="team-skills"><span class="skill-tag">PC Build</span><span class="skill-tag">Overclocking</span><span class="skill-tag">Diagnostics</span></div></div>
+<div class="team-card reveal"><div class="team-avatar">🎨</div><div class="team-name" data-i18n="team3_name">Нурфайз Шодмонкулов</div><div class="team-role" data-i18n="team3_role">UI/UX Designer</div><div class="team-skills"><span class="skill-tag">Figma</span><span class="skill-tag">React</span><span class="skill-tag">Animation</span><span class="skill-tag">Design Systems</span></div></div>
+<div class="team-card reveal"><div class="team-avatar">🧠</div><div class="team-name" data-i18n="team4_name">Исфандиёр Вохидов</div><div class="team-role" data-i18n="team4_role">Lead Developer</div><div class="team-skills"><span class="skill-tag">Node.js</span><span class="skill-tag">Python</span><span class="skill-tag">AI/ML</span><span class="skill-tag">Architecture</span></div></div></div></div></section>
 
 <!-- ПРОЕКТЫ -->
-<section id="projects">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Портфолио</div>
-      <h2 class="section-title">Избранные проекты</h2>
-      <p class="section-desc">Реальные кейсы, которыми мы гордимся.</p>
-    </div>
-    <div class="projects-grid">
-      <a href="https://lingo-nova-ai.netlify.app" class="project-card reveal" target="_blank">
-        <div class="project-num">01 / Образование</div>
-        <div class="project-name">Lingo Nova</div>
-        <p class="project-desc">Интеллектуальная платформа для изучения языков с AI-тьютором</p>
-      </a>
-      <a href="https://cs-elite.netlify.app" class="project-card reveal" target="_blank">
-        <div class="project-num">02 / GameDev</div>
-        <div class="project-name">Cyber Strike</div>
-        <p class="project-desc">Мультиплеерный шутер с продвинутой физикой и процедурной генерацией</p>
-      </a>
-      <a href="https://d3vhub.netlify.app" class="project-card reveal" target="_blank">
-        <div class="project-num">03 / Аналитика</div>
-        <div class="project-name">DevMetrics</div>
-        <p class="project-desc">Платформа для анализа кода и производительности команд разработки</p>
-      </a>
-    </div>
-  </div>
-</section>
+<section id="projects"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="projects_label">Портфолио</div><h2 class="section-title" data-i18n="projects_title">Избранные проекты</h2><p class="section-desc" data-i18n="projects_desc">Реальные кейсы, которыми мы гордимся.</p></div>
+<div class="projects-grid"><a href="https://lingo-nova-ai.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">01 / Образование</div><div class="project-name">Lingo Nova</div><p class="project-desc" data-i18n="project1_desc">Интеллектуальная платформа для изучения языков с AI-тьютором</p></a>
+<a href="https://cs-elite.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">02 / GameDev</div><div class="project-name">Cyber Strike</div><p class="project-desc" data-i18n="project2_desc">Мультиплеерный шутер с продвинутой физикой и процедурной генерацией</p></a>
+<a href="https://d3vhub.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">03 / Аналитика</div><div class="project-name">DevMetrics</div><p class="project-desc" data-i18n="project3_desc">Платформа для анализа кода и производительности команд разработки</p></a></div></div></section>
 
 <!-- ОТЗЫВЫ -->
-<section id="testimonials">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Отзывы клиентов</div>
-      <h2 class="section-title">Что о нас говорят</h2>
-      <p class="section-desc">Доверие и репутация — наш главный капитал.</p>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">Команда Collepse превзошла все ожидания. Проект был сдан раньше срока, качество кода на высоте. Обязательно будем работать.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">А</div>
-          <div>
-            <div class="author-name">Нафиса Низамова</div>
-            <div class="author-title">CEO, EdTech Startup</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card reveal">
-        <div class="stars">★★★★★</div>
-        <p class="testimonial-text">Отличный подход к разработке. Ребята действительно понимают современные технологии и всегда на связи.</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">Д</div>
-          <div>
-            <div class="author-name">Абдуллаев Дилшод</div>
-            <div class="author-title">CTO, FinTech Company</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<section id="testimonials"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="testimonials_label">Отзывы клиентов</div><h2 class="section-title" data-i18n="testimonials_title">Что о нас говорят</h2><p class="section-desc" data-i18n="testimonials_desc">Доверие и репутация — наш главный капитал.</p></div>
+<div class="testimonials-grid"><div class="testimonial-card reveal"><div class="stars">★★★★★</div><p class="testimonial-text" data-i18n="testimonial1_text">Команда Collepse превзошла все ожидания. Проект был сдан раньше срока, качество кода на высоте. Обязательно будем работать.</p><div class="testimonial-author"><div class="author-avatar">А</div><div><div class="author-name" data-i18n="testimonial1_name">Нафиса Низамова</div><div class="author-title" data-i18n="testimonial1_title">CEO, EdTech Startup</div></div></div></div>
+<div class="testimonial-card reveal"><div class="stars">★★★★★</div><p class="testimonial-text" data-i18n="testimonial2_text">Отличный подход к разработке. Ребята действительно понимают современные технологии и всегда на связи.</p><div class="testimonial-author"><div class="author-avatar">Д</div><div><div class="author-name" data-i18n="testimonial2_name">Абдуллаев Дилшод</div><div class="author-title" data-i18n="testimonial2_title">CTO, FinTech Company</div></div></div></div></div></div></section>
 
 <!-- КОНТАКТЫ -->
-<section id="contact">
-  <div class="section-inner">
-    <div class="reveal">
-      <div class="section-label">Связаться с нами</div>
-      <h2 class="section-title">Начнём сотрудничество</h2>
-      <p class="section-desc">Оставьте заявку — мы свяжемся с вами в течение часа.</p>
-    </div>
-    <div class="contact-grid">
-      <div class="reveal">
-        <h3>Контактная информация</h3>
-        <p>Работаем удалённо по всему миру. Всегда на связи для ваших проектов.</p>
+<section id="contact"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="contact_label">Связаться с нами</div><h2 class="section-title" data-i18n="contact_title">Начнём сотрудничество</h2><p class="section-desc" data-i18n="contact_desc">Оставьте заявку — мы свяжемся с вами в течение часа.</p></div>
+<div class="contact-grid"><div class="reveal"><h3 data-i18n="contact_info_title">Контактная информация</h3><p data-i18n="contact_info_text">Работаем удалённо по всему миру. Всегда на связи для ваших проектов.</p>
+<div class="contact-item"><div class="contact-icon">⏱️</div><div><div class="contact-label" data-i18n="contact_work_label">Время работы</div><div class="contact-value" data-i18n="contact_work_value">Пн–Вс / 10:00 – 22:00 (МСК)</div></div></div>
+<div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-label" data-i18n="contact_location_label">Локация</div><div class="contact-value" data-i18n="contact_location_value">Узбекистан / Ташкент</div></div></div>
+<div class="contact-item"><div class="contact-icon">💬</div><div><div class="contact-label">Telegram</div><div class="contact-value"><a href="https://t.me/collepse_official" target="_blank">@collepse_official</a></div></div></div></div>
 
-        <div class="contact-item">
-          <div class="contact-icon">⏱️</div>
-          <div>
-            <div class="contact-label">Время работы</div>
-            <div class="contact-value">Пн–Вс / 10:00 – 22:00 (МСК)</div>
-          </div>
-        </div>
+<div class="contact-form reveal"><form id="contactForm"><div class="form-row"><div class="form-group"><label for="name" data-i18n="form_name">Ваше имя</label><input type="text" id="name" name="name" placeholder="Name" required></div>
+<div class="form-group"><label for="email" data-i18n="form_email">Email</label><input type="email" id="email" name="email" placeholder="example@example.com" required></div>
+<div class="form-group"><label for="Telegram" data-i18n="form_telegram">Telegram</label><input type="text" id="Telegram" name="Telegram" placeholder="@username" required></div>
+<div class="form-group"><label for="Phone" data-i18n="form_phone">Телефон</label><input type="tel" id="Phone" name="Phone" placeholder="+998 (12) 345-67-87" required></div></div>
+<div class="form-group"><label for="service" data-i18n="form_service">Интересующая услуга</label><select id="service" name="service"><option value="" data-i18n="form_select_option">Выберите из списка</option><option value="Web" data-i18n="form_web">Веб-разработка</option><option value="GameDev" data-i18n="form_gamedev">Разработка игр</option><option value="AI" data-i18n="form_ai">AI и бэкенд</option><option value="PC" data-i18n="form_pc">Оптимизация ПК</option><option value="Other" data-i18n="form_other">Другое</option></select></div>
+<div class="form-group"><label for="message" data-i18n="form_message">Опишите задачу</label><textarea id="message" name="message" placeholder="Расскажите подробнее о вашем проекте..." required></textarea></div>
+<button type="submit" class="form-submit" id="submitBtn"><span data-i18n="form_submit">Отправить заявку</span><span>→</span></button><div class="form-status" id="formStatus"></div></form></div></div></div></section>
 
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <div>
-            <div class="contact-label">Локация</div>
-            <div class="contact-value">Узбекистан / Ташкент</div>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <div class="contact-icon">💬</div>
-          <div>
-            <div class="contact-label">Telegram</div>
-            <div class="contact-value">
-              <a href="https://t.me/collepse_official" target="_blank">@collepse_official</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="contact-form reveal">
-        <form id="contactForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Ваше имя</label>
-              <input type="text" id="name" name="name" placeholder="Name" required>
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="example@example.com" required>
-            </div>
-            <div class="form-group">
-              <label for="Telegram">Telegram</label>
-              <input type="text" id="Telegram" name="Telegram" placeholder="@username" required>
-            </div>
-            <div class="form-group">
-              <label for="Phone">Телефон</label>
-              <input type="tel" id="Phone" name="Phone" placeholder="+998 (12) 345-67-87" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="service">Интересующая услуга</label>
-            <select id="service" name="service">
-              <option value="">Выберите из списка</option>
-              <option value="Web">Веб-разработка</option>
-              <option value="GameDev">Разработка игр</option>
-              <option value="AI">AI и бэкенд</option>
-              <option value="PC">Оптимизация ПК</option>
-              <option value="Other">Другое</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message">Опишите задачу</label>
-            <textarea id="message" name="message" placeholder="Расскажите подробнее о вашем проекте..." required></textarea>
-          </div>
-          <button type="submit" class="form-submit" id="submitBtn">
-            <span>Отправить заявку</span>
-            <span>→</span>
-          </button>
-          <div class="form-status" id="formStatus"></div>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ФУТЕР -->
-<footer>
-  <div class="footer-logo">Collepse<span>.</span></div>
-  <p>Создаём цифровое будущее — технологии, дизайн, результат</p>
-  <p>© 2024 Collepse. Все права защищены.</p>
-</footer>
+<footer><div class="footer-logo">Collepse<span>.</span></div><p data-i18n="footer_text">Создаём цифровое будущее — технологии, дизайн, результат</p><p>© 2024 Collepse. Все права защищены.</p></footer>
 
 <script>
-  // Навигация при скролле
   const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-  });
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 20); });
+  const hamburger = document.getElementById('hamburger'); const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+  function closeMenu() { mobileMenu.classList.remove('open'); }
+  document.querySelectorAll('.mobile-menu a').forEach(link => { link.addEventListener('click', closeMenu); });
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('visible'); }, 50); observer.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+  revealElements.forEach(el => observer.observe(el));
+  document.querySelectorAll('.services-grid, .team-grid, .projects-grid, .testimonials-grid').forEach(grid => { grid.querySelectorAll('.reveal').forEach((child, i) => { child.style.transitionDelay = `${i * 0.08}s`; }); });
+  const form = document.getElementById('contactForm'); const statusDiv = document.getElementById('formStatus'); const submitBtn = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => { e.preventDefault(); const name = document.getElementById('name').value.trim(); const email = document.getElementById('email').value.trim(); const phone = document.getElementById('Phone').value.trim(); const telegram = document.getElementById('Telegram').value.trim(); const message = document.getElementById('message').value.trim(); if (!name || !email || !phone || !telegram || !message) { statusDiv.textContent = '⚠️ Пожалуйста, заполните все обязательные поля'; statusDiv.style.color = '#ef4444'; return; } const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; if (!emailRegex.test(email)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный email'; statusDiv.style.color = '#ef4444'; return; } const phoneRegex = /^\+?\d{10,15}$/; if (!phoneRegex.test(phone)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный телефонный номер'; statusDiv.style.color = '#ef4444'; return; } const telegramRegex = /^@[a-zA-Z0-9_]{3,32}$/; if (!telegramRegex.test(telegram)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный никнейм в Telegram'; statusDiv.style.color = '#ef4444'; return; } const originalText = submitBtn.innerHTML; submitBtn.innerHTML = '<span>Отправка...</span><span>⏳</span>'; submitBtn.disabled = true; statusDiv.textContent = ''; try { const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, service: document.getElementById('service').value, message }) }); const result = await response.json(); if (response.ok) { statusDiv.textContent = '✓ Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.'; statusDiv.style.color = '#10b981'; form.reset(); submitBtn.innerHTML = '<span>Отправлено</span><span>✓</span>'; setTimeout(() => { submitBtn.innerHTML = originalText; submitBtn.disabled = false; statusDiv.textContent = ''; }, 5000); } else { throw new Error(result.error || 'Произошла ошибка при отправке'); } } catch (error) { console.error('Ошибка:', error); statusDiv.textContent = `⚠️ Не удалось отправить заявку. Попробуйте позже или напишите в Telegram.`; statusDiv.style.color = '#ef4444'; submitBtn.innerHTML = originalText; submitBtn.disabled = false; } });
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { const href = this.getAttribute('href'); if (href === '#') return; const targetElement = document.querySelector(href); if (targetElement) { e.preventDefault(); const offset = 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - offset; window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); } }); });
 
-  // Мобильное меню
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
-  });
+  // ---------- ПЕРЕВОД ----------
+  const translations = {
+    ru: {
+      nav_home: "Главная",
+      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_cta: "Начать проект",
+      hero_tag: "Инновационная IT-команда", hero_title1: "Создаём", hero_title2: "цифровое", hero_title3: "будущее уже сегодня", hero_slogan: "// Технологии · Дизайн · Результат",
+      hero_text: "Мы — команда экспертов, создающая современные веб-решения, AI-интеграции и высокопроизводительные системы для бизнеса любого масштаба.",
+      hero_btn1: "Обсудить проект", hero_btn2: "Портфолио", stat1: "Веб-проектов", stat2: "AI-интеграций", stat3: "API запросов", stat4: "ПК сборок",
+      card1_title: "AI & Backend", card1_sub: "Node.js · Python · LLM", card2_title: "Frontend & Web3", card2_sub: "React · Vue · Web3.js", card3_title: "Game Development", card3_sub: "Unity · Unreal · C#",
+      services_label: "Наши компетенции", services_title: "Что мы предлагаем", services_desc: "Полный цикл разработки — от идеи до масштабирования. Качественно и в срок.",
+      service1_name: "Web & Frontend", service1_desc: "Современные веб-приложения с продуманным UX и плавными анимациями", service1_stat1: "15+ проектов", service1_stat2: "99% Lighthouse",
+      service2_name: "Game Development", service2_desc: "Разработка игр любой сложности с уникальным геймдизайном и мультиплеером", service2_stat1: "8+ игр", service2_stat2: "5 наград",
+      service3_name: "AI & Backend", service3_desc: "Интеграция нейросетей, разработка API и высоконагруженных систем", service3_stat1: "20+ ботов", service3_stat2: "10M запросов",
+      service4_name: "PC Optimization", service4_desc: "Профессиональная сборка и настройка ПК для работы и киберспорта", service4_stat1: "100+ сборок", service4_stat2: "+40% FPS",
+      team_label: "Кто мы", team_title: "Команда экспертов", team_desc: "Каждый из нас — специалист высокого уровня в своей области.",
+      team1_name: "Шохруз Исломов", team1_role: "GameDev Lead", team2_name: "Бехруз Давлаталиев", team2_role: "Hardware Expert", team3_name: "Нурфайз Шодмонкулов", team3_role: "UI/UX Designer", team4_name: "Исфандиёр Вохидов", team4_role: "Lead Developer",
+      projects_label: "Портфолио", projects_title: "Избранные проекты", projects_desc: "Реальные кейсы, которыми мы гордимся.",
+      project1_desc: "Интеллектуальная платформа для изучения языков с AI-тьютором", project2_desc: "Мультиплеерный шутер с продвинутой физикой и процедурной генерацией", project3_desc: "Платформа для анализа кода и производительности команд разработки",
+      testimonials_label: "Отзывы клиентов", testimonials_title: "Что о нас говорят", testimonials_desc: "Доверие и репутация — наш главный капитал.",
+      testimonial1_text: "Команда Collepse превзошла все ожидания. Проект был сдан раньше срока, качество кода на высоте. Обязательно будем работать.", testimonial1_name: "Нафиса Низамова", testimonial1_title: "CEO, EdTech Startup",
+      testimonial2_text: "Отличный подход к разработке. Ребята действительно понимают современные технологии и всегда на связи.", testimonial2_name: "Абдуллаев Дилшод", testimonial2_title: "CTO, FinTech Company",
+      contact_label: "Связаться с нами", contact_title: "Начнём сотрудничество", contact_desc: "Оставьте заявку — мы свяжемся с вами в течение часа.",
+      contact_info_title: "Контактная информация", contact_info_text: "Работаем удалённо по всему миру. Всегда на связи для ваших проектов.",
+      contact_work_label: "Время работы", contact_work_value: "Пн–Вс / 10:00 – 22:00 (МСК)", contact_location_label: "Локация", contact_location_value: "Узбекистан / Ташкент",
+      form_name: "Ваше имя", form_email: "Email", form_telegram: "Telegram", form_phone: "Телефон", form_service: "Интересующая услуга", form_select_option: "Выберите из списка", form_web: "Веб-разработка", form_gamedev: "Разработка игр", form_ai: "AI и бэкенд", form_pc: "Оптимизация ПК", form_other: "Другое", form_message: "Опишите задачу", form_submit: "Отправить заявку",
+      footer_text: "Создаём цифровое будущее — технологии, дизайн, результат"
+    },
+    uz: {
+      nav_home: "Bosh sahifa",
+      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_cta: "Loyihani boshlash",
+      hero_tag: "Innovatsion IT jamoa", hero_title1: "Raqamli", hero_title2: "kelajakni", hero_title3: "bugundan yaratamiz", hero_slogan: "// Texnologiya · Dizayn · Natija",
+      hero_text: "Biz — zamonaviy veb-yechimlar, AI-integratsiyalar va yuqori unumli tizimlarni yaratuvchi ekspertlar jamoasi.",
+      hero_btn1: "Loyihani muhokama qilish", hero_btn2: "Portfolio", stat1: "Veb-loyihalar", stat2: "AI-integratsiyalar", stat3: "API so'rovlari", stat4: "Kompyuter yig'ish",
+      card1_title: "AI & Backend", card1_sub: "Node.js · Python · LLM", card2_title: "Frontend & Web3", card2_sub: "React · Vue · Web3.js", card3_title: "O'yin ishlab chiqish", card3_sub: "Unity · Unreal · C#",
+      services_label: "Bizning kompetensiyalar", services_title: "Biz nimani taklif qilamiz", services_desc: "Toʻliq ishlab chiqish sikli — gʻoyadan masshtablashtirishgacha. Sifatli va oʻz vaqtida.",
+      service1_name: "Web & Frontend", service1_desc: "Zamonaviy veb-ilovalar, yaxshi UX va silliq animatsiyalar bilan", service1_stat1: "15+ loyiha", service1_stat2: "99% Lighthouse",
+      service2_name: "Game Development", service2_desc: "Har qanday murakkablikdagi oʻyinlarni noyob dizayn va multiplayer bilan ishlab chiqish", service2_stat1: "8+ oʻyin", service2_stat2: "5 mukofot",
+      service3_name: "AI & Backend", service3_desc: "Neyron tarmoqlarni integratsiya qilish, API va yuqori yuklangan tizimlarni ishlab chiqish", service3_stat1: "20+ bot", service3_stat2: "10M so'rov",
+      service4_name: "PC Optimization", service4_desc: "Ish va kiber sport uchun professional kompyuter yig'ish va sozlash", service4_stat1: "100+ yig'ilish", service4_stat2: "+40% FPS",
+      team_label: "Biz kimiz", team_title: "Ekspertlar jamoasi", team_desc: "Har birimiz oʻz sohamizda yuqori darajali mutaxassis.",
+      team1_name: "Shoxrux Islomov", team1_role: "GameDev Lead", team2_name: "Bexruz Davlataliyev", team2_role: "Hardware Expert", team3_name: "Nur fayz Shodmonqulov", team3_role: "UI/UX Designer", team4_name: "Isfandiyor Voxidov", team4_role: "Lead Developer",
+      projects_label: "Portfolio", projects_title: "Tanlangan loyihalar", projects_desc: "Biz faxrlanadigan haqiqiy misollar.",
+      project1_desc: "AI-o‘qituvchi bilan tillarni o‘rganish uchun intellektual platforma", project2_desc: "Ilg'or fizika va protsessual generatsiyaga ega multiplayer shooter", project3_desc: "Kod tahlili va dasturchilar jamoalarining samaradorligi uchun platforma",
+      testimonials_label: "Mijozlar fikrlari", testimonials_title: "Biz haqimizda nima deyishadi", testimonials_desc: "Ishonch va obro‘ — bizning asosiy kapitalimiz.",
+      testimonial1_text: "Collepse jamoasi barcha kutganlardan oshib ketdi. Loyiha muddatidan oldin topshirildi, kod sifati yuqori. Albatta hamkorlik qilamiz.", testimonial1_name: "Nafisa Nizamova", testimonial1_title: "CEO, EdTech Startup",
+      testimonial2_text: "Ishlab chiqishga ajoyib yondashuv. Yigitlar zamonaviy texnologiyalarni yaxshi tushunishadi va doim aloqada.", testimonial2_name: "Abdullayev Dilshod", testimonial2_title: "CTO, FinTech Company",
+      contact_label: "Bog'lanish", contact_title: "Hamkorlikni boshlaymiz", contact_desc: "So‘rovingizni qoldiring — bir soat ichida siz bilan bog‘lanamiz.",
+      contact_info_title: "Kontakt ma'lumotlari", contact_info_text: "Butun dunyo bo‘ylab masofaviy ishlaymiz. Loyihalaringiz uchun doim aloqadamiz.",
+      contact_work_label: "Ish vaqti", contact_work_value: "Dush–Yak / 10:00 – 22:00 (Toshkent)", contact_location_label: "Manzil", contact_location_value: "O‘zbekiston / Toshkent",
+      form_name: "Ismingiz", form_email: "Email", form_telegram: "Telegram", form_phone: "Telefon", form_service: "Qiziqqan xizmat", form_select_option: "Ro‘yxatdan tanlang", form_web: "Veb-ishlab chiqish", form_gamedev: "O‘yin ishlab chiqish", form_ai: "AI va backend", form_pc: "Kompyuterni optimallashtirish", form_other: "Boshqa", form_message: "Vazifani tavsiflang", form_submit: "So‘rov yuborish",
+      footer_text: "Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija"
+    },
+    en: {
+      nav_home: "Home",
+      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_cta: "Start a Project",
+      hero_tag: "Innovative IT Team", hero_title1: "Building", hero_title2: "digital", hero_title3: "future today", hero_slogan: "// Technology · Design · Result",
+      hero_text: "We are a team of experts creating modern web solutions, AI integrations, and high-performance systems for businesses of any scale.",
+      hero_btn1: "Discuss project", hero_btn2: "Portfolio", stat1: "Web projects", stat2: "AI integrations", stat3: "API requests", stat4: "PC builds",
+      card1_title: "AI & Backend", card1_sub: "Node.js · Python · LLM", card2_title: "Frontend & Web3", card2_sub: "React · Vue · Web3.js", card3_title: "Game Development", card3_sub: "Unity · Unreal · C#",
+      services_label: "Our expertise", services_title: "What we offer", services_desc: "Full development cycle — from idea to scaling. Quality and on time.",
+      service1_name: "Web & Frontend", service1_desc: "Modern web apps with thoughtful UX and smooth animations", service1_stat1: "15+ projects", service1_stat2: "99% Lighthouse",
+      service2_name: "Game Development", service2_desc: "Game development of any complexity with unique game design and multiplayer", service2_stat1: "8+ games", service2_stat2: "5 awards",
+      service3_name: "AI & Backend", service3_desc: "Neural network integration, API development and high-load systems", service3_stat1: "20+ bots", service3_stat2: "10M requests",
+      service4_name: "PC Optimization", service4_desc: "Professional PC assembly and tuning for work and eSports", service4_stat1: "100+ builds", service4_stat2: "+40% FPS",
+      team_label: "Who we are", team_title: "Team of experts", team_desc: "Each of us is a high-level specialist in our field.",
+      team1_name: "Shokhruz Islomov", team1_role: "GameDev Lead", team2_name: "Bekhruz Davlataliev", team2_role: "Hardware Expert", team3_name: "Nurfayz Shodmonkulov", team3_role: "UI/UX Designer", team4_name: "Isfandiyor Vokhidov", team4_role: "Lead Developer",
+      projects_label: "Portfolio", projects_title: "Featured projects", projects_desc: "Real cases we are proud of.",
+      project1_desc: "Intelligent platform for learning languages with AI tutor", project2_desc: "Multiplayer shooter with advanced physics and procedural generation", project3_desc: "Platform for code analysis and developer team performance",
+      testimonials_label: "Client reviews", testimonials_title: "What they say about us", testimonials_desc: "Trust and reputation are our main assets.",
+      testimonial1_text: "The Collepse team exceeded all expectations. The project was delivered ahead of schedule, code quality is top notch. We will definitely work again.", testimonial1_name: "Nafisa Nizamova", testimonial1_title: "CEO, EdTech Startup",
+      testimonial2_text: "Great approach to development. The guys really understand modern technologies and are always in touch.", testimonial2_name: "Abdullaev Dilshod", testimonial2_title: "CTO, FinTech Company",
+      contact_label: "Contact us", contact_title: "Start cooperation", contact_desc: "Leave a request — we will contact you within an hour.",
+      contact_info_title: "Contact information", contact_info_text: "We work remotely all over the world. Always in touch for your projects.",
+      contact_work_label: "Working hours", contact_work_value: "Mon–Sun / 10:00 – 22:00 (Moscow)", contact_location_label: "Location", contact_location_value: "Uzbekistan / Tashkent",
+      form_name: "Your name", form_email: "Email", form_telegram: "Telegram", form_phone: "Phone", form_service: "Service of interest", form_select_option: "Select from list", form_web: "Web development", form_gamedev: "Game development", form_ai: "AI & backend", form_pc: "PC optimization", form_other: "Other", form_message: "Describe your task", form_submit: "Send request",
+      footer_text: "Building digital future — technology, design, result"
+    }
+  };
 
-  function closeMenu() {
-    mobileMenu.classList.remove('open');
+  function setLanguage(lang) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
+          if (el.placeholder) el.placeholder = translations[lang][key];
+          else if (el.options && el.options[0]) el.options[0].text = translations[lang][key];
+        } else {
+          el.innerHTML = translations[lang][key];
+        }
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+    localStorage.setItem('collepse_lang', lang);
   }
 
-  // Закрытие меню при клике на ссылку
-  document.querySelectorAll('.mobile-menu a').forEach(link => {
-    link.addEventListener('click', closeMenu);
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
   });
-
-  // Анимация появления элементов при скролле
-  const revealElements = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, 50);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
-
-  revealElements.forEach(el => observer.observe(el));
-
-  // Последовательная анимация для карточек
-  document.querySelectorAll('.services-grid, .team-grid, .projects-grid, .testimonials-grid').forEach(grid => {
-    grid.querySelectorAll('.reveal').forEach((child, i) => {
-      child.style.transitionDelay = `${i * 0.08}s`;
-    });
-  });
-
-  // Обработка формы
-  const form = document.getElementById('contactForm');
-  const statusDiv = document.getElementById('formStatus');
-  const submitBtn = document.getElementById('submitBtn');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('Phone').value.trim();
-    const telegram = document.getElementById('Telegram').value.trim();
-    const message = document.getElementById('message').value.trim();
-
-    // Валидация
-    if (!name || !email || !phone || !telegram || !message) {
-      statusDiv.textContent = '⚠️ Пожалуйста, заполните все обязательные поля';
-      statusDiv.style.color = '#ef4444';
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный email';
-      statusDiv.style.color = '#ef4444';
-      return;
-    }
-
-    const phoneRegex = /^\+?\d{10,15}$/;
-    if (!phoneRegex.test(phone)) {
-      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный телефонный номер';
-      statusDiv.style.color = '#ef4444';
-      return;
-    }
-
-    const telegramRegex = /^@[a-zA-Z0-9_]{3,32}$/;
-    if (!telegramRegex.test(telegram)) {
-      statusDiv.textContent = '⚠️ Пожалуйста, введите корректный никнейм в Telegram';
-      statusDiv.style.color = '#ef4444';
-      return;
-    }
-
-
-    // UI состояния загрузки
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<span>Отправка...</span><span>⏳</span>';
-    submitBtn.disabled = true;
-    statusDiv.textContent = '';
-
-    try {
-      // Здесь должен быть URL вашего бекенда
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name,
-          email,
-          service: document.getElementById('service').value,
-          message
-        })
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        statusDiv.textContent = '✓ Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.';
-        statusDiv.style.color = '#10b981';
-        form.reset();
-        submitBtn.innerHTML = '<span>Отправлено</span><span>✓</span>';
-        
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-          statusDiv.textContent = '';
-        }, 5000);
-      } else {
-        throw new Error(result.error || 'Произошла ошибка при отправке');
-      }
-    } catch (error) {
-      console.error('Ошибка:', error);
-      statusDiv.textContent = `⚠️ Не удалось отправить заявку. Попробуйте позже или напишите в Telegram.`;
-      statusDiv.style.color = '#ef4444';
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-    }
-  });
-
-  // Плавный скролл для якорных ссылок (учитывая фиксированную шапку)
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href === '#') return;
-      
-      const targetElement = document.querySelector(href);
-      if (targetElement) {
-        e.preventDefault();
-        const offset = 80;
-        const elementPosition = targetElement.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
+  const savedLang = localStorage.getItem('collepse_lang') || 'ru';
+  setLanguage(savedLang);
 </script>
 </body>
 </html>
-  
