@@ -479,23 +479,204 @@
       padding: 1.5rem;
     }
   }
+  /* Навигация - порядок элементов */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 6%;
+  height: 80px;
+  background: rgba(var(--bg-secondary-rgb), 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+/* Гамбургер - первый и самый левый */
+.hamburger {
+  order: 0;
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 102;
+}
+
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition);
+  margin: 4px 0;
+}
+
+/* Логотип */
+.nav-logo {
+  order: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+/* Десктопное меню */
+.nav-links {
+  order: 2;
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  margin: 0 auto;
+}
+
+/* Контролы (перевод и тема) - справа */
+.theme-switch-wrapper {
+  order: 3;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    order: 0;
+  }
+  
+  .nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    order: 1;
+    font-size: 1.5rem;
+    white-space: nowrap;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .theme-switch-wrapper {
+    order: 2;
+    margin-left: auto;
+  }
+}
+
+/* Мобильное меню */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.5rem 6%;
+  z-index: 99;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+.mobile-menu.open {
+  display: flex;
+}
+
+.mobile-menu a {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu a:hover {
+  color: var(--accent-primary);
+  padding-left: 8px;
+}
+
+/* Прогресс бар */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  z-index: 1001;
+  transition: width 0.1s ease;
+}
+
+/* Кнопка наверх */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--accent-secondary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(6, 182, 212, 0.4);
+}
 </style>
 </head>
 <body>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="index.html" data-i18n="nav_home">Главная</a>
-  <a href="index.html#services" data-i18n="nav_services">Услуги</a>
-  <a href="index.html#team" data-i18n="nav_team">Команда</a>
-  <a href="index.html#projects" data-i18n="nav_projects">Проекты</a>
-  <a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a>
-  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
-  <a href="collepse-documentation.html" data-i18n="nav_docs">Документация</a>
-  <a href="index.html#contact" data-i18n="nav_cta">Начать проект</a>
-</div>
+<div class="reading-progress" id="readingProgress"></div>
+<div class="custom-cursor" id="customCursor"></div>
+<button class="back-to-top" id="backToTopBtn" aria-label="Наверх">↑</button>
 
 <nav id="navbar">
+  <!-- ГАМБУРГЕР - ПЕРВЫЙ (САМЫЙ ЛЕВЫЙ) -->
+  <button class="hamburger" id="hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+  
+  <!-- ЛОГОТИП -->
   <a href="index.html" class="nav-logo">Collepse</a>
+  
+  <!-- ДЕСКТОПНОЕ МЕНЮ -->
   <ul class="nav-links">
     <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
     <li><a href="index.html#services" data-i18n="nav_services">Услуги</a></li>
@@ -506,6 +687,8 @@
     <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
     <li><a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
+  
+  <!-- КНОПКИ УПРАВЛЕНИЯ (ПЕРЕВОД И ТЕМА) -->
   <div class="theme-switch-wrapper">
     <div class="lang-switch">
       <button class="lang-btn" data-lang="ru">РУ</button>
@@ -514,8 +697,19 @@
     </div>
     <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle theme">🌓</button>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
 </nav>
+
+<!-- МОБИЛЬНОЕ МЕНЮ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" data-i18n="nav_home">Главная</a>
+  <a href="index.html#services" data-i18n="nav_services">Услуги</a>
+  <a href="index.html#team" data-i18n="nav_team">Команда</a>
+  <a href="index.html#projects" data-i18n="nav_projects">Проекты</a>
+  <a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a>
+  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+  <a href="collepse-documentation.html" data-i18n="nav_docs">Документация</a>
+  <a href="index.html#contact" data-i18n="nav_cta">Начать проект</a>
+</div>
 
 <section class="docs-hero">
   <h1 data-i18n="docs_title">Документация Collepse</h1>
@@ -614,33 +808,71 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  // навигация и скролл
+  // ============================================
+  // НАВИГАЦИЯ И МОБИЛЬНОЕ МЕНЮ
+  // ============================================
   const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20));
+  window.addEventListener('scroll', () => {
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+  
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
-  function closeMenu() { mobileMenu.classList.remove('open'); }
-  document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMenu() { mobileMenu.classList.remove('open'); }
+    document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
+  }
 
-  // подсветка активного пункта в сайдбаре
+  // ============================================
+  // ПРОГРЕСС БАР ЧТЕНИЯ
+  // ============================================
+  function updateReadingProgress() {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    const progressBar = document.getElementById('readingProgress');
+    if (progressBar) progressBar.style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', updateReadingProgress);
+
+  // ============================================
+  // КНОПКА НАВЕРХ
+  // ============================================
+  const backBtn = document.getElementById('backToTopBtn');
+  if (backBtn) {
+    window.addEventListener('scroll', () => {
+      backBtn.classList.toggle('show', window.scrollY > 500);
+    });
+    backBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ============================================
+  // ПОДСВЕТКА АКТИВНОГО ПУНКТА В САЙДБАРЕ
+  // ============================================
   const sections = document.querySelectorAll('.doc-section');
   const navLinks = document.querySelectorAll('.docs-sidebar a');
+  
   function updateActiveLink() {
     let current = '';
     sections.forEach(section => {
       const sectionTop = section.offsetTop - 120;
-      if (pageYOffset >= sectionTop) current = section.getAttribute('id');
+      if (window.pageYOffset >= sectionTop) current = section.getAttribute('id');
     });
     navLinks.forEach(link => {
       link.classList.remove('active');
       if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
     });
   }
+  
   window.addEventListener('scroll', updateActiveLink);
   window.addEventListener('load', updateActiveLink);
   
-  // плавный скролл для якорей
+  // ============================================
+  // ПЛАВНЫЙ СКРОЛЛ ДЛЯ ЯКОРЕЙ
+  // ============================================
   document.querySelectorAll('.docs-sidebar a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -655,10 +887,12 @@
     });
   });
 
-  // ---------- ПЕРЕВОД ----------
+  // ============================================
+  // ПЕРЕВОД
+  // ============================================
   const translations = {
     ru: {
-      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_home: "Главная", nav_cta: "Начать проект", nav_faq: "FAQ",
+      nav_home: "Главная", nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_cta: "Начать проект", nav_faq: "FAQ",
       docs_title: "Документация Collepse", docs_subtitle: "Техническая документация, API справочники и официальные условия договора",
       sidebar_title: "Содержание", link_intro: "Введение", link_tech: "Технологический стек", link_api: "API соглашения", link_terms: "Условия договора", link_liability: "Ответственность сторон", link_payment: "Порядок оплаты", link_confidentiality: "Конфиденциальность", link_sign: "Реквизиты и подписи",
       intro_title: "1. Введение", intro_text1: "Настоящий документ определяет условия сотрудничества между Collepse (далее — «Исполнитель») и Заказчиком, а также технические стандарты, которым следуют все разрабатываемые продукты. Документация является неотъемлемой частью договора оказания услуг.",
@@ -674,7 +908,7 @@
       pdf_btn: "Скачать договор (PDF)", footer_text: "Создаём цифровое будущее — технологии, дизайн, результат"
     },
     uz: {
-      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_home: "Bosh sahifa", nav_cta: "Loyihani boshlash", nav_faq: "Ko‘p so‘raladigan savollar",
+      nav_home: "Bosh sahifa", nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_cta: "Loyihani boshlash", nav_faq: "Ko‘p so‘raladigan savollar",
       docs_title: "Collepse hujjatlari", docs_subtitle: "Texnik hujjatlar, API ma'lumotnomalari va shartnoma shartlari",
       sidebar_title: "Mundarija", link_intro: "Kirish", link_tech: "Texnologik stek", link_api: "API kelishuvlari", link_terms: "Shartnoma shartlari", link_liability: "Tomonlarning javobgarligi", link_payment: "To'lov tartibi", link_confidentiality: "Maxfiylik", link_sign: "Rezavorlar va imzolar",
       intro_title: "1. Kirish", intro_text1: "Ushbu hujjat Collepse (keyingi o‘rinlarda «Ijrochi») va Buyurtmachi o‘rtasidagi hamkorlik shartlarini, shuningdek barcha ishlab chiqilayotgan mahsulotlar uchun texnik standartlarni belgilaydi. Hujjat xizmat ko‘rsatish shartnomasining ajralmas qismidir.",
@@ -689,7 +923,7 @@
       pdf_btn: "Shartnomani yuklab olish (PDF)", footer_text: "Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija"
     },
     en: {
-      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_home: "Home", nav_cta: "Start a Project", nav_faq: "FAQ",
+      nav_home: "Home", nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_cta: "Start a Project", nav_faq: "FAQ",
       docs_title: "Collepse Documentation", docs_subtitle: "Technical docs, API references and official contract terms",
       sidebar_title: "Contents", link_intro: "Introduction", link_tech: "Tech stack", link_api: "API agreements", link_terms: "Contract terms", link_liability: "Liability", link_payment: "Payment procedure", link_confidentiality: "Confidentiality", link_sign: "Details & signatures",
       intro_title: "1. Introduction", intro_text1: "This document defines the terms of cooperation between Collepse (hereinafter referred to as the 'Contractor') and the Customer, as well as the technical standards followed by all developed products. The documentation is an integral part of the service agreement.",
@@ -717,7 +951,8 @@
       }
     });
     document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+    const activeBtn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
     localStorage.setItem('collepse_docs_lang', lang);
   }
 
@@ -727,7 +962,9 @@
   const savedLangDocs = localStorage.getItem('collepse_docs_lang') || 'ru';
   setLanguage(savedLangDocs);
 
-  // ---------- ТЁМНАЯ / СВЕТЛАЯ ТЕМА (GITHUB DARK DEFAULT) ----------
+  // ============================================
+  // ТЁМНАЯ / СВЕТЛАЯ ТЕМА
+  // ============================================
   function initTheme() {
     const savedTheme = localStorage.getItem('collepse_theme');
     if (savedTheme === 'dark') {
@@ -740,6 +977,7 @@
     }
     updateThemeIcon();
   }
+  
   function toggleTheme() {
     if (document.body.classList.contains('dark-theme')) {
       document.body.classList.remove('dark-theme');
@@ -750,6 +988,7 @@
     }
     updateThemeIcon();
   }
+  
   function updateThemeIcon() {
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
@@ -758,22 +997,29 @@
       btn.style.fontSize = '1.25rem';
     }
   }
-  document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
+  
+  const themeBtn = document.getElementById('themeToggleBtn');
+  if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
   initTheme();
 
-  // PDF скачивание
+  // ============================================
+  // PDF СКАЧИВАНИЕ
+  // ============================================
   const downloadBtn = document.getElementById('downloadPdfBtn');
-  downloadBtn.addEventListener('click', () => {
-    const element = document.getElementById('docsContent');
-    const opt = {
-      margin:        [0.5, 0.5, 0.5, 0.5],
-      filename:     'Collepse_contract.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, letterRendering: true },
-      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-  });
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const element = document.getElementById('docsContent');
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: 'Collepse_contract.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+  }
 </script>
 </body>
+
 </html>
