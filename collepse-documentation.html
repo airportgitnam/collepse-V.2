@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collepse | Документация и условия договора</title>
+<title>Collepse | Документация и условия договора — Light & Dark Theme</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (СВЕТЛАЯ ТЕМА) ─── */
   :root {
     --bg-primary: #fafbfc;
     --bg-secondary: #ffffff;
@@ -31,6 +31,32 @@
     --radius-md: 16px;
     --radius-sm: 10px;
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --code-bg: #f1f5f9;
+  }
+
+  /* ─── ТЁМНАЯ ТЕМА (GITHUB DARK DEFAULT) ─── */
+  body.dark-theme {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #0d1117;
+    --bg-dark: #010409;
+    --text-primary: #f0f6fc;
+    --text-secondary: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-light: #6e7681;
+    --accent-primary: #2f81f7;
+    --accent-secondary: #58a6ff;
+    --accent-soft: #1f2d3d;
+    --accent-mint: #3fb950;
+    --border-light: #30363d;
+    --border-medium: #21262d;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.2), 0 2px 4px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -2px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1);
+    --nav-bg: rgba(13, 17, 23, 0.85);
+    --code-bg: #1f242e;
   }
 
   * {
@@ -50,6 +76,7 @@
     background: var(--bg-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   ::-webkit-scrollbar { width: 8px; }
@@ -74,7 +101,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-light);
     transition: var(--transition);
@@ -82,7 +109,10 @@
 
   nav.scrolled {
     box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-secondary);
+  }
+  body.dark-theme nav.scrolled {
+    background: rgba(22, 27, 34, 0.95);
   }
 
   .nav-logo {
@@ -179,7 +209,7 @@
     top: 80px;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-light);
     padding: 1.5rem 6%;
     z-index: 99;
@@ -211,14 +241,39 @@
     padding-left: 8px;
   }
 
+  /* Кнопки перевода и темы */
+  .theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 1rem;
+  }
+  .theme-toggle-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .theme-toggle-btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-primary);
+  }
   .lang-switch {
     display: flex;
     gap: 6px;
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: 40px;
     padding: 5px 8px;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
   .lang-btn {
     background: transparent;
@@ -242,16 +297,28 @@
   }
 
   @media (max-width: 768px) {
-    .lang-switch { margin-left: auto; margin-right: 1rem; }
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
+    .theme-switch-wrapper {
+      order: 1;
+      margin-left: auto;
+      margin-right: 0.5rem;
+    }
+    .lang-switch {
+      margin-left: 0;
+    }
+    .nav-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+    }
   }
 
   /* Документация */
   .docs-hero {
     padding: 140px 6% 60px;
-    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
     text-align: center;
+    transition: background 0.3s;
   }
   .docs-hero h1 {
     font-family: 'Playfair Display', serif;
@@ -311,11 +378,12 @@
   }
 
   .docs-content {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--radius-lg);
     padding: 2rem 2.5rem;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-light);
+    transition: background 0.2s, border 0.2s;
   }
   .doc-section {
     margin-bottom: 3rem;
@@ -352,6 +420,7 @@
     border-radius: var(--radius-sm);
     border-left: 4px solid var(--accent-primary);
     margin: 1rem 0;
+    color: var(--text-primary);
   }
 
   .pdf-btn-wrapper {
@@ -387,6 +456,7 @@
     padding: 2.5rem 6%;
     text-align: center;
     font-size: 0.9rem;
+    transition: background 0.2s;
   }
   footer .footer-logo {
     font-family: 'Playfair Display', serif;
@@ -425,20 +495,26 @@
     <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
     <li><a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
-  <div class="lang-switch">
-    <button class="lang-btn" data-lang="ru">РУ</button>
-    <button class="lang-btn" data-lang="uz">UZ</button>
-    <button class="lang-btn" data-lang="en">EN</button>
+  <div class="theme-switch-wrapper">
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="ru">РУ</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle theme">🌓</button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Меню"><span></span><span></span><span></span></button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" data-i18n="nav_home">Главная</a>
   <a href="index.html#services" data-i18n="nav_services">Услуги</a>
   <a href="index.html#team" data-i18n="nav_team">Команда</a>
   <a href="index.html#projects" data-i18n="nav_projects">Проекты</a>
   <a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a>
+  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
   <a href="collepse-documentation.html" data-i18n="nav_docs">Документация</a>
+  <a href="index.html#contact" data-i18n="nav_cta">Начать проект</a>
 </div>
 
 <section class="docs-hero">
@@ -517,6 +593,7 @@
     <div id="sign" class="doc-section">
       <h2 data-i18n="sign_title">8. Реквизиты и подписи</h2>
       <p><strong data-i18n="sign_name">Collepse (Исполнитель):</strong></p>
+      <p data-i18n="sign_details">ИНН: 123456789, ОГРН: 9876543210<br>Юридический адрес: г. Ташкент, ул. Мирабадская, 15<br>E-mail: legal@collepse.com | Тел: +998 71 123 45 67</p>
       <p><strong data-i18n="sign_customer">Заказчик:</strong> <span data-i18n="sign_customer_placeholder">[ФИО / Название компании]</span></p>
       <p data-i18n="sign_footer">Настоящий договор составлен в двух экземплярах, имеющих равную юридическую силу.</p>
     </div>
@@ -581,7 +658,7 @@
   // ---------- ПЕРЕВОД ----------
   const translations = {
     ru: {
-      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_home: "Главная", nav_cta: "Начать проект",
+      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_home: "Главная", nav_cta: "Начать проект", nav_faq: "FAQ",
       docs_title: "Документация Collepse", docs_subtitle: "Техническая документация, API справочники и официальные условия договора",
       sidebar_title: "Содержание", link_intro: "Введение", link_tech: "Технологический стек", link_api: "API соглашения", link_terms: "Условия договора", link_liability: "Ответственность сторон", link_payment: "Порядок оплаты", link_confidentiality: "Конфиденциальность", link_sign: "Реквизиты и подписи",
       intro_title: "1. Введение", intro_text1: "Настоящий документ определяет условия сотрудничества между Collepse (далее — «Исполнитель») и Заказчиком, а также технические стандарты, которым следуют все разрабатываемые продукты. Документация является неотъемлемой частью договора оказания услуг.",
@@ -597,7 +674,7 @@
       pdf_btn: "Скачать договор (PDF)", footer_text: "Создаём цифровое будущее — технологии, дизайн, результат"
     },
     uz: {
-      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_home: "Bosh sahifa", nav_cta: "Loyihani boshlash",
+      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_home: "Bosh sahifa", nav_cta: "Loyihani boshlash", nav_faq: "Ko‘p so‘raladigan savollar",
       docs_title: "Collepse hujjatlari", docs_subtitle: "Texnik hujjatlar, API ma'lumotnomalari va shartnoma shartlari",
       sidebar_title: "Mundarija", link_intro: "Kirish", link_tech: "Texnologik stek", link_api: "API kelishuvlari", link_terms: "Shartnoma shartlari", link_liability: "Tomonlarning javobgarligi", link_payment: "To'lov tartibi", link_confidentiality: "Maxfiylik", link_sign: "Rezavorlar va imzolar",
       intro_title: "1. Kirish", intro_text1: "Ushbu hujjat Collepse (keyingi o‘rinlarda «Ijrochi») va Buyurtmachi o‘rtasidagi hamkorlik shartlarini, shuningdek barcha ishlab chiqilayotgan mahsulotlar uchun texnik standartlarni belgilaydi. Hujjat xizmat ko‘rsatish shartnomasining ajralmas qismidir.",
@@ -612,7 +689,7 @@
       pdf_btn: "Shartnomani yuklab olish (PDF)", footer_text: "Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija"
     },
     en: {
-      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_home: "Home", nav_cta: "Start a Project",
+      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_home: "Home", nav_cta: "Start a Project", nav_faq: "FAQ",
       docs_title: "Collepse Documentation", docs_subtitle: "Technical docs, API references and official contract terms",
       sidebar_title: "Contents", link_intro: "Introduction", link_tech: "Tech stack", link_api: "API agreements", link_terms: "Contract terms", link_liability: "Liability", link_payment: "Payment procedure", link_confidentiality: "Confidentiality", link_sign: "Details & signatures",
       intro_title: "1. Introduction", intro_text1: "This document defines the terms of cooperation between Collepse (hereinafter referred to as the 'Contractor') and the Customer, as well as the technical standards followed by all developed products. The documentation is an integral part of the service agreement.",
@@ -647,8 +724,42 @@
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
   });
-  const savedLang = localStorage.getItem('collepse_docs_lang') || 'ru';
-  setLanguage(savedLang);
+  const savedLangDocs = localStorage.getItem('collepse_docs_lang') || 'ru';
+  setLanguage(savedLangDocs);
+
+  // ---------- ТЁМНАЯ / СВЕТЛАЯ ТЕМА (GITHUB DARK DEFAULT) ----------
+  function initTheme() {
+    const savedTheme = localStorage.getItem('collepse_theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-theme');
+    } else if (savedTheme === 'light') {
+      document.body.classList.remove('dark-theme');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (prefersDark) document.body.classList.add('dark-theme');
+    }
+    updateThemeIcon();
+  }
+  function toggleTheme() {
+    if (document.body.classList.contains('dark-theme')) {
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('collepse_theme', 'light');
+    } else {
+      document.body.classList.add('dark-theme');
+      localStorage.setItem('collepse_theme', 'dark');
+    }
+    updateThemeIcon();
+  }
+  function updateThemeIcon() {
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) {
+      const isDark = document.body.classList.contains('dark-theme');
+      btn.innerHTML = isDark ? '☀️' : '🌙';
+      btn.style.fontSize = '1.25rem';
+    }
+  }
+  document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
+  initTheme();
 
   // PDF скачивание
   const downloadBtn = document.getElementById('downloadPdfBtn');

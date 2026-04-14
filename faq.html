@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collepse | Часто задаваемые вопросы</title>
+<title>Collepse | Часто задаваемые вопросы — Light & Dark Theme</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (СВЕТЛАЯ ТЕМА) ─── */
   :root {
     --bg-primary: #fafbfc;
     --bg-secondary: #ffffff;
@@ -31,6 +31,38 @@
     --radius-md: 16px;
     --radius-sm: 10px;
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --nav-border: #e2e8f0;
+    --card-bg: #ffffff;
+    --code-bg: #f1f5f9;
+    --skeleton-bg: #e2e8f0;
+  }
+
+  /* ─── ТЁМНАЯ ТЕМА (GITHUB DARK DEFAULT) ─── */
+  body.dark-theme {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #0d1117;
+    --bg-dark: #010409;
+    --text-primary: #f0f6fc;
+    --text-secondary: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-light: #6e7681;
+    --accent-primary: #2f81f7;
+    --accent-secondary: #58a6ff;
+    --accent-soft: #1f2d3d;
+    --accent-mint: #3fb950;
+    --border-light: #30363d;
+    --border-medium: #21262d;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.2), 0 2px 4px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -2px rgba(0,0,0,0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.2), 0 10px 10px -5px rgba(0,0,0,0.1);
+    --nav-bg: rgba(13, 17, 23, 0.85);
+    --nav-border: #21262d;
+    --card-bg: #161b22;
+    --code-bg: #1f242e;
+    --skeleton-bg: #21262d;
   }
 
   * {
@@ -50,6 +82,90 @@
     background: var(--bg-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.2s ease;
+    cursor: default;
+  }
+
+ 
+
+  /* ─── ПРОГРЕСС-БАР ЧТЕНИЯ ─── */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    z-index: 1001;
+    transition: width 0.08s linear;
+    box-shadow: 0 0 3px var(--accent-primary);
+  }
+
+  /* ─── КНОПКА BACK TO TOP ─── */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.6rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
+    transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+  }
+  .back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  .back-to-top:hover {
+    transform: translateY(-5px);
+    background: var(--accent-secondary);
+  }
+
+  /* ─── SKELETON LOADER (для FAQ GRID) ─── */
+  .skeleton-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .skeleton-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+  .skeleton-question {
+    width: 85%;
+    height: 24px;
+    background: var(--skeleton-bg);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+  .skeleton-answer {
+    width: 100%;
+    height: 60px;
+    background: var(--skeleton-bg);
+    border-radius: 12px;
+  }
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  @media (max-width: 768px) {
+    .skeleton-grid { grid-template-columns: 1fr; }
   }
 
   ::-webkit-scrollbar { width: 8px; }
@@ -74,15 +190,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--nav-border);
     transition: var(--transition);
   }
 
   nav.scrolled {
     box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-secondary);
+    backdrop-filter: blur(12px);
+  }
+
+  body.dark-theme nav.scrolled {
+    background: rgba(22, 27, 34, 0.95);
   }
 
   .nav-logo {
@@ -173,14 +294,13 @@
     transition: var(--transition);
   }
 
-  /* ─── МОБИЛЬНОЕ МЕНЮ ─── */
   .mobile-menu {
     display: none;
     position: fixed;
     top: 80px;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-light);
     padding: 1.5rem 6%;
     z-index: 99;
@@ -212,15 +332,38 @@
     padding-left: 8px;
   }
 
-  /* Кнопка перевода */
+  .theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 1rem;
+  }
+  .theme-toggle-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+  .theme-toggle-btn:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-primary);
+  }
   .lang-switch {
     display: flex;
     gap: 6px;
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: 40px;
     padding: 5px 8px;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
   .lang-btn {
     background: transparent;
@@ -244,29 +387,20 @@
   }
 
   @media (max-width: 1024px) {
-    .lang-switch {
-      margin-left: 0;
-    }
+    .theme-switch-wrapper { margin-left: 0; }
   }
   @media (max-width: 768px) {
-    .lang-switch {
-      order: 1;
-      margin-left: auto;
-      margin-right: 1rem;
-    }
-    .nav-links {
-      display: none;
-    }
-    .hamburger {
-      display: flex;
-    }
+    .theme-switch-wrapper { order: 1; margin-left: auto; margin-right: 0.5rem; }
+    .lang-switch { margin-left: 0; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
   }
 
-  /* ─── FAQ HERO ─── */
   .faq-hero {
     padding: 140px 6% 60px;
-    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
     text-align: center;
+    transition: background 0.3s;
   }
   .faq-hero h1 {
     font-family: 'Playfair Display', serif;
@@ -281,7 +415,6 @@
     font-size: 1.1rem;
   }
 
-  /* ─── FAQ КОНТЕНТ ─── */
   .faq-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -295,7 +428,7 @@
     justify-content: center;
   }
   .cat-btn {
-    background: white;
+    background: var(--card-bg);
     border: 1px solid var(--border-light);
     padding: 10px 24px;
     border-radius: 40px;
@@ -321,7 +454,7 @@
     gap: 1.5rem;
   }
   .faq-item {
-    background: white;
+    background: var(--card-bg);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 1.8rem;
@@ -342,9 +475,7 @@
     align-items: center;
     gap: 0.75rem;
   }
-  .faq-question .q-icon {
-    font-size: 1.3rem;
-  }
+  .faq-question .q-icon { font-size: 1.3rem; }
   .faq-answer {
     color: var(--text-secondary);
     font-size: 0.95rem;
@@ -362,9 +493,7 @@
     font-size: 1.2rem;
     transition: transform 0.3s;
   }
-  .faq-item.open .toggle-icon {
-    transform: rotate(180deg);
-  }
+  .faq-item.open .toggle-icon { transform: rotate(180deg); }
   .faq-question-wrapper {
     display: flex;
     align-items: center;
@@ -377,7 +506,7 @@
     gap: 8px;
     margin-top: 3rem;
     padding: 12px 24px;
-    background: white;
+    background: var(--card-bg);
     border: 1px solid var(--border-light);
     border-radius: 40px;
     text-decoration: none;
@@ -393,15 +522,14 @@
     transform: translateX(-4px);
   }
 
-  /* МОДАЛЬНОЕ ОКНО */
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
     z-index: 200;
     display: flex;
     align-items: center;
@@ -415,7 +543,7 @@
     visibility: visible;
   }
   .modal-container {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--radius-lg);
     max-width: 450px;
     width: 90%;
@@ -424,10 +552,9 @@
     box-shadow: var(--shadow-xl);
     transform: scale(0.95);
     transition: transform 0.3s ease;
+    border: 1px solid var(--border-light);
   }
-  .modal-overlay.active .modal-container {
-    transform: scale(1);
-  }
+  .modal-overlay.active .modal-container { transform: scale(1); }
   .modal-container h3 {
     font-family: 'Playfair Display', serif;
     font-size: 1.8rem;
@@ -454,24 +581,12 @@
     font-weight: 600;
     transition: var(--transition);
     border: 1px solid var(--border-light);
-    background: white;
+    background: var(--card-bg);
     color: var(--text-primary);
   }
-  .modal-btn.telegram-lead {
-    background: #0088cc;
-    color: white;
-    border: none;
-  }
-  .modal-btn.telegram-group {
-    background: #26a5e4;
-    color: white;
-    border: none;
-  }
-  .modal-btn.contact-main {
-    background: var(--accent-primary);
-    color: white;
-    border: none;
-  }
+  .modal-btn.telegram-lead { background: #0088cc; color: white; border: none; }
+  .modal-btn.telegram-group { background: #26a5e4; color: white; border: none; }
+  .modal-btn.contact-main { background: var(--accent-primary); color: white; border: none; }
   .modal-btn:hover {
     transform: translateY(-3px);
     filter: brightness(1.05);
@@ -486,9 +601,7 @@
     font-size: 0.85rem;
     transition: var(--transition);
   }
-  .close-modal:hover {
-    color: var(--accent-primary);
-  }
+  .close-modal:hover { color: var(--accent-primary); }
 
   footer {
     background: var(--bg-dark);
@@ -496,6 +609,7 @@
     padding: 2.5rem 6%;
     text-align: center;
     font-size: 0.9rem;
+    transition: background 0.2s;
   }
   footer .footer-logo {
     font-family: 'Playfair Display', serif;
@@ -504,31 +618,23 @@
     color: white;
     margin-bottom: 0.75rem;
   }
-  footer .footer-logo span {
-    color: var(--accent-mint);
-  }
-  footer p {
-    margin-top: 0.75rem;
-  }
+  footer .footer-logo span { color: var(--accent-mint); }
+  footer p { margin-top: 0.75rem; }
 
   @media (max-width: 768px) {
-    .faq-grid {
-      grid-template-columns: 1fr;
-    }
-    .faq-categories {
-      flex-direction: row;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      justify-content: flex-start;
-    }
+    .faq-grid { grid-template-columns: 1fr; }
+    .faq-categories { flex-direction: row; overflow-x: auto; padding-bottom: 10px; justify-content: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<!-- НАВИГАЦИЯ (как в запросе) -->
+<div class="reading-progress" id="readingProgress"></div>
+<div class="custom-cursor" id="customCursor"></div>
+<button class="back-to-top" id="backToTopBtn" aria-label="Наверх">↑</button>
+
 <nav id="navbar">
-  <a href="index.html" class="nav-logo">Collepse<span>.</span></a>
+  <a href="index.html" class="nav-logo">Collepse</a>
   <ul class="nav-links">
     <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
     <li><a href="index.html#services" data-i18n="nav_services">Услуги</a></li>
@@ -539,17 +645,19 @@
     <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
     <li><a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
-  <div class="lang-switch">
-    <button class="lang-btn" data-lang="ru">РУ</button>
-    <button class="lang-btn" data-lang="uz">UZ</button>
-    <button class="lang-btn" data-lang="en">EN</button>
+  <div class="theme-switch-wrapper">
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="ru">РУ</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle theme">🌓</button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Меню">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- МОБИЛЬНОЕ МЕНЮ -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html" data-i18n="nav_home">Главная</a>
   <a href="index.html#services" data-i18n="nav_services">Услуги</a>
@@ -561,7 +669,6 @@
   <a href="index.html#contact" data-i18n="nav_cta">Начать проект</a>
 </div>
 
-<!-- HERO -->
 <section class="faq-hero">
   <h1 data-i18n="faq_title">Часто задаваемые вопросы</h1>
   <p data-i18n="faq_subtitle">Ответы на главные вопросы о сотрудничестве, разработке и услугах Collepse</p>
@@ -576,9 +683,7 @@
     <button class="cat-btn" data-cat="payment" data-i18n="cat_payment">Оплата</button>
   </div>
 
-  <div class="faq-grid" id="faqGrid">
-    <!-- Вопросы динамически через JS -->
-  </div>
+  <div id="faqGrid" class="faq-grid"><!-- skeleton will be injected here --></div>
 
   <div style="text-align: center; margin-top: 2rem;">
     <button id="askQuestionBtn" class="back-link" data-i18n="ask_question">✉️ Задать свой вопрос</button>
@@ -586,7 +691,6 @@
   </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО С 3 КНОПКАМИ -->
 <div id="contactModal" class="modal-overlay">
   <div class="modal-container">
     <h3 data-i18n="modal_title">Свяжитесь с нами</h3>
@@ -607,162 +711,119 @@
 </footer>
 
 <script>
-  // Навигация при скролле
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-  });
-
-  // Мобильное меню
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.toggle('open');
-  });
-  function closeMenu() { mobileMenu.classList.remove('open'); }
-  document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
-
-  // Данные FAQ (многоязычные)
-  const faqData = {
-    ru: [
-      { id: 1, cat: "general", q: "Какие услуги предоставляет Collepse?", a: "Мы разрабатываем веб-приложения, игры, AI-интеграции, ботов, а также занимаемся профессиональной сборкой и оптимизацией ПК. Полный цикл — от идеи до поддержки." },
-      { id: 2, cat: "general", q: "Как начать сотрудничество?", a: "Оставьте заявку через форму на сайте или напишите в Telegram. Мы обсудим идею, подготовим КП и подпишем договор." },
-      { id: 3, cat: "dev", q: "Сколько времени занимает разработка?", a: "Сроки зависят от сложности: лендинг — 1-2 недели, интернет-магазин — 4-6 недель, сложные AI-платформы — от 3 месяцев." },
-      { id: 4, cat: "dev", q: "Какие технологии вы используете?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 и другие современные инструменты." },
-      { id: 5, cat: "dev", q: "Предоставляете ли вы техническую поддержку после сдачи?", a: "Да, мы даём гарантию 90 дней на все работы. Также можно заключить договор на долгосрочное сопровождение." },
-      { id: 6, cat: "legal", q: "Заключается ли официальный договор?", a: "Да, мы работаем по договору (публичная оферта или двусторонний). Все права, сроки и ответственность прописаны в документации." },
-      { id: 7, cat: "legal", q: "Кому принадлежат исключительные права на код?", a: "По умолчанию права передаются Заказчику после полной оплаты. Возможны индивидуальные условия." },
-      { id: 8, cat: "payment", q: "Какие способы оплаты?", a: "Безналичный расчет на счет ИП/ООО, также принимаем криптовалюту (USDT, BTC) по согласованию." },
-      { id: 9, cat: "payment", q: "Нужна ли предоплата?", a: "Стандартно — предоплата 50%, остаток 50% после подписания акта. Для крупных проектов возможна поэтапная оплата." },
-      { id: 10, cat: "general", q: "Есть ли у вас отзывы или портфолио?", a: "Да, посмотрите раздел «Проекты» и «Отзывы» на главной странице. Также можем предоставить контакты клиентов для связи." },
-      { id: 11, cat: "dev", q: "Можете ли вы доработать существующий проект?", a: "Да, мы занимаемся рефакторингом, оптимизацией и добавлением нового функционала в готовые проекты." },
-      { id: 12, cat: "legal", q: "Что такое NDA и подписываете ли вы его?", a: "Да, мы подписываем соглашение о неразглашении (NDA) перед обсуждением деталей проекта, если это необходимо." }
-    ],
-    uz: [
-      { id: 1, cat: "general", q: "Collepse qanday xizmatlar ko‘rsatadi?", a: "Biz veb-ilovalar, o‘yinlar, AI-integratsiyalar, botlar yaratamiz, shuningdek professional kompyuter yig‘ish va optimallashtirish bilan shug‘ullanamiz." },
-      { id: 2, cat: "general", q: "Hamkorlikni qanday boshlash mumkin?", a: "Saytdagi forma orqali yoki Telegramda so‘rov qoldiring. G‘oyani muhokama qilamiz, taklif tayyorlaymiz va shartnoma imzolaymiz." },
-      { id: 3, cat: "dev", q: "Ishlab chiqish qancha vaqt oladi?", a: "Murakkablikka bog‘liq: lending — 1-2 hafta, onlayn-do‘kon — 4-6 hafta, murakkab AI platformalar — 3 oydan." },
-      { id: 4, cat: "dev", q: "Qanday texnologiyalardan foydalanasiz?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 va boshqalar." },
-      { id: 5, cat: "dev", q: "Yetkazib berishdan keyin texnik qo‘llab-quvvatlaysizmi?", a: "Ha, barcha ishlarga 90 kun kafolat beramiz. Uzoq muddatli hamkorlik shartnomasi ham mumkin." },
-      { id: 6, cat: "legal", q: "Rasmiy shartnoma tuziladimi?", a: "Ha, shartnoma (ommaviy oferta yoki ikki tomonlama) asosida ishlaymiz. Barcha huquqlar, muddatlar hujjatlarda belgilangan." },
-      { id: 7, cat: "legal", q: "Kodga bo‘lgan eksklyuziv huquqlar kimga tegishli?", a: "Standartda huquqlar to‘liq to‘lovdan keyin Buyurtmachiga o‘tadi. Individual shartlar mumkin." },
-      { id: 8, cat: "payment", q: "To‘lov usullari qanday?", a: "Naqd pulsiz hisob-kitob, shuningdek kelishuvga ko‘ra kriptovalyuta (USDT, BTC) qabul qilinadi." },
-      { id: 9, cat: "payment", q: "Oldindan to‘lov kerakmi?", a: "Standart — 50% oldindan, qolgan 50% dalolatnoma imzolangandan keyin. Katta loyihalar uchun bosqichli to‘lov." },
-      { id: 10, cat: "general", q: "Fikr-mulohazalar yoki portfoliongiz bormi?", a: "Ha, bosh sahifadagi «Loyihalar» va «Fikrlar» bo‘limlarini ko‘ring. Mijozlar bilan bog‘lanish uchun maʼlumot berishimiz mumkin." },
-      { id: 11, cat: "dev", q: "Mavjud loyihani takomillashtira olasizmi?", a: "Ha, biz refaktoring, optimallashtirish va tayyor loyihalarga yangi funksiyalar qo‘shish bilan shug‘ullanamiz." },
-      { id: 12, cat: "legal", q: "NDA nima va uni imzolaysizmi?", a: "Ha, agar kerak bo‘lsa, loyiha tafsilotlarini muhokama qilishdan oldin maxfiylik shartnomasini (NDA) imzolaymiz." }
-    ],
-    en: [
-      { id: 1, cat: "general", q: "What services does Collepse provide?", a: "We develop web applications, games, AI integrations, bots, and also provide professional PC assembly and optimization. Full cycle from idea to support." },
-      { id: 2, cat: "general", q: "How to start cooperation?", a: "Leave a request via the form on the website or write to Telegram. We will discuss the idea, prepare a proposal and sign a contract." },
-      { id: 3, cat: "dev", q: "How long does development take?", a: "Timelines depend on complexity: landing page — 1-2 weeks, online store — 4-6 weeks, complex AI platforms — from 3 months." },
-      { id: 4, cat: "dev", q: "What technologies do you use?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 and other modern tools." },
-      { id: 5, cat: "dev", q: "Do you provide technical support after delivery?", a: "Yes, we provide a 90-day warranty on all work. Long-term maintenance contracts are also available." },
-      { id: 6, cat: "legal", q: "Is an official contract concluded?", a: "Yes, we work under a contract (public offer or bilateral). All rights, deadlines and responsibilities are specified in the documentation." },
-      { id: 7, cat: "legal", q: "Who owns the exclusive rights to the code?", a: "By default, the rights are transferred to the Customer after full payment. Individual terms are possible." },
-      { id: 8, cat: "payment", q: "What payment methods are available?", a: "Bank transfer to individual entrepreneur/LLC account, also accept cryptocurrency (USDT, BTC) upon agreement." },
-      { id: 9, cat: "payment", q: "Is a prepayment required?", a: "Standard — 50% prepayment, remaining 50% after signing the act. For large projects, stage-by-stage payment is possible." },
-      { id: 10, cat: "general", q: "Do you have reviews or a portfolio?", a: "Yes, check the 'Projects' and 'Testimonials' sections on the main page. We can also provide client contacts for reference." },
-      { id: 11, cat: "dev", q: "Can you improve an existing project?", a: "Yes, we do refactoring, optimization and adding new functionality to existing projects." },
-      { id: 12, cat: "legal", q: "What is an NDA and do you sign it?", a: "Yes, we sign a non-disclosure agreement (NDA) before discussing project details if necessary." }
-    ]
-  };
-
+  // ---- INIT GLOBALS ----
   let currentLang = 'ru';
   let currentCategory = 'all';
+  let faqDataGlobal = null;
+  
+  // FAQ Data (identical to original, just namespaced)
+  const faqData = {
+    ru: [{ id:1, cat:"general", q:"Какие услуги предоставляет Collepse?", a:"Мы разрабатываем веб-приложения, игры, AI-интеграции, ботов, а также занимаемся профессиональной сборкой и оптимизацией ПК. Полный цикл — от идеи до поддержки." },{ id:2, cat:"general", q:"Как начать сотрудничество?", a:"Оставьте заявку через форму на сайте или напишите в Telegram. Мы обсудим идею, подготовим КП и подпишем договор." },{ id:3, cat:"dev", q:"Сколько времени занимает разработка?", a:"Сроки зависят от сложности: лендинг — 1-2 недели, интернет-магазин — 4-6 недель, сложные AI-платформы — от 3 месяцев." },{ id:4, cat:"dev", q:"Какие технологии вы используете?", a:"React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 и другие современные инструменты." },{ id:5, cat:"dev", q:"Предоставляете ли вы техническую поддержку после сдачи?", a:"Да, мы даём гарантию 90 дней на все работы. Также можно заключить договор на долгосрочное сопровождение." },{ id:6, cat:"legal", q:"Заключается ли официальный договор?", a:"Да, мы работаем по договору (публичная оферта или двусторонний). Все права, сроки и ответственность прописаны в документации." },{ id:7, cat:"legal", q:"Кому принадлежат исключительные права на код?", a:"По умолчанию права передаются Заказчику после полной оплаты. Возможны индивидуальные условия." },{ id:8, cat:"payment", q:"Какие способы оплаты?", a:"Безналичный расчет на счет ИП/ООО, также принимаем криптовалюту (USDT, BTC) по согласованию." },{ id:9, cat:"payment", q:"Нужна ли предоплата?", a:"Стандартно — предоплата 50%, остаток 50% после подписания акта. Для крупных проектов возможна поэтапная оплата." },{ id:10, cat:"general", q:"Есть ли у вас отзывы или портфолио?", a:"Да, посмотрите раздел «Проекты» и «Отзывы» на главной странице. Также можем предоставить контакты клиентов для связи." },{ id:11, cat:"dev", q:"Можете ли вы доработать существующий проект?", a:"Да, мы занимаемся рефакторингом, оптимизацией и добавлением нового функционала в готовые проекты." },{ id:12, cat:"legal", q:"Что такое NDA и подписываете ли вы его?", a:"Да, мы подписываем соглашение о неразглашении (NDA) перед обсуждением деталей проекта, если это необходимо." }],
+    uz: [{ id:1, cat:"general", q:"Collepse qanday xizmatlar ko‘rsatadi?", a:"Biz veb-ilovalar, o‘yinlar, AI-integratsiyalar, botlar yaratamiz, shuningdek professional kompyuter yig‘ish va optimallashtirish bilan shug‘ullanamiz." },{ id:2, cat:"general", q:"Hamkorlikni qanday boshlash mumkin?", a:"Saytdagi forma orqali yoki Telegramda so‘rov qoldiring. G‘oyani muhokama qilamiz, taklif tayyorlaymiz va shartnoma imzolaymiz." },{ id:3, cat:"dev", q:"Ishlab chiqish qancha vaqt oladi?", a:"Murakkablikka bog‘liq: lending — 1-2 hafta, onlayn-do‘kon — 4-6 hafta, murakkab AI platformalar — 3 oydan." },{ id:4, cat:"dev", q:"Qanday texnologiyalardan foydalanasiz?", a:"React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 va boshqalar." },{ id:5, cat:"dev", q:"Yetkazib berishdan keyin texnik qo‘llab-quvvatlaysizmi?", a:"Ha, barcha ishlarga 90 kun kafolat beramiz. Uzoq muddatli hamkorlik shartnomasi ham mumkin." },{ id:6, cat:"legal", q:"Rasmiy shartnoma tuziladimi?", a:"Ha, shartnoma (ommaviy oferta yoki ikki tomonlama) asosida ishlaymiz. Barcha huquqlar, muddatlar hujjatlarda belgilangan." },{ id:7, cat:"legal", q:"Kodga bo‘lgan eksklyuziv huquqlar kimga tegishli?", a:"Standartda huquqlar to‘liq to‘lovdan keyin Buyurtmachiga o‘tadi. Individual shartlar mumkin." },{ id:8, cat:"payment", q:"To‘lov usullari qanday?", a:"Naqd pulsiz hisob-kitob, shuningdek kelishuvga ko‘ra kriptovalyuta (USDT, BTC) qabul qilinadi." },{ id:9, cat:"payment", q:"Oldindan to‘lov kerakmi?", a:"Standart — 50% oldindan, qolgan 50% dalolatnoma imzolangandan keyin. Katta loyihalar uchun bosqichli to‘lov." },{ id:10, cat:"general", q:"Fikr-mulohazalar yoki portfoliongiz bormi?", a:"Ha, bosh sahifadagi «Loyihalar» va «Fikrlar» bo‘limlarini ko‘ring. Mijozlar bilan bog‘lanish uchun maʼlumot berishimiz mumkin." },{ id:11, cat:"dev", q:"Mavjud loyihani takomillashtira olasizmi?", a:"Ha, biz refaktoring, optimallashtirish va tayyor loyihalarga yangi funksiyalar qo‘shish bilan shug‘ullanamiz." },{ id:12, cat:"legal", q:"NDA nima va uni imzolaysizmi?", a:"Ha, agar kerak bo‘lsa, loyiha tafsilotlarini muhokama qilishdan oldin maxfiylik shartnomasini (NDA) imzolaymiz." }],
+    en: [{ id:1, cat:"general", q:"What services does Collepse provide?", a:"We develop web applications, games, AI integrations, bots, and also provide professional PC assembly and optimization. Full cycle from idea to support." },{ id:2, cat:"general", q:"How to start cooperation?", a:"Leave a request via the form on the website or write to Telegram. We will discuss the idea, prepare a proposal and sign a contract." },{ id:3, cat:"dev", q:"How long does development take?", a:"Timelines depend on complexity: landing page — 1-2 weeks, online store — 4-6 weeks, complex AI platforms — from 3 months." },{ id:4, cat:"dev", q:"What technologies do you use?", a:"React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 and other modern tools." },{ id:5, cat:"dev", q:"Do you provide technical support after delivery?", a:"Yes, we provide a 90-day warranty on all work. Long-term maintenance contracts are also available." },{ id:6, cat:"legal", q:"Is an official contract concluded?", a:"Yes, we work under a contract (public offer or bilateral). All rights, deadlines and responsibilities are specified in the documentation." },{ id:7, cat:"legal", q:"Who owns the exclusive rights to the code?", a:"By default, the rights are transferred to the Customer after full payment. Individual terms are possible." },{ id:8, cat:"payment", q:"What payment methods are available?", a:"Bank transfer to individual entrepreneur/LLC account, also accept cryptocurrency (USDT, BTC) upon agreement." },{ id:9, cat:"payment", q:"Is a prepayment required?", a:"Standard — 50% prepayment, remaining 50% after signing the act. For large projects, stage-by-stage payment is possible." },{ id:10, cat:"general", q:"Do you have reviews or a portfolio?", a:"Yes, check the 'Projects' and 'Testimonials' sections on the main page. We can also provide client contacts for reference." },{ id:11, cat:"dev", q:"Can you improve an existing project?", a:"Yes, we do refactoring, optimization and adding new functionality to existing projects." },{ id:12, cat:"legal", q:"What is an NDA and do you sign it?", a:"Yes, we sign a non-disclosure agreement (NDA) before discussing project details if necessary." }]
+  };
 
+  // Helper: escapeHtml, render skeleton, render faq
+  function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+  function showSkeleton() {
+    const grid = document.getElementById('faqGrid');
+    grid.innerHTML = `<div class="skeleton-grid">${Array(4).fill(0).map(() => `<div class="skeleton-card"><div class="skeleton-question"></div><div class="skeleton-answer"></div></div>`).join('')}</div>`;
+  }
   function renderFaq(lang, category) {
     const grid = document.getElementById('faqGrid');
     const data = faqData[lang] || faqData.ru;
     let filtered = category === 'all' ? data : data.filter(item => item.cat === category);
-    if (!filtered.length) filtered = [{ id: 0, cat: "general", q: "—", a: "Нет вопросов в этой категории / Bu kategoriyada savollar yo‘q / No questions in this category" }];
-    
+    if (!filtered.length) filtered = [{ id: 0, cat: "general", q: "—", a: "Нет вопросов в этой категории" }];
     grid.innerHTML = '';
     filtered.forEach(item => {
       const faqDiv = document.createElement('div');
       faqDiv.className = 'faq-item';
-      faqDiv.setAttribute('data-id', item.id);
-      faqDiv.innerHTML = `
-        <div class="faq-question-wrapper">
-          <div class="faq-question">
-            <span class="q-icon">❓</span>
-            <span class="q-text">${escapeHtml(item.q)}</span>
-          </div>
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="faq-answer">${escapeHtml(item.a)}</div>
-      `;
-      faqDiv.addEventListener('click', (e) => {
-        if (e.target.closest('.faq-question-wrapper') || e.target.closest('.faq-item')) {
-          faqDiv.classList.toggle('open');
-        }
-      });
+      faqDiv.innerHTML = `<div class="faq-question-wrapper"><div class="faq-question"><span class="q-icon">❓</span><span class="q-text">${escapeHtml(item.q)}</span></div><span class="toggle-icon">▼</span></div><div class="faq-answer">${escapeHtml(item.a)}</div>`;
+      faqDiv.addEventListener('click', (e) => { if(e.target.closest('.faq-question-wrapper') || e.target.closest('.faq-item')) faqDiv.classList.toggle('open'); });
       grid.appendChild(faqDiv);
     });
   }
 
-  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-
-  function updateUIByLang(lang) {
-    currentLang = lang;
-    renderFaq(lang, currentCategory);
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      const translations = {
-        ru: { nav_home:"Главная", nav_services:"Услуги", nav_team:"Команда", nav_projects:"Проекты", nav_testimonials:"Отзывы", nav_docs:"Документация Collepse", nav_cta:"Начать проект", faq_title:"Часто задаваемые вопросы", faq_subtitle:"Ответы на главные вопросы о сотрудничестве, разработке и услугах Collepse", cat_all:"Все вопросы", cat_general:"Общие", cat_dev:"Разработка", cat_legal:"Юридические", cat_payment:"Оплата", ask_question:"✉️ Задать свой вопрос", back_home:"🏠 На главную", footer_text:"Создаём цифровое будущее — технологии, дизайн, результат", modal_title:"Свяжитесь с нами", modal_subtitle:"Выберите удобный способ связи", modal_lead:"📨 Lead Telegram (Исфандиёр)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Перейти в контакты на главной", modal_close:"Закрыть" },
-        uz: { nav_home:"Bosh sahifa", nav_services:"Xizmatlar", nav_team:"Jamoa", nav_projects:"Loyihalar", nav_testimonials:"Fikrlar", nav_docs:"Collepse hujjatlari", nav_cta:"Loyihani boshlash", faq_title:"Ko‘p so‘raladigan savollar", faq_subtitle:"Hamkorlik, ishlab chiqish va Collepse xizmatlari haqida asosiy savollarga javoblar", cat_all:"Barcha savollar", cat_general:"Umumiy", cat_dev:"Ishlab chiqish", cat_legal:"Yuridik", cat_payment:"To‘lov", ask_question:"✉️ Savolingizni bering", back_home:"🏠 Bosh sahifaga", footer_text:"Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija", modal_title:"Biz bilan bog‘laning", modal_subtitle:"Qulay aloqa usulini tanlang", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Bosh sahifadagi kontaktlarga o‘tish", modal_close:"Yopish" },
-        en: { nav_home:"Home", nav_services:"Services", nav_team:"Team", nav_projects:"Projects", nav_testimonials:"Testimonials", nav_docs:"Collepse Documentation", nav_cta:"Start Project", faq_title:"Frequently Asked Questions", faq_subtitle:"Answers to key questions about cooperation, development and Collepse services", cat_all:"All questions", cat_general:"General", cat_dev:"Development", cat_legal:"Legal", cat_payment:"Payment", ask_question:"✉️ Ask a question", back_home:"🏠 Back to home", footer_text:"Building digital future — technology, design, result", modal_title:"Contact us", modal_subtitle:"Choose a convenient way to reach us", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Go to contacts on main page", modal_close:"Close" }
-      };
-      if (translations[lang] && translations[lang][key]) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = translations[lang][key];
-        else el.innerHTML = translations[lang][key];
-      }
-    });
-    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
-    localStorage.setItem('collepse_faq_lang', lang);
+  // THEME + CURSOR
+  function initTheme() {
+    const savedTheme = localStorage.getItem('collepse_theme');
+    if (savedTheme === 'dark') document.body.classList.add('dark-theme');
+    else if (savedTheme === 'light') document.body.classList.remove('dark-theme');
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.body.classList.add('dark-theme');
+    updateThemeIcon();
   }
+  function toggleTheme() { document.body.classList.toggle('dark-theme'); localStorage.setItem('collepse_theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light'); updateThemeIcon(); }
+  function updateThemeIcon() { const btn = document.getElementById('themeToggleBtn'); if(btn) btn.innerHTML = document.body.classList.contains('dark-theme') ? '☀️' : '🌙'; }
+  document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
 
-  // Обработка категорий
+  // // CURSOR EFFECT
+  // const cursor = document.getElementById('customCursor');
+  // if (cursor && window.innerWidth > 768) {
+  //   document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+  //   const interactive = document.querySelectorAll('a, button, .cat-btn, .faq-item, .back-link, .modal-btn, .nav-cta, .theme-toggle-btn, .lang-btn');
+  //   interactive.forEach(el => { el.addEventListener('mouseenter', () => cursor.classList.add('hover')); el.addEventListener('mouseleave', () => cursor.classList.remove('hover')); });
+  // }
+
+  // PROGRESS BAR
+  function updateReadingProgress() {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById('readingProgress').style.width = scrolled + '%';
+  }
+  window.addEventListener('scroll', updateReadingProgress);
+
+  // BACK TO TOP
+  const backBtn = document.getElementById('backToTopBtn');
+  window.addEventListener('scroll', () => { backBtn.classList.toggle('show', window.scrollY > 500); });
+  backBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  // Mobile menu, navbar scroll
+  const navbarEl = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbarEl.classList.toggle('scrolled', window.scrollY > 20));
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenuDiv = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => mobileMenuDiv.classList.toggle('open'));
+  document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', () => mobileMenuDiv.classList.remove('open')));
+
+  // Category & Language
   document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentCategory = btn.getAttribute('data-cat');
-      renderFaq(currentLang, currentCategory);
+      showSkeleton(); setTimeout(() => renderFaq(currentLang, currentCategory), 80);
     });
   });
-
-  // Переключение языка
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.getAttribute('data-lang');
-      updateUIByLang(lang);
+  function updateUIByLang(lang) {
+    currentLang = lang;
+    showSkeleton(); setTimeout(() => renderFaq(lang, currentCategory), 80);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const t = { ru: { nav_home:"Главная", nav_services:"Услуги", nav_team:"Команда", nav_projects:"Проекты", nav_testimonials:"Отзывы", nav_docs:"Документация Collepse", nav_cta:"Начать проект", faq_title:"Часто задаваемые вопросы", faq_subtitle:"Ответы на главные вопросы о сотрудничестве, разработке и услугах Collepse", cat_all:"Все вопросы", cat_general:"Общие", cat_dev:"Разработка", cat_legal:"Юридические", cat_payment:"Оплата", ask_question:"✉️ Задать свой вопрос", back_home:"🏠 На главную", footer_text:"Создаём цифровое будущее — технологии, дизайн, результат", modal_title:"Свяжитесь с нами", modal_subtitle:"Выберите удобный способ связи", modal_lead:"📨 Lead Telegram (Исфандиёр)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Перейти в контакты на главной", modal_close:"Закрыть" }, uz: { nav_home:"Bosh sahifa", nav_services:"Xizmatlar", nav_team:"Jamoa", nav_projects:"Loyihalar", nav_testimonials:"Fikrlar", nav_docs:"Collepse hujjatlari", nav_cta:"Loyihani boshlash", faq_title:"Ko‘p so‘raladigan savollar", faq_subtitle:"Hamkorlik, ishlab chiqish va Collepse xizmatlari haqida asosiy savollarga javoblar", cat_all:"Barcha savollar", cat_general:"Umumiy", cat_dev:"Ishlab chiqish", cat_legal:"Yuridik", cat_payment:"To‘lov", ask_question:"✉️ Savolingizni bering", back_home:"🏠 Bosh sahifaga", footer_text:"Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija", modal_title:"Biz bilan bog‘laning", modal_subtitle:"Qulay aloqa usulini tanlang", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Bosh sahifadagi kontaktlarga o‘tish", modal_close:"Yopish" }, en: { nav_home:"Home", nav_services:"Services", nav_team:"Team", nav_projects:"Projects", nav_testimonials:"Testimonials", nav_docs:"Collepse Documentation", nav_cta:"Start Project", faq_title:"Frequently Asked Questions", faq_subtitle:"Answers to key questions about cooperation, development and Collepse services", cat_all:"All questions", cat_general:"General", cat_dev:"Development", cat_legal:"Legal", cat_payment:"Payment", ask_question:"✉️ Ask a question", back_home:"🏠 Back to home", footer_text:"Building digital future — technology, design, result", modal_title:"Contact us", modal_subtitle:"Choose a convenient way to reach us", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Go to contacts on main page", modal_close:"Close" } };
+      if (t[lang] && t[lang][key]) el.innerHTML = t[lang][key];
     });
-  });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+    localStorage.setItem('collepse_faq_lang', lang);
+  }
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => { updateUIByLang(btn.getAttribute('data-lang')); }));
 
-  // МОДАЛЬНОЕ ОКНО
+  // Modal Logic
   const modal = document.getElementById('contactModal');
   const askBtn = document.getElementById('askQuestionBtn');
   const closeModalBtn = document.querySelector('.close-modal');
-
-  function openModal() {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
+  function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
   askBtn.addEventListener('click', openModal);
   closeModalBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
+  modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
 
+  // Final initialization
   const savedLang = localStorage.getItem('collepse_faq_lang') || 'ru';
+  initTheme();
   updateUIByLang(savedLang);
-  renderFaq(savedLang, 'all');
+  showSkeleton(); setTimeout(() => renderFaq(savedLang, 'all'), 100);
 </script>
 </body>
 </html>

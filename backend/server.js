@@ -4,7 +4,7 @@
  * =====================================================
  * Описание: Сервер для обработки заявок с сайта Collepse
  * Автор: Collepse Team
- * Версия: 3.0.0
+ * Версия: 3.1.0 (Добавлена поддержка Telegram и Phone)
  * =====================================================
  */
 
@@ -175,7 +175,7 @@ const connectDB = async () => {
 };
 
 // ============================================
-// МОДЕЛЬ ДАННЫХ CONTACT
+// МОДЕЛЬ ДАННЫХ CONTACT (с Telegram и Phone)
 // ============================================
 const contactSchema = new mongoose.Schema({
   name: {
@@ -195,6 +195,24 @@ const contactSchema = new mongoose.Schema({
       'Некорректный формат email'
     ],
   },
+  telegram: {
+    type: String,
+    required: [true, 'Telegram обязателен'],
+    trim: true,
+    match: [
+      /^@?[a-zA-Z0-9_]{5,32}$/,
+      'Некорректный формат Telegram username'
+    ],
+  },
+  phone: {
+    type: String,
+    required: [true, 'Телефон обязателен'],
+    trim: true,
+    match: [
+      /^\+?[\d\s\-().]{10,20}$/,
+      'Некорректный формат телефона'
+    ],
+  },
   service: {
     type: String,
     enum: ['Web', 'GameDev', 'AI', 'PC', 'Other', ''],
@@ -204,7 +222,7 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Сообщение обязательно'],
     trim: true,
-    minlength: [3, 'Сообщение должно быть не менее 3 символов'],
+    minlength: [10, 'Сообщение должно быть не менее 10 символов'],
     maxlength: [2000, 'Сообщение не может превышать 2000 символов'],
   },
   status: {
@@ -228,6 +246,8 @@ const contactSchema = new mongoose.Schema({
 
 // Индексы для оптимизации запросов
 contactSchema.index({ email: 1 });
+contactSchema.index({ telegram: 1 });
+contactSchema.index({ phone: 1 });
 contactSchema.index({ createdAt: -1 });
 contactSchema.index({ status: 1 });
 
@@ -235,6 +255,11 @@ contactSchema.index({ status: 1 });
 contactSchema.pre('save', function(next) {
   this.name = this.name.replace(/\s+/g, ' ').trim();
   this.email = this.email.toLowerCase().trim();
+  this.telegram = this.telegram.trim();
+  if (!this.telegram.startsWith('@')) {
+    this.telegram = '@' + this.telegram;
+  }
+  this.phone = this.phone.trim();
   this.message = this.message.replace(/\s+/g, ' ').trim();
   next();
 });
@@ -252,12 +277,13 @@ if (typeof bot.setContactModel === 'function') {
 }
 
 // ============================================
-// ВАЛИДАЦИЯ ДАННЫХ
+// ВАЛИДАЦИЯ ДАННЫХ (обновленная)
 // ============================================
 const validateContact = (req, res, next) => {
-  const { name, email, message } = req.body;
+  const { name, email, telegram, phone, message } = req.body;
   const errors = [];
 
+  // Валидация имени
   if (!name) {
     errors.push('Имя обязательно');
   } else if (name.length < 2) {
@@ -266,6 +292,7 @@ const validateContact = (req, res, next) => {
     errors.push('Имя не может превышать 50 символов');
   }
 
+  // Валидация email
   if (!email) {
     errors.push('Email обязателен');
   } else {
@@ -275,10 +302,31 @@ const validateContact = (req, res, next) => {
     }
   }
 
+  // Валидация Telegram
+  if (!telegram) {
+    errors.push('Telegram обязателен');
+  } else {
+    const telegramRegex = /^@?[a-zA-Z0-9_]{5,32}$/;
+    if (!telegramRegex.test(telegram)) {
+      errors.push('Некорректный формат Telegram username (должен содержать 5-32 символов, латиница, цифры, underscore)');
+    }
+  }
+
+  // Валидация телефона
+  if (!phone) {
+    errors.push('Телефон обязателен');
+  } else {
+    const phoneRegex = /^\+?[\d\s\-().]{10,20}$/;
+    if (!phoneRegex.test(phone)) {
+      errors.push('Некорректный формат телефона');
+    }
+  }
+
+  // Валидация сообщения
   if (!message) {
     errors.push('Сообщение обязательно');
-  } else if (message.length < 3) {
-    errors.push('Сообщение должно быть не менее 3 символов');
+  } else if (message.length < 10) {
+    errors.push('Сообщение должно быть не менее 10 символов');
   } else if (message.length > 2000) {
     errors.push('Сообщение не может превышать 2000 символов');
   }
@@ -326,7 +374,7 @@ app.get('/api/contact', (req, res) => {
   res.json({
     status: 'ok',
     message: 'API для отправки заявок. Используйте метод POST.',
-    required_fields: ['name', 'email', 'message'],
+    required_fields: ['name', 'email', 'telegram', 'phone', 'message'],
     optional_fields: ['service'],
   });
 });
@@ -338,26 +386,50 @@ app.get('/api/contact', (req, res) => {
  */
 app.post('/api/contact', validateContact, async (req, res) => {
   try {
-    const { name, email, service, message } = req.body;
+    const { name, email, telegram, phone, service, message } = req.body;
     
     console.log('\n' + '='.repeat(50));
     console.log('📨 НОВАЯ ЗАЯВКА');
     console.log('='.repeat(50));
     console.log(`👤 Имя: ${name}`);
     console.log(`📧 Email: ${email}`);
+    console.log(`📱 Telegram: ${telegram}`);
+    console.log(`📞 Телефон: ${phone}`);
     console.log(`🎯 Услуга: ${service || 'Не указана'}`);
-    console.log(`💬 Сообщение: ${message}`);
+    console.log(`💬 Сообщение: ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}`);
     
-    const ipAddress = req.headers['x-forwarded-for'] || req.ip || req.connection.remoteAddress;
+    const ipAddress = req.headers['x-forwarded-for'] || req.ip || req.socket.remoteAddress;
     const userAgent = req.headers['user-agent'] || '';
     
     let savedContact = null;
+    
+    // Проверка на дубликаты (последние 5 минут)
+    if (mongoose.connection.readyState === 1) {
+      const recentContact = await Contact.findOne({
+        $or: [
+          { email: email.toLowerCase() },
+          { telegram: telegram },
+          { phone: phone }
+        ],
+        createdAt: { $gte: new Date(Date.now() - 5 * 60 * 1000) }
+      });
+      
+      if (recentContact) {
+        console.log('⚠️ Обнаружена повторная заявка');
+        return res.status(429).json({
+          status: 'error',
+          message: 'Вы уже отправляли заявку недавно. Пожалуйста, подождите 5 минут.',
+        });
+      }
+    }
     
     // Сохранение в базу данных
     if (mongoose.connection.readyState === 1) {
       const contact = new Contact({
         name,
         email,
+        telegram,
+        phone,
         service: service || '',
         message,
         ipAddress,
@@ -367,17 +439,13 @@ app.post('/api/contact', validateContact, async (req, res) => {
       savedContact = await contact.save();
       console.log(`✅ Заявка сохранена в MongoDB`);
       console.log(`🆔 ID: ${savedContact._id}`);
+      console.log(`📅 Дата: ${savedContact.createdAt}`);
     } else {
-      console.warn('⚠️ База данных недоступна, заявка не сохранена');
-      savedContact = { 
-        _id: 'N/A', 
-        name, 
-        email, 
-        service, 
-        message, 
-        ipAddress,
-        createdAt: new Date(),
-      };
+      console.error('❌ База данных недоступна, заявка не сохранена');
+      return res.status(503).json({
+        status: 'error',
+        message: 'Сервис временно недоступен. Попробуйте позже.',
+      });
     }
     
     // Отправка уведомления в Telegram
@@ -391,6 +459,9 @@ app.post('/api/contact', validateContact, async (req, res) => {
     if (telegramSent && savedContact._id !== 'N/A') {
       savedContact.telegramNotified = true;
       await savedContact.save();
+      console.log('✅ Уведомление в Telegram отправлено');
+    } else {
+      console.log('⚠️ Telegram уведомление не отправлено');
     }
     
     console.log('='.repeat(50) + '\n');
@@ -410,6 +481,7 @@ app.post('/api/contact', validateContact, async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: 'Произошла ошибка при обработке заявки. Попробуйте позже.',
+      error: NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 });
@@ -455,6 +527,141 @@ app.get('/api/contacts', async (req, res) => {
     res.status(500).json({
       status: 'error',
       message: 'Ошибка при получении заявок',
+    });
+  }
+});
+
+/**
+ * @route   GET /api/contact/:id
+ * @desc    Получение одной заявки по ID
+ * @access  Public
+ */
+app.get('/api/contact/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Некорректный ID',
+      });
+    }
+    
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        status: 'error',
+        message: 'База данных недоступна',
+      });
+    }
+    
+    const contact = await Contact.findById(id);
+    
+    if (!contact) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Заявка не найдена',
+      });
+    }
+    
+    res.json({
+      status: 'success',
+      contact,
+    });
+  } catch (error) {
+    console.error('❌ Ошибка получения заявки:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Ошибка получения заявки',
+    });
+  }
+});
+
+/**
+ * @route   PUT /api/contact/:id/status
+ * @desc    Обновление статуса заявки
+ * @access  Public
+ */
+app.put('/api/contact/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Некорректный ID',
+      });
+    }
+    
+    const validStatuses = ['new', 'processing', 'completed', 'archived'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Некорректный статус',
+      });
+    }
+    
+    const contact = await Contact.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    
+    if (!contact) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Заявка не найдена',
+      });
+    }
+    
+    res.json({
+      status: 'success',
+      message: 'Статус обновлен',
+      contact,
+    });
+  } catch (error) {
+    console.error('❌ Ошибка обновления статуса:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Ошибка обновления статуса',
+    });
+  }
+});
+
+/**
+ * @route   DELETE /api/contact/:id
+ * @desc    Удаление заявки
+ * @access  Public
+ */
+app.delete('/api/contact/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Некорректный ID',
+      });
+    }
+    
+    const contact = await Contact.findByIdAndDelete(id);
+    
+    if (!contact) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Заявка не найдена',
+      });
+    }
+    
+    res.json({
+      status: 'success',
+      message: 'Заявка удалена',
+    });
+  } catch (error) {
+    console.error('❌ Ошибка удаления заявки:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Ошибка удаления заявки',
     });
   }
 });
@@ -577,13 +784,15 @@ const startServer = async () => {
         : `http://localhost:${PORT}`;
 
       console.log('\n' + '█'.repeat(50));
-      console.log('█  COLLEPSE SYSTEM V.2 — ONLINE');
+      console.log('█  COLLEPSE SYSTEM V.3.1 — ONLINE');
       console.log('█'.repeat(50));
       console.log(`[STATUS]  MODE: ${NODE_ENV.toUpperCase()}`);
       console.log(`[NETWORK] HOST: ${HOST}`);
       console.log(`[NETWORK] PORT: ${PORT}`);
       console.log(`[NETWORK] URL:  ${serverUrl}`);
       console.log(`[HEALTH]  CHECK: ${serverUrl}/api/health`);
+      console.log(`[API]     CONTACT: POST ${serverUrl}/api/contact`);
+      console.log(`[API]     CONTACTS: GET ${serverUrl}/api/contacts`);
       
       const indexPath = path.join(FRONTEND_PATH, 'index.html');
       if (fs.existsSync(indexPath)) {

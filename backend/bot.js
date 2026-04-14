@@ -1,6 +1,6 @@
 /**
  * =====================================================
- * TELEGRAM BOT MODULE — ИСПРАВЛЕННАЯ ВЕРСИЯ
+ * TELEGRAM BOT MODULE — ПОЛНАЯ ВЕРСИЯ
  * =====================================================
  */
 
@@ -79,24 +79,35 @@ async function loadRecentContactsFromDB() {
 function loadSubscribers() {
   try {
     if (fs.existsSync(SUBSCRIBERS_FILE)) {
-      subscribers = new Set(JSON.parse(fs.readFileSync(SUBSCRIBERS_FILE, 'utf8')));
+      const data = fs.readFileSync(SUBSCRIBERS_FILE, 'utf8');
+      subscribers = new Set(JSON.parse(data));
+      console.log(`📋 [BOT] Загружено подписчиков: ${subscribers.size}`);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Ошибка загрузки подписчиков:', e);
+  }
 
   const envChat = process.env.TELEGRAM_CHAT_ID || process.env.chat_id;
-  if (envChat) subscribers.add(String(envChat));
+  if (envChat) {
+    subscribers.add(String(envChat));
+    console.log(`✅ [BOT] Добавлен chat_id из .env: ${envChat}`);
+  }
 }
 
 function saveSubscribers() {
   try {
     fs.writeFileSync(SUBSCRIBERS_FILE, JSON.stringify([...subscribers]));
-  } catch (e) {}
+    console.log(`💾 [BOT] Сохранено подписчиков: ${subscribers.size}`);
+  } catch (e) {
+    console.error('Ошибка сохранения подписчиков:', e);
+  }
 }
 
 function loadLastUpdateId() {
   try {
     if (fs.existsSync(LAST_UPDATE_FILE)) {
-      lastUpdateId = JSON.parse(fs.readFileSync(LAST_UPDATE_FILE, 'utf8')).lastUpdateId || 0;
+      const data = JSON.parse(fs.readFileSync(LAST_UPDATE_FILE, 'utf8'));
+      lastUpdateId = data.lastUpdateId || 0;
     }
   } catch (e) {}
 }
@@ -116,14 +127,26 @@ async function autoDiscoverChatId() {
     const res = await fetch(`${API_URL}/getUpdates?limit=10`);
     const data = await res.json();
 
-    if (data.ok && data.result.length) {
+    if (data.ok && data.result && data.result.length) {
+      let added = 0;
       for (const upd of data.result) {
         const chat = upd.message?.chat || upd.callback_query?.message?.chat;
-        if (chat?.id) subscribers.add(String(chat.id));
+        if (chat?.id) {
+          const chatId = String(chat.id);
+          if (!subscribers.has(chatId)) {
+            subscribers.add(chatId);
+            added++;
+          }
+        }
       }
-      saveSubscribers();
+      if (added > 0) {
+        saveSubscribers();
+        console.log(`✅ [BOT] Автоматически добавлено ${added} новых подписчиков`);
+      }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Ошибка автоопределения chat_id:', e);
+  }
 }
 
 // ============================================
@@ -138,11 +161,14 @@ async function clearPendingUpdates() {
       body: JSON.stringify({ offset: -1, timeout: 1 }),
     });
     const data = await res.json();
-    if (data.ok && data.result.length) {
+    if (data.ok && data.result && data.result.length) {
       lastUpdateId = Math.max(...data.result.map(u => u.update_id));
       saveLastUpdateId();
+      console.log(`✅ [BOT] Очищено ${data.result.length} обновлений`);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Ошибка очистки обновлений:', e);
+  }
 }
 
 // ============================================
@@ -162,17 +188,64 @@ async function sendMessage(chatId, text, options = {}) {
         reply_markup: options.reply_markup,
       }),
     });
-    return (await res.json()).ok;
+    const data = await res.json();
+    return data.ok;
   } catch (e) {
+    console.error(`Ошибка отправки сообщения в ${chatId}:`, e.message);
     return false;
   }
 }
 
 async function broadcastMessage(text, options = {}) {
+  let successCount = 0;
   for (const chatId of subscribers) {
-    await sendMessage(chatId, text, options);
-    await new Promise(r => setTimeout(r, 50));
+    const sent = await sendMessage(chatId, text, options);
+    if (sent) successCount++;
+    await new Promise(r => setTimeout(r, 50)); // Задержка между сообщениями
   }
+  console.log(`📢 [BOT] Рассылка завершена: ${successCount}/${subscribers.size}`);
+  return successCount;
+}
+
+// ============================================
+// ФОРМАТИРОВАНИЕ ЗАЯВКИ (с Telegram и Phone)
+// ============================================
+
+function formatContact(contact, idx = null) {
+  const date = contact.createdAt ? new Date(contact.createdAt).toLocaleString('ru-RU') : '—';
+  
+  let result = '';
+  
+  if (idx !== null) {
+    result += `<b>📋 ЗАЯВКА #${idx + 1}</b>\n\n`;
+  }
+  
+  result += `👤 <b>Имя:</b> ${contact.name || '—'}\n`;
+  result += `📧 <b>Email:</b> ${contact.email || '—'}\n`;
+  result += `📱 <b>Telegram:</b> ${contact.telegram || '—'}\n`;
+  result += `📞 <b>Телефон:</b> ${contact.phone || '—'}\n`;
+  
+  if (contact.service) {
+    result += `🎯 <b>Услуга:</b> ${contact.service}\n`;
+  }
+  
+  result += `\n💬 <b>Сообщение:</b>\n${contact.message || '—'}\n`;
+  result += `\n───────────────────\n`;
+  result += `🆔 <b>ID:</b> <code>${contact._id || 'N/A'}</code>\n`;
+  result += `📅 <b>Время:</b> ${date}\n`;
+  
+  if (contact.ipAddress) {
+    result += `🌐 <b>IP:</b> ${contact.ipAddress}\n`;
+  }
+  
+  return result.trim();
+}
+
+function formatStats() {
+  return `<b>📊 СТАТИСТИКА БОТА</b>\n\n` +
+         `👥 Подписчиков: ${subscribers.size}\n` +
+         `📋 Заявок в кэше: ${recentContacts.length}\n` +
+         `🤖 Статус: ${pollingActive ? 'Активен ✅' : 'Остановлен ❌'}`;
 }
 
 // ============================================
@@ -208,45 +281,21 @@ function getContactsKeyboard(contacts, page = 0) {
   const pageContacts = contacts.slice(page * pageSize, (page + 1) * pageSize);
 
   pageContacts.forEach((c, i) => {
+    const displayName = c.name && c.name.length > 20 ? c.name.substring(0, 17) + '...' : (c.name || 'Без имени');
+    const displayService = c.service || '—';
     buttons.push([{
-      text: `${c.name?.substring(0, 20) || '—'} (${c.service || '—'})`,
+      text: `${displayName} (${displayService})`,
       callback_data: `view_${page * pageSize + i}`,
     }]);
   });
 
   const nav = [];
-  if (page > 0) nav.push({ text: '⬅️', callback_data: `page_${page - 1}` });
-  if ((page + 1) * pageSize < contacts.length) nav.push({ text: '➡️', callback_data: `page_${page + 1}` });
+  if (page > 0) nav.push({ text: '⬅️ Назад', callback_data: `page_${page - 1}` });
+  if ((page + 1) * pageSize < contacts.length) nav.push({ text: 'Вперед ➡️', callback_data: `page_${page + 1}` });
   if (nav.length) buttons.push(nav);
 
-  buttons.push([{ text: '🔙 Меню', callback_data: 'back_to_main' }]);
+  buttons.push([{ text: '🔙 Главное меню', callback_data: 'back_to_main' }]);
   return { inline_keyboard: buttons };
-}
-
-// ============================================
-// ФОРМАТИРОВАНИЕ
-// ============================================
-
-function formatContact(contact, idx = null) {
-  const date = contact.createdAt ? new Date(contact.createdAt).toLocaleString('ru-RU') : '—';
-  return `
-${idx !== null ? `<b>📋 ЗАЯВКА #${idx + 1}</b>\n` : ''}
-👤 <b>Имя:</b> ${contact.name || '—'}
-📧 <b>Email:</b> ${contact.email || '—'}
-📌 <b>Услуга:</b> ${contact.service || '—'}
-
-💬 <b>Сообщение:</b>
-${contact.message || '—'}
-
-───────────────────
-🆔 <b>ID:</b> <code>${contact._id || 'N/A'}</code>
-📅 <b>Время:</b> ${date}
-🌐 <b>IP:</b> ${contact.ipAddress || '—'}
-`.trim();
-}
-
-function formatStats() {
-  return `<b>📊 СТАТИСТИКА</b>\n\n👥 Подписчиков: ${subscribers.size}\n📋 Заявок: ${recentContacts.length}`;
 }
 
 // ============================================
@@ -254,20 +303,29 @@ function formatStats() {
 // ============================================
 
 async function sendNewContactNotification(contactData) {
+  // Добавляем в кэш
   recentContacts.unshift({
     ...contactData,
     _id: contactData._id?.toString(),
     addedAt: new Date().toISOString(),
   });
-  if (recentContacts.length > MAX_RECENT_CONTACTS) recentContacts.pop();
-
-  const msg = `<b>🚀 НОВАЯ ЗАЯВКА!</b>\n${formatContact(contactData)}`;
-  await broadcastMessage(msg);
-  return true;
+  
+  if (recentContacts.length > MAX_RECENT_CONTACTS) {
+    recentContacts.pop();
+  }
+  
+  // Формируем сообщение
+  const msg = `<b>🚀 НОВАЯ ЗАЯВКА!</b>\n\n${formatContact(contactData)}`;
+  
+  // Отправляем всем подписчикам
+  const sentCount = await broadcastMessage(msg);
+  
+  console.log(`📱 [BOT] Уведомление о заявке отправлено ${sentCount} подписчикам`);
+  return sentCount > 0;
 }
 
 // ============================================
-// ПОЛУЧЕНИЕ ОБНОВЛЕНИЙ
+// ОБРАБОТКА ОБНОВЛЕНИЙ
 // ============================================
 
 async function getUpdates() {
@@ -282,87 +340,153 @@ async function getUpdates() {
     });
     const data = await res.json();
 
-    if (data.ok && data.result.length) {
+    if (data.ok && data.result && data.result.length) {
       for (const upd of data.result) {
         lastUpdateId = upd.update_id;
         await handleUpdate(upd);
       }
       saveLastUpdateId();
     }
-  } catch (e) {}
-  finally {
+  } catch (e) {
+    console.error('Ошибка получения обновлений:', e);
+  } finally {
     isProcessing = false;
   }
 }
 
 async function handleUpdate(upd) {
-  // Callback query (кнопки)
+  // Обработка callback query (кнопки)
   if (upd.callback_query) {
     const cb = upd.callback_query;
     const chatId = String(cb.message.chat.id);
     const msgId = cb.message.message_id;
     const data = cb.data;
 
+    // Отвечаем на callback
     await fetch(`${API_URL}/answerCallbackQuery`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ callback_query_id: cb.id }),
     });
 
+    // Обработка разных callback_data
     if (data === 'back_to_main') {
       await editMessage(chatId, msgId, '🔽 Выберите действие:', getMainMenuKeyboard());
-    } else if (data === 'contacts') {
+    } 
+    else if (data === 'contacts') {
       if (recentContacts.length === 0) {
-        await editMessage(chatId, msgId, '📋 Нет заявок', getBackKeyboard());
+        await editMessage(chatId, msgId, '📋 Нет заявок в кэше', getBackKeyboard());
       } else {
-        await editMessage(chatId, msgId, `📋 Заявок: ${recentContacts.length}`, getContactsKeyboard(recentContacts, 0));
+        await editMessage(chatId, msgId, `📋 Заявок: ${recentContacts.length}\nВыберите заявку для просмотра:`, getContactsKeyboard(recentContacts, 0));
       }
-    } else if (data === 'status') {
+    } 
+    else if (data === 'status') {
       const isSub = subscribers.has(chatId);
-      await editMessage(chatId, msgId, `📊 Статус\n\nПодписан: ${isSub ? '✅' : '❌'}\nПодписчиков: ${subscribers.size}\nЗаявок: ${recentContacts.length}`, getBackKeyboard());
-    } else if (data === 'stats') {
+      await editMessage(chatId, msgId, 
+        `📊 <b>СТАТУС ПОДПИСКИ</b>\n\n` +
+        `Подписан: ${isSub ? '✅ ДА' : '❌ НЕТ'}\n` +
+        `Всего подписчиков: ${subscribers.size}\n` +
+        `Заявок в кэше: ${recentContacts.length}\n` +
+        `Бот активен: ${pollingActive ? '✅' : '❌'}`,
+        getBackKeyboard()
+      );
+    } 
+    else if (data === 'stats') {
       await editMessage(chatId, msgId, formatStats(), getBackKeyboard());
-    } else if (data === 'settings') {
+    } 
+    else if (data === 'settings') {
       const isSub = subscribers.has(chatId);
-      await editMessage(chatId, msgId, `⚙️ Настройки\nСтатус: ${isSub ? '✅' : '❌'}`, getSettingsKeyboard(isSub));
-    } else if (data === 'help') {
-      await editMessage(chatId, msgId, '❓ Помощь\n\n/start - меню\n@collepse_official', getBackKeyboard());
-    } else if (data === 'subscribe') {
+      await editMessage(chatId, msgId, 
+        `⚙️ <b>НАСТРОЙКИ</b>\n\n` +
+        `Ваш статус: ${isSub ? '✅ Подписан' : '❌ Не подписан'}\n\n` +
+        `Выберите действие:`,
+        getSettingsKeyboard(isSub)
+      );
+    } 
+    else if (data === 'help') {
+      await editMessage(chatId, msgId, 
+        `❓ <b>ПОМОЩЬ</b>\n\n` +
+        `📌 <b>Доступные команды:</b>\n` +
+        `/start - Главное меню\n` +
+        `/menu - Показать меню\n\n` +
+        `📌 <b>Возможности бота:</b>\n` +
+        `• Просмотр новых заявок\n` +
+        `• Управление подпиской\n` +
+        `• Статистика работы\n\n` +
+        `📌 <b>Контакты:</b>\n` +
+        `Telegram: @collepse_official\n` +
+        `Email: info@collepse.com`,
+        getBackKeyboard()
+      );
+    } 
+    else if (data === 'subscribe') {
       subscribers.add(chatId);
       saveSubscribers();
-      await editMessage(chatId, msgId, '✅ Вы подписаны!', getBackKeyboard());
-    } else if (data === 'unsubscribe') {
+      await editMessage(chatId, msgId, 
+        `✅ <b>Вы успешно подписались!</b>\n\n` +
+        `Теперь вы будете получать уведомления о новых заявках.`,
+        getBackKeyboard()
+      );
+    } 
+    else if (data === 'unsubscribe') {
       subscribers.delete(chatId);
       saveSubscribers();
-      await editMessage(chatId, msgId, '❌ Вы отписались', getBackKeyboard());
-    } else if (data.startsWith('page_')) {
+      await editMessage(chatId, msgId, 
+        `❌ <b>Вы отписались от уведомлений</b>\n\n` +
+        `Чтобы снова подписаться, используйте команду /start или /menu`,
+        getBackKeyboard()
+      );
+    } 
+    else if (data.startsWith('page_')) {
       const page = parseInt(data.split('_')[1]);
-      await editMessage(chatId, msgId, `📋 Страница ${page + 1}`, getContactsKeyboard(recentContacts, page));
-    } else if (data.startsWith('view_')) {
+      await editMessage(chatId, msgId, 
+        `📋 Страница ${page + 1} из ${Math.ceil(recentContacts.length / 5)}\nВыберите заявку:`,
+        getContactsKeyboard(recentContacts, page)
+      );
+    } 
+    else if (data.startsWith('view_')) {
       const idx = parseInt(data.split('_')[1]);
       const contact = recentContacts[idx];
       if (contact) {
         await editMessage(chatId, msgId, formatContact(contact, idx), getBackKeyboard());
+      } else {
+        await editMessage(chatId, msgId, '❌ Заявка не найдена', getBackKeyboard());
       }
     }
     return;
   }
 
-  // Обычные сообщения
+  // Обработка обычных сообщений
   const msg = upd.message;
-  if (!msg?.text) return;
+  if (!msg || !msg.text) return;
 
   const chatId = String(msg.chat.id);
   const text = msg.text.trim();
 
-  if (text === '/start' || text.includes('/start')) {
+  if (text === '/start') {
     if (!subscribers.has(chatId)) {
       subscribers.add(chatId);
       saveSubscribers();
+      console.log(`✅ [BOT] Новый подписчик: ${chatId}`);
     }
-    await sendMessage(chatId, '👋 Добро пожаловать в Collepse Bot!', { reply_markup: getMainMenuKeyboard() });
-  } else if (text === '/menu') {
-    await sendMessage(chatId, '🔽 Меню:', { reply_markup: getMainMenuKeyboard() });
+    await sendMessage(chatId, 
+      `👋 <b>Добро пожаловать в Collepse Bot!</b>\n\n` +
+      `Я буду присылать вам уведомления о новых заявках с сайта.\n\n` +
+      `Используйте кнопки ниже для управления:`,
+      { reply_markup: getMainMenuKeyboard() }
+    );
+  } 
+  else if (text === '/menu') {
+    await sendMessage(chatId, '🔽 Главное меню:', { reply_markup: getMainMenuKeyboard() });
+  }
+  else if (text === '/status') {
+    const isSub = subscribers.has(chatId);
+    await sendMessage(chatId, 
+      `📊 <b>СТАТУС</b>\n\n` +
+      `Подписан: ${isSub ? '✅ ДА' : '❌ НЕТ'}\n` +
+      `Всего подписчиков: ${subscribers.size}`,
+      { reply_markup: getBackKeyboard() }
+    );
   }
 }
 
@@ -379,7 +503,9 @@ async function editMessage(chatId, msgId, text, markup) {
         reply_markup: markup,
       }),
     });
-  } catch (e) {}
+  } catch (e) {
+    console.error('Ошибка редактирования сообщения:', e);
+  }
 }
 
 // ============================================
@@ -393,31 +519,37 @@ async function startPolling() {
   await autoDiscoverChatId();
   await clearPendingUpdates();
 
+  console.log('🤖 [BOT] Запуск поллинга...');
+  
   const poll = async () => {
     if (!pollingActive) return;
     await getUpdates();
     setTimeout(poll, 1000);
   };
+  
   poll();
-  console.log('🤖 [BOT] Поллинг запущен');
+  console.log('✅ [BOT] Поллинг запущен');
 }
 
 function stopPolling() {
   pollingActive = false;
+  console.log('🛑 [BOT] Поллинг остановлен');
 }
 
 // ============================================
-// ИНФОРМАЦИЯ О БОТЕ (ИСПРАВЛЕНО)
+// ИНФОРМАЦИЯ О БОТЕ
 // ============================================
 
 async function getBotInfo() {
   try {
     const res = await fetch(`${API_URL}/getMe`);
-    const text = await res.text();
-    const data = JSON.parse(text);
-    return data.ok ? data.result : null;
+    const data = await res.json();
+    if (data.ok) {
+      return data.result;
+    }
+    return null;
   } catch (error) {
-    console.error('❌ getBotInfo error:', error.message);
+    console.error('❌ Ошибка получения информации о боте:', error.message);
     return null;
   }
 }

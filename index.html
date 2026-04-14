@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ) ─── */
   :root {
     --bg-primary: #fafbfc;
     --bg-secondary: #ffffff;
@@ -33,6 +33,28 @@
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* ─── ТЁМНАЯ ТЕМА (GitHub Dark Style) ─── */
+  body.dark {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #0d1117;
+    --bg-dark: #010409;
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --text-muted: #8b949e;
+    --text-light: #6e7681;
+    --accent-primary: #58a6ff;
+    --accent-secondary: #79c0ff;
+    --accent-soft: rgba(88, 166, 255, 0.15);
+    --accent-mint: #3fb950;
+    --border-light: #30363d;
+    --border-medium: #21262d;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4), 0 4px 6px -2px rgba(0,0,0,0.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.4), 0 10px 10px -5px rgba(0,0,0,0.2);
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -50,21 +72,19 @@
     background: var(--bg-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.2s ease;
   }
 
-  /* ─── СКРОЛЛБАР ─── */
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
   ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 4px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-  /* ─── ВЫДЕЛЕНИЕ ТЕКСТА ─── */
   ::selection {
     background: var(--accent-primary);
     color: white;
   }
 
-  /* ─── НАВИГАЦИЯ ─── */
   nav {
     position: fixed;
     top: 0;
@@ -76,15 +96,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(var(--bg-secondary-rgb), 0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-light);
     transition: var(--transition);
   }
+  body.dark nav {
+    background: rgba(22, 27, 34, 0.85);
+  }
 
   nav.scrolled {
     box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(var(--bg-secondary-rgb), 0.95);
+  }
+  body.dark nav.scrolled {
+    background: rgba(22, 27, 34, 0.95);
   }
 
   .nav-logo {
@@ -175,14 +201,13 @@
     transition: var(--transition);
   }
 
-  /* ─── МОБИЛЬНОЕ МЕНЮ ─── */
   .mobile-menu {
     display: none;
     position: fixed;
     top: 80px;
     left: 0;
     right: 0;
-    background: white;
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-light);
     padding: 1.5rem 6%;
     z-index: 99;
@@ -214,15 +239,18 @@
     padding-left: 8px;
   }
 
-  /* Кнопка перевода */
+  .controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
   .lang-switch {
     display: flex;
     gap: 6px;
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: 40px;
     padding: 5px 8px;
-    margin-left: 1rem;
   }
   .lang-btn {
     background: transparent;
@@ -244,27 +272,42 @@
     background: var(--accent-soft);
     color: var(--accent-primary);
   }
+  .theme-toggle {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+    color: var(--text-primary);
+  }
+  .theme-toggle:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-primary);
+  }
 
   @media (max-width: 1024px) {
-    .lang-switch {
-      margin-left: 0;
+    .controls {
+      margin-left: auto;
     }
   }
   @media (max-width: 768px) {
-    .lang-switch {
-      order: 1;
-      margin-left: auto;
-      margin-right: 1rem;
-    }
     .nav-links {
       display: none;
     }
     .hamburger {
       display: flex;
     }
+    .controls {
+      order: 1;
+      margin-right: 1rem;
+    }
   }
 
-  /* ─── ГЕРОЙ СЕКЦИЯ ─── */
   #hero {
     min-height: 100vh;
     padding: 0 6%;
@@ -272,7 +315,7 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-tertiary) 100%);
   }
 
   .hero-bg {
@@ -288,6 +331,11 @@
     background-image: 
       radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
       radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+  }
+  body.dark .hero-bg-pattern {
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(121, 192, 255, 0.05) 0%, transparent 50%);
   }
 
   .hero-inner {
@@ -308,7 +356,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: white;
+    background: var(--bg-secondary);
     color: var(--accent-primary);
     font-size: 0.8rem;
     font-weight: 600;
@@ -417,7 +465,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: white;
+    background: var(--bg-secondary);
     color: var(--text-primary);
     padding: 15px 32px;
     border-radius: 40px;
@@ -435,7 +483,6 @@
     box-shadow: var(--shadow-md);
   }
 
-  /* ─── СТАТИСТИКА ГЕРОЯ ─── */
   .hero-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -446,7 +493,7 @@
   }
 
   .stat-card {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
     padding: 1.5rem 1rem;
@@ -475,7 +522,6 @@
     font-weight: 500;
   }
 
-  /* ─── ВИЗУАЛЬНАЯ ЧАСТЬ ГЕРОЯ ─── */
   .hero-visual {
     display: flex;
     flex-direction: column;
@@ -485,7 +531,7 @@
   }
 
   .card-float {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 1.8rem;
@@ -518,6 +564,9 @@
   .icon-blue { background: #eff6ff; color: var(--accent-primary); }
   .icon-teal { background: #f0fdfa; color: var(--accent-mint); }
   .icon-purple { background: #f5f3ff; color: #8b5cf6; }
+  body.dark .icon-blue { background: rgba(88, 166, 255, 0.15); }
+  body.dark .icon-teal { background: rgba(63, 185, 80, 0.15); }
+  body.dark .icon-purple { background: rgba(139, 92, 246, 0.15); }
 
   .card-float-title {
     font-weight: 600;
@@ -564,7 +613,6 @@
     border: 1px solid var(--border-light);
   }
 
-  /* ─── СЕКЦИИ ─── */
   section {
     padding: 100px 6%;
   }
@@ -602,7 +650,6 @@
     margin-bottom: 3.5rem;
   }
 
-  /* ─── УСЛУГИ ─── */
   #services {
     background: var(--bg-secondary);
   }
@@ -614,7 +661,7 @@
   }
 
   .service-card {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 2rem;
@@ -685,7 +732,6 @@
     border-radius: 20px;
   }
 
-  /* ─── КОМАНДА ─── */
   #team {
     background: var(--bg-tertiary);
   }
@@ -697,7 +743,7 @@
   }
 
   .team-card {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 2rem 1.5rem;
@@ -774,7 +820,6 @@
     border: 1px solid var(--border-light);
   }
 
-  /* ─── ПРОЕКТЫ ─── */
   #projects {
     background: var(--bg-dark);
   }
@@ -867,7 +912,6 @@
     color: white;
   }
 
-  /* ─── ОТЗЫВЫ ─── */
   #testimonials {
     background: var(--bg-secondary);
   }
@@ -879,7 +923,7 @@
   }
 
   .testimonial-card {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 2rem;
@@ -952,7 +996,6 @@
     margin-top: 2px;
   }
 
-  /* ─── КОНТАКТЫ ─── */
   #contact {
     background: var(--bg-tertiary);
   }
@@ -989,7 +1032,7 @@
   .contact-icon {
     width: 50px;
     height: 50px;
-    background: white;
+    background: var(--bg-secondary);
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
@@ -1025,9 +1068,8 @@
     color: var(--accent-secondary);
   }
 
-  /* ─── ФОРМА ─── */
   .contact-form {
-    background: white;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
     padding: 2.5rem;
@@ -1054,6 +1096,10 @@
     letter-spacing: 0.02em;
   }
 
+  .form-group label .required {
+    color: #ef4444;
+  }
+
   .form-group input,
   .form-group textarea,
   .form-group select {
@@ -1064,7 +1110,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     color: var(--text-primary);
-    background: white;
+    background: var(--bg-secondary);
     transition: var(--transition);
     outline: none;
   }
@@ -1079,6 +1125,13 @@
   .form-group textarea {
     resize: vertical;
     min-height: 120px;
+  }
+
+  .form-group small {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.7rem;
+    color: var(--text-muted);
   }
 
   .form-submit {
@@ -1101,21 +1154,36 @@
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
   }
 
-  .form-submit:hover {
+  .form-submit:hover:not(:disabled) {
     background: var(--accent-secondary);
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(6, 182, 212, 0.3);
+  }
+
+  .form-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
   .form-status {
     margin-top: 1.2rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
-    color: var(--accent-primary);
     text-align: center;
+    padding: 8px;
+    border-radius: 8px;
   }
 
-  /* ─── ФУТЕР ─── */
+  .form-status.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+  }
+
+  .form-status.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+
   footer {
     background: var(--bg-dark);
     color: rgba(255, 255, 255, 0.7);
@@ -1140,7 +1208,6 @@
     margin-top: 0.75rem;
   }
 
-  /* ─── АНИМАЦИИ ─── */
   @keyframes fadeUp {
     from {
       opacity: 0;
@@ -1194,7 +1261,6 @@
     transform: none;
   }
 
-  /* ─── АДАПТИВНОСТЬ ─── */
   @media (max-width: 1200px) {
     .services-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -1221,12 +1287,6 @@
   }
 
   @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-    }
-    .hamburger {
-      display: flex;
-    }
     section {
       padding: 70px 5%;
     }
@@ -1268,7 +1328,6 @@
 </head>
 <body>
 
-<!-- НАВИГАЦИЯ -->
 <nav id="navbar">
   <a href="#hero" class="nav-logo">Collepse</a>
   <ul class="nav-links">
@@ -1281,17 +1340,19 @@
     <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
     <li><a href="#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
-  <div class="lang-switch">
-    <button class="lang-btn" data-lang="ru">РУ</button>
-    <button class="lang-btn" data-lang="uz">UZ</button>
-    <button class="lang-btn" data-lang="en">EN</button>
+  <div class="controls">
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="ru">РУ</button>
+      <button class="lang-btn" data-lang="uz">UZ</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Меню">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- МОБИЛЬНОЕ МЕНЮ -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#services" data-i18n="nav_services">Услуги</a>
   <a href="#team" data-i18n="nav_team">Команда</a>
@@ -1300,7 +1361,6 @@
   <a href="#contact" data-i18n="nav_cta">Начать проект</a>
 </div>
 
-<!-- ГЕРОЙ -->
 <section id="hero">
   <div class="hero-bg">
     <div class="hero-bg-pattern"></div>
@@ -1328,7 +1388,6 @@
           Портфолио
         </a>
       </div>
-
       <div class="hero-stats">
         <div class="stat-card"><div class="stat-number">15+</div><div class="stat-label" data-i18n="stat1">Веб-проектов</div></div>
         <div class="stat-card"><div class="stat-number">20+</div><div class="stat-label" data-i18n="stat2">AI-интеграций</div></div>
@@ -1336,7 +1395,6 @@
         <div class="stat-card"><div class="stat-number">100+</div><div class="stat-label" data-i18n="stat4">ПК сборок</div></div>
       </div>
     </div>
-
     <div class="hero-visual">
       <div class="card-float">
         <div class="card-float-header"><div class="card-icon icon-blue">🤖</div><div><div class="card-float-title" data-i18n="card1_title">AI & Backend</div><div class="card-float-sub" data-i18n="card1_sub">Node.js · Python · LLM</div></div></div>
@@ -1354,68 +1412,260 @@
   </div>
 </section>
 
-<!-- УСЛУГИ -->
 <section id="services"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="services_label">Наши компетенции</div><h2 class="section-title" data-i18n="services_title">Что мы предлагаем</h2><p class="section-desc" data-i18n="services_desc">Полный цикл разработки — от идеи до масштабирования. Качественно и в срок.</p></div>
 <div class="services-grid"><div class="service-card reveal"><span class="service-emoji">✨</span><div class="service-name" data-i18n="service1_name">Web & Frontend</div><p class="service-desc" data-i18n="service1_desc">Современные веб-приложения с продуманным UX и плавными анимациями</p><div class="service-stats"><span class="service-stat" data-i18n="service1_stat1">15+ проектов</span><span class="service-stat" data-i18n="service1_stat2">99% Lighthouse</span></div></div>
 <div class="service-card reveal"><span class="service-emoji">🎮</span><div class="service-name" data-i18n="service2_name">Game Development</div><p class="service-desc" data-i18n="service2_desc">Разработка игр любой сложности с уникальным геймдизайном и мультиплеером</p><div class="service-stats"><span class="service-stat" data-i18n="service2_stat1">8+ игр</span><span class="service-stat" data-i18n="service2_stat2">5 наград</span></div></div>
 <div class="service-card reveal"><span class="service-emoji">🤖</span><div class="service-name" data-i18n="service3_name">AI & Backend</div><p class="service-desc" data-i18n="service3_desc">Интеграция нейросетей, разработка API и высоконагруженных систем</p><div class="service-stats"><span class="service-stat" data-i18n="service3_stat1">20+ ботов</span><span class="service-stat" data-i18n="service3_stat2">10M запросов</span></div></div>
 <div class="service-card reveal"><span class="service-emoji">💻</span><div class="service-name" data-i18n="service4_name">PC Optimization</div><p class="service-desc" data-i18n="service4_desc">Профессиональная сборка и настройка ПК для работы и киберспорта</p><div class="service-stats"><span class="service-stat" data-i18n="service4_stat1">100+ сборок</span><span class="service-stat" data-i18n="service4_stat2">+40% FPS</span></div></div></div></div></section>
 
-<!-- КОМАНДА -->
 <section id="team"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="team_label">Кто мы</div><h2 class="section-title" data-i18n="team_title">Команда экспертов</h2><p class="section-desc" data-i18n="team_desc">Каждый из нас — специалист высокого уровня в своей области.</p></div>
 <div class="team-grid"><div class="team-card reveal"><div class="team-avatar">🎮</div><div class="team-name" data-i18n="team1_name">Шохруз Исломов</div><div class="team-role" data-i18n="team1_role">GameDev Lead</div><div class="team-skills"><span class="skill-tag">Unity</span><span class="skill-tag">Unreal</span><span class="skill-tag">C#</span><span class="skill-tag">Game Design</span></div></div>
 <div class="team-card reveal"><div class="team-avatar">💻</div><div class="team-name" data-i18n="team2_name">Бехруз Давлаталиев</div><div class="team-role" data-i18n="team2_role">Hardware Expert</div><div class="team-skills"><span class="skill-tag">PC Build</span><span class="skill-tag">Overclocking</span><span class="skill-tag">Diagnostics</span></div></div>
 <div class="team-card reveal"><div class="team-avatar">🎨</div><div class="team-name" data-i18n="team3_name">Нурфайз Шодмонкулов</div><div class="team-role" data-i18n="team3_role">UI/UX Designer</div><div class="team-skills"><span class="skill-tag">Figma</span><span class="skill-tag">React</span><span class="skill-tag">Animation</span><span class="skill-tag">Design Systems</span></div></div>
 <div class="team-card reveal"><div class="team-avatar">🧠</div><div class="team-name" data-i18n="team4_name">Исфандиёр Вохидов</div><div class="team-role" data-i18n="team4_role">Lead Developer</div><div class="team-skills"><span class="skill-tag">Node.js</span><span class="skill-tag">Python</span><span class="skill-tag">AI/ML</span><span class="skill-tag">Architecture</span></div></div></div></div></section>
 
-<!-- ПРОЕКТЫ -->
 <section id="projects"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="projects_label">Портфолио</div><h2 class="section-title" data-i18n="projects_title">Избранные проекты</h2><p class="section-desc" data-i18n="projects_desc">Реальные кейсы, которыми мы гордимся.</p></div>
 <div class="projects-grid"><a href="https://lingo-nova-ai.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">01 / Образование</div><div class="project-name">Lingo Nova</div><p class="project-desc" data-i18n="project1_desc">Интеллектуальная платформа для изучения языков с AI-тьютором</p></a>
 <a href="https://cs-elite.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">02 / GameDev</div><div class="project-name">Cyber Strike</div><p class="project-desc" data-i18n="project2_desc">Мультиплеерный шутер с продвинутой физикой и процедурной генерацией</p></a>
 <a href="https://d3vhub.netlify.app" class="project-card reveal" target="_blank"><div class="project-num">03 / Аналитика</div><div class="project-name">DevMetrics</div><p class="project-desc" data-i18n="project3_desc">Платформа для анализа кода и производительности команд разработки</p></a></div></div></section>
 
-<!-- ОТЗЫВЫ -->
 <section id="testimonials"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="testimonials_label">Отзывы клиентов</div><h2 class="section-title" data-i18n="testimonials_title">Что о нас говорят</h2><p class="section-desc" data-i18n="testimonials_desc">Доверие и репутация — наш главный капитал.</p></div>
 <div class="testimonials-grid"><div class="testimonial-card reveal"><div class="stars">★★★★★</div><p class="testimonial-text" data-i18n="testimonial1_text">Команда Collepse превзошла все ожидания. Проект был сдан раньше срока, качество кода на высоте. Обязательно будем работать.</p><div class="testimonial-author"><div class="author-avatar">А</div><div><div class="author-name" data-i18n="testimonial1_name">Нафиса Низамова</div><div class="author-title" data-i18n="testimonial1_title">CEO, EdTech Startup</div></div></div></div>
 <div class="testimonial-card reveal"><div class="stars">★★★★★</div><p class="testimonial-text" data-i18n="testimonial2_text">Отличный подход к разработке. Ребята действительно понимают современные технологии и всегда на связи.</p><div class="testimonial-author"><div class="author-avatar">Д</div><div><div class="author-name" data-i18n="testimonial2_name">Абдуллаев Дилшод</div><div class="author-title" data-i18n="testimonial2_title">CTO, FinTech Company</div></div></div></div></div></div></section>
 
-<!-- КОНТАКТЫ -->
 <section id="contact"><div class="section-inner"><div class="reveal"><div class="section-label" data-i18n="contact_label">Связаться с нами</div><h2 class="section-title" data-i18n="contact_title">Начнём сотрудничество</h2><p class="section-desc" data-i18n="contact_desc">Оставьте заявку — мы свяжемся с вами в течение часа.</p></div>
 <div class="contact-grid"><div class="reveal"><h3 data-i18n="contact_info_title">Контактная информация</h3><p data-i18n="contact_info_text">Работаем удалённо по всему миру. Всегда на связи для ваших проектов.</p>
 <div class="contact-item"><div class="contact-icon">⏱️</div><div><div class="contact-label" data-i18n="contact_work_label">Время работы</div><div class="contact-value" data-i18n="contact_work_value">Пн–Вс / 10:00 – 22:00 (Ташкент)</div></div></div>
 <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-label" data-i18n="contact_location_label">Локация</div><div class="contact-value" data-i18n="contact_location_value">Узбекистан / Ташкент</div></div></div>
 <div class="contact-item"><div class="contact-icon">💬</div><div><div class="contact-label">Telegram</div><div class="contact-value"><a href="https://t.me/collepse_official" target="_blank">@collepse_official</a></div></div></div></div>
 
-<div class="contact-form reveal"><form id="contactForm"><div class="form-row"><div class="form-group"><label for="name" data-i18n="form_name">Ваше имя</label><input type="text" id="name" name="name" placeholder="Name" required></div>
-<div class="form-group"><label for="email" data-i18n="form_email">Email</label><input type="email" id="email" name="email" placeholder="example@example.com" required></div>
-<div class="form-group"><label for="Telegram" data-i18n="form_telegram">Telegram</label><input type="text" id="Telegram" name="Telegram" placeholder="@username" required></div>
-<div class="form-group"><label for="Phone" data-i18n="form_phone">Телефон</label><input type="tel" id="Phone" name="Phone" placeholder="+998 (12) 345-67-87" required></div></div>
-<div class="form-group"><label for="service" data-i18n="form_service">Интересующая услуга</label><select id="service" name="service"><option value="" data-i18n="form_select_option">Выберите из списка</option><option value="Web" data-i18n="form_web">Веб-разработка</option><option value="GameDev" data-i18n="form_gamedev">Разработка игр</option><option value="AI" data-i18n="form_ai">AI и бэкенд</option><option value="PC" data-i18n="form_pc">Оптимизация ПК</option><option value="Other" data-i18n="form_other">Другое</option></select></div>
-<div class="form-group"><label for="message" data-i18n="form_message">Опишите задачу</label><textarea id="message" name="message" placeholder="Расскажите подробнее о вашем проекте..." required></textarea></div>
-<button type="submit" class="form-submit" id="submitBtn"><span data-i18n="form_submit">Отправить заявку</span><span>→</span></button><div class="form-status" id="formStatus"></div></form></div></div></div></section>
+<div class="contact-form reveal">
+  <form id="contactForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name" data-i18n="form_name">Ваше имя <span class="required">*</span></label>
+        <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
+      </div>
+      <div class="form-group">
+        <label for="email" data-i18n="form_email">Email <span class="required">*</span></label>
+        <input type="email" id="email" name="email" placeholder="example@example.com" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="telegram" data-i18n="form_telegram">Telegram <span class="required">*</span></label>
+        <input type="text" id="telegram" name="telegram" placeholder="@username" required>
+        <small>Введите ваш Telegram username (например, @john_doe)</small>
+      </div>
+      <div class="form-group">
+        <label for="phone" data-i18n="form_phone">Телефон <span class="required">*</span></label>
+        <input type="tel" id="phone" name="phone" placeholder="+998 99 123 45 67" required>
+        <small>Введите номер телефона в международном формате</small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="service" data-i18n="form_service">Интересующая услуга</label>
+      <select id="service" name="service">
+        <option value="" data-i18n="form_select_option">Выберите из списка</option>
+        <option value="Web" data-i18n="form_web">Веб-разработка</option>
+        <option value="GameDev" data-i18n="form_gamedev">Разработка игр</option>
+        <option value="AI" data-i18n="form_ai">AI и бэкенд</option>
+        <option value="PC" data-i18n="form_pc">Оптимизация ПК</option>
+        <option value="Other" data-i18n="form_other">Другое</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message" data-i18n="form_message">Опишите задачу <span class="required">*</span></label>
+      <textarea id="message" name="message" placeholder="Расскажите подробнее о вашем проекте..." required></textarea>
+      <small>Минимум 10 символов</small>
+    </div>
+    <button type="submit" class="form-submit" id="submitBtn">
+      <span data-i18n="form_submit">Отправить заявку</span>
+      <span>→</span>
+    </button>
+    <div class="form-status" id="formStatus"></div>
+  </form>
+</div></div></div></section>
 
 <footer><div class="footer-logo">Collepse<span>.</span></div><p data-i18n="footer_text">Создаём цифровое будущее — технологии, дизайн, результат</p><p>© 2024 Collepse. Все права защищены.</p></footer>
 
 <script>
+  // Навигация и анимации
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 20); });
-  const hamburger = document.getElementById('hamburger'); const mobileMenu = document.getElementById('mobileMenu');
+  
+  const hamburger = document.getElementById('hamburger'); 
+  const mobileMenu = document.getElementById('mobileMenu');
   hamburger.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
   function closeMenu() { mobileMenu.classList.remove('open'); }
   document.querySelectorAll('.mobile-menu a').forEach(link => { link.addEventListener('click', closeMenu); });
+  
   const revealElements = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting) { setTimeout(() => { entry.target.classList.add('visible'); }, 50); observer.unobserve(entry.target); } }); }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+  const observer = new IntersectionObserver((entries) => { 
+    entries.forEach(entry => { 
+      if(entry.isIntersecting) { 
+        setTimeout(() => { entry.target.classList.add('visible'); }, 50); 
+        observer.unobserve(entry.target); 
+      } 
+    }); 
+  }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
   revealElements.forEach(el => observer.observe(el));
-  document.querySelectorAll('.services-grid, .team-grid, .projects-grid, .testimonials-grid').forEach(grid => { grid.querySelectorAll('.reveal').forEach((child, i) => { child.style.transitionDelay = `${i * 0.08}s`; }); });
-  const form = document.getElementById('contactForm'); const statusDiv = document.getElementById('formStatus'); const submitBtn = document.getElementById('submitBtn');
-  form.addEventListener('submit', async (e) => { e.preventDefault(); const name = document.getElementById('name').value.trim(); const email = document.getElementById('email').value.trim(); const phone = document.getElementById('Phone').value.trim(); const telegram = document.getElementById('Telegram').value.trim(); const message = document.getElementById('message').value.trim(); if (!name || !email || !phone || !telegram || !message) { statusDiv.textContent = '⚠️ Пожалуйста, заполните все обязательные поля'; statusDiv.style.color = '#ef4444'; return; } const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; if (!emailRegex.test(email)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный email'; statusDiv.style.color = '#ef4444'; return; } const phoneRegex = /^\+?\d{10,15}$/; if (!phoneRegex.test(phone)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный телефонный номер'; statusDiv.style.color = '#ef4444'; return; } const telegramRegex = /^@[a-zA-Z0-9_]{3,32}$/; if (!telegramRegex.test(telegram)) { statusDiv.textContent = '⚠️ Пожалуйста, введите корректный никнейм в Telegram'; statusDiv.style.color = '#ef4444'; return; } const originalText = submitBtn.innerHTML; submitBtn.innerHTML = '<span>Отправка...</span><span>⏳</span>'; submitBtn.disabled = true; statusDiv.textContent = ''; try { const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, service: document.getElementById('service').value, message }) }); const result = await response.json(); if (response.ok) { statusDiv.textContent = '✓ Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.'; statusDiv.style.color = '#10b981'; form.reset(); submitBtn.innerHTML = '<span>Отправлено</span><span>✓</span>'; setTimeout(() => { submitBtn.innerHTML = originalText; submitBtn.disabled = false; statusDiv.textContent = ''; }, 5000); } else { throw new Error(result.error || 'Произошла ошибка при отправке'); } } catch (error) { console.error('Ошибка:', error); statusDiv.textContent = `⚠️ Не удалось отправить заявку. Попробуйте позже или напишите в Telegram.`; statusDiv.style.color = '#ef4444'; submitBtn.innerHTML = originalText; submitBtn.disabled = false; } });
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function (e) { const href = this.getAttribute('href'); if (href === '#') return; const targetElement = document.querySelector(href); if (targetElement) { e.preventDefault(); const offset = 80; const elementPosition = targetElement.getBoundingClientRect().top; const offsetPosition = elementPosition + window.pageYOffset - offset; window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); } }); });
+  
+  document.querySelectorAll('.services-grid, .team-grid, .projects-grid, .testimonials-grid').forEach(grid => { 
+    grid.querySelectorAll('.reveal').forEach((child, i) => { child.style.transitionDelay = `${i * 0.08}s`; }); 
+  });
 
-  // ---------- ПЕРЕВОД ----------
+  // Плавная прокрутка
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => { 
+    anchor.addEventListener('click', function (e) { 
+      const href = this.getAttribute('href'); 
+      if (href === '#') return; 
+      const targetElement = document.querySelector(href); 
+      if (targetElement) { 
+        e.preventDefault(); 
+        const offset = 80; 
+        const elementPosition = targetElement.getBoundingClientRect().top; 
+        const offsetPosition = elementPosition + window.pageYOffset - offset; 
+        window.scrollTo({ top: offsetPosition, behavior: 'smooth' }); 
+      } 
+    }); 
+  });
+
+  // Тема
+  const themeToggle = document.getElementById('themeToggle');
+  const setTheme = (theme) => {
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+      themeToggle.innerHTML = '☀️';
+      localStorage.setItem('collepse_theme', 'dark');
+    } else {
+      document.body.classList.remove('dark');
+      themeToggle.innerHTML = '🌙';
+      localStorage.setItem('collepse_theme', 'light');
+    }
+  };
+  const savedTheme = localStorage.getItem('collepse_theme');
+  setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+  themeToggle.addEventListener('click', () => {
+    setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  // ============================================
+  // ОТПРАВКА ФОРМЫ - ОСНОВНАЯ ЛОГИКА
+  // ============================================
+  const form = document.getElementById('contactForm');
+  const statusDiv = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Сбор данных
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      let telegram = document.getElementById('telegram').value.trim();
+      let phone = document.getElementById('phone').value.trim();
+      const service = document.getElementById('service').value;
+      const message = document.getElementById('message').value.trim();
+      
+      // Очистка и форматирование
+      // Telegram: добавляем @ если нет
+      if (telegram && !telegram.startsWith('@') && telegram.length > 0) {
+        telegram = '@' + telegram;
+      }
+      
+      // Телефон: очищаем от лишних символов
+      phone = phone.replace(/[\s\-\(\)]/g, '');
+      if (!phone.startsWith('+') && phone.length > 0 && !phone.startsWith('8')) {
+        phone = '+' + phone;
+      }
+      
+      // Валидация
+      const errors = [];
+      
+      if (!name) errors.push('Имя обязательно');
+      else if (name.length < 2) errors.push('Имя должно быть не менее 2 символов');
+      
+      if (!email) errors.push('Email обязателен');
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Некорректный email');
+      
+      if (!telegram) errors.push('Telegram обязателен');
+      else {
+        let cleanTelegram = telegram.startsWith('@') ? telegram.substring(1) : telegram;
+        if (cleanTelegram.length < 3) errors.push('Telegram username должен быть не менее 3 символов');
+        else if (!/^[a-zA-Z0-9_]+$/.test(cleanTelegram)) errors.push('Telegram может содержать только латиницу, цифры и _');
+      }
+      
+      if (!phone) errors.push('Телефон обязателен');
+      else {
+        let cleanPhone = phone.replace(/[^\d+]/g, '');
+        if (cleanPhone.length < 9) errors.push('Телефон должен содержать минимум 9 цифр');
+      }
+      
+      if (!message) errors.push('Сообщение обязательно');
+      else if (message.length < 10) errors.push('Сообщение должно быть не менее 10 символов');
+      
+      if (errors.length > 0) {
+        statusDiv.textContent = '⚠️ ' + errors.join(', ');
+        statusDiv.className = 'form-status error';
+        return;
+      }
+      
+      // Отправка
+      const formData = { name, email, telegram, phone, service, message };
+      console.log('📤 Отправка:', formData);
+      
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span>Отправка...</span><span>⏳</span>';
+      submitBtn.disabled = true;
+      statusDiv.textContent = '';
+      statusDiv.className = 'form-status';
+      
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+        
+        const result = await response.json();
+        console.log('📥 Ответ:', result);
+        
+        if (response.ok && result.status === 'success') {
+          statusDiv.textContent = '✓ Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.';
+          statusDiv.className = 'form-status success';
+          form.reset();
+          
+          submitBtn.innerHTML = '<span>Отправлено</span><span>✓</span>';
+          setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            setTimeout(() => {
+              statusDiv.textContent = '';
+              statusDiv.className = 'form-status';
+            }, 3000);
+          }, 2000);
+        } else {
+          const errorMsg = result.errors ? result.errors.join(', ') : (result.message || 'Ошибка при отправке');
+          throw new Error(errorMsg);
+        }
+      } catch (error) {
+        console.error('❌ Ошибка:', error);
+        statusDiv.textContent = `⚠️ ${error.message || 'Не удалось отправить заявку. Попробуйте позже.'}`;
+        statusDiv.className = 'form-status error';
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  // ============================================
+  // ПЕРЕВОД
+  // ============================================
   const translations = {
     ru: {
-      nav_home: "Главная",
-      nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_cta: "Начать проект",
+      nav_home: "Главная", nav_services: "Услуги", nav_team: "Команда", nav_projects: "Проекты", nav_testimonials: "Отзывы", nav_docs: "Документация Collepse", nav_cta: "Начать проект",
       hero_tag: "Инновационная IT-команда", hero_title1: "Создаём", hero_title2: "цифровое", hero_title3: "будущее уже сегодня", hero_slogan: "// Технологии · Дизайн · Результат",
       hero_text: "Мы — команда экспертов, создающая современные веб-решения, AI-интеграции и высокопроизводительные системы для бизнеса любого масштаба.",
       hero_btn1: "Обсудить проект", hero_btn2: "Портфолио", stat1: "Веб-проектов", stat2: "AI-интеграций", stat3: "API запросов", stat4: "ПК сборок",
@@ -1439,8 +1689,7 @@
       footer_text: "Создаём цифровое будущее — технологии, дизайн, результат"
     },
     uz: {
-      nav_home: "Bosh sahifa",
-      nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_cta: "Loyihani boshlash",
+      nav_home: "Bosh sahifa", nav_services: "Xizmatlar", nav_team: "Jamoa", nav_projects: "Loyihalar", nav_testimonials: "Fikrlar", nav_docs: "Collepse hujjatlari", nav_cta: "Loyihani boshlash",
       hero_tag: "Innovatsion IT jamoa", hero_title1: "Raqamli", hero_title2: "kelajakni", hero_title3: "bugundan yaratamiz", hero_slogan: "// Texnologiya · Dizayn · Natija",
       hero_text: "Biz — zamonaviy veb-yechimlar, AI-integratsiyalar va yuqori unumli tizimlarni yaratuvchi ekspertlar jamoasi.",
       hero_btn1: "Loyihani muhokama qilish", hero_btn2: "Portfolio", stat1: "Veb-loyihalar", stat2: "AI-integratsiyalar", stat3: "API so'rovlari", stat4: "Kompyuter yig'ish",
@@ -1464,8 +1713,7 @@
       footer_text: "Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija"
     },
     en: {
-      nav_home: "Home",
-      nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_cta: "Start a Project",
+      nav_home: "Home", nav_services: "Services", nav_team: "Team", nav_projects: "Projects", nav_testimonials: "Testimonials", nav_docs: "Collepse Documentation", nav_cta: "Start a Project",
       hero_tag: "Innovative IT Team", hero_title1: "Building", hero_title2: "digital", hero_title3: "future today", hero_slogan: "// Technology · Design · Result",
       hero_text: "We are a team of experts creating modern web solutions, AI integrations, and high-performance systems for businesses of any scale.",
       hero_btn1: "Discuss project", hero_btn2: "Portfolio", stat1: "Web projects", stat2: "AI integrations", stat3: "API requests", stat4: "PC builds",
