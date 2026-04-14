@@ -1325,61 +1325,7 @@
     }
   }
 
-  /* Навигация - порядок элементов */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-/* Гамбургер - первый и самый левый */
-.hamburger {
-  order: 0;
-  display: none;
-}
-
-/* Логотип */
-.nav-logo {
-  order: 1;
-}
-
-/* Десктопное меню */
-.nav-links {
-  order: 2;
-  margin: 0 auto;
-}
-
-/* Контролы (перевод и тема) - справа */
-.controls {
-  order: 3;
-  margin-left: auto;
-}
-
-/* Мобильная версия */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-    order: 0;
-    z-index: 102;
-  }
   
-  .nav-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    order: 1;
-  }
-  
-  .nav-links {
-    display: none;
-  }
-  
-  .controls {
-    order: 2;
-    margin-left: auto;
-  }
-}
 </style>
 </head>
 <body>
