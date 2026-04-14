@@ -1324,22 +1324,76 @@
       justify-content: center;
     }
   }
+
+  /* Навигация - порядок элементов */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Гамбургер - первый и самый левый */
+.hamburger {
+  order: 0;
+  display: none;
+}
+
+/* Логотип */
+.nav-logo {
+  order: 1;
+}
+
+/* Десктопное меню */
+.nav-links {
+  order: 2;
+  margin: 0 auto;
+}
+
+/* Контролы (перевод и тема) - справа */
+.controls {
+  order: 3;
+  margin-left: auto;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    order: 0;
+    z-index: 102;
+  }
+  
+  .nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    order: 1;
+  }
+  
+  .nav-links {
+    display: none;
+  }
+  
+  .controls {
+    order: 2;
+    margin-left: auto;
+  }
+}
 </style>
 </head>
 <body>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#services" data-i18n="nav_services">Услуги</a>
-  <a href="#team" data-i18n="nav_team">Команда</a>
-  <a href="#projects" data-i18n="nav_projects">Проекты</a>
-  <a href="#testimonials" data-i18n="nav_testimonials">Отзывы</a>
-  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
-  <a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a>
-  <a href="#contact" data-i18n="nav_cta">Начать проект</a>
-</div>
-
 <nav id="navbar">
+  <!-- ГАМБУРГЕР - ПЕРВЫЙ (САМЫЙ ЛЕВЫЙ) -->
+  <button class="hamburger" id="hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+  
+  <!-- ЛОГОТИП -->
   <a href="#hero" class="nav-logo">Collepse</a>
+  
+  <!-- ДЕСКТОПНОЕ МЕНЮ -->
   <ul class="nav-links">
     <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
     <li><a href="#services" data-i18n="nav_services">Услуги</a></li>
@@ -1350,6 +1404,8 @@
     <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
     <li><a href="#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
   </ul>
+  
+  <!-- КНОПКИ УПРАВЛЕНИЯ (ПЕРЕВОД И ТЕМА) -->
   <div class="controls">
     <div class="lang-switch">
       <button class="lang-btn" data-lang="ru">РУ</button>
@@ -1358,11 +1414,9 @@
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
   </div>
-  <button class="hamburger" id="hamburger" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-<!-- 
+
+<!-- МОБИЛЬНОЕ МЕНЮ -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#services" data-i18n="nav_services">Услуги</a>
   <a href="#team" data-i18n="nav_team">Команда</a>
@@ -1371,7 +1425,7 @@
   <a href="faq.html" data-i18n="nav_faq">FAQ</a>
   <a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a>
   <a href="#contact" data-i18n="nav_cta">Начать проект</a>
-</div> -->
+</div>
 
 <section id="hero">
   <div class="hero-bg">
@@ -1774,4 +1828,5 @@
   setLanguage(savedLang);
 </script>
 </body>
+
 </html>
