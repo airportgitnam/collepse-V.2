@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collepse | Часто задаваемые вопросы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ─── ОСНОВНЫЕ ПЕРЕМЕННЫЕ (ПРИЯТНЫЕ ГЛАЗУ) ─── */
+  :root {
+    --bg-primary: #fafbfc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f5f7fa;
+    --bg-dark: #1a2332;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #06b6d4;
+    --accent-soft: #e0f2fe;
+    --accent-mint: #14b8a6;
+    --border-light: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-tertiary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  ::selection {
+    background: var(--accent-primary);
+    color: white;
+  }
+
+  /* ─── НАВИГАЦИЯ ─── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 0 6%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  nav.scrolled {
+    box-shadow: var(--shadow-md);
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span {
+    color: var(--accent-primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    border-radius: 1px;
+    transition: var(--transition);
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-primary);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .nav-cta {
+    background: var(--accent-primary);
+    color: white !important;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: var(--transition);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  }
+
+  .nav-cta::after {
+    display: none !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: var(--transition);
+  }
+
+  /* ─── МОБИЛЬНОЕ МЕНЮ ─── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid var(--border-light);
+    padding: 1.5rem 6%;
+    z-index: 99;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  .mobile-menu.open {
+    display: flex;
+  }
+
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-menu a:hover {
+    color: var(--accent-primary);
+    padding-left: 8px;
+  }
+
+  /* Кнопка перевода */
+  .lang-switch {
+    display: flex;
+    gap: 6px;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 5px 8px;
+    margin-left: 1rem;
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+  }
+  .lang-btn.active {
+    background: var(--accent-primary);
+    color: white;
+  }
+  .lang-btn:hover:not(.active) {
+    background: var(--accent-soft);
+    color: var(--accent-primary);
+  }
+
+  @media (max-width: 1024px) {
+    .lang-switch {
+      margin-left: 0;
+    }
+  }
+  @media (max-width: 768px) {
+    .lang-switch {
+      order: 1;
+      margin-left: auto;
+      margin-right: 1rem;
+    }
+    .nav-links {
+      display: none;
+    }
+    .hamburger {
+      display: flex;
+    }
+  }
+
+  /* ─── FAQ HERO ─── */
+  .faq-hero {
+    padding: 140px 6% 60px;
+    background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
+    text-align: center;
+  }
+  .faq-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .faq-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  /* ─── FAQ КОНТЕНТ ─── */
+  .faq-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 6% 100px;
+  }
+  .faq-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 3rem;
+    justify-content: center;
+  }
+  .cat-btn {
+    background: white;
+    border: 1px solid var(--border-light);
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-secondary);
+  }
+  .cat-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+  }
+  .cat-btn:hover:not(.active) {
+    background: var(--accent-soft);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+  }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .faq-item {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .faq-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent-primary);
+  }
+  .faq-question {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .faq-question .q-icon {
+    font-size: 1.3rem;
+  }
+  .faq-answer {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin 0.2s ease;
+  }
+  .faq-item.open .faq-answer {
+    max-height: 300px;
+    margin-top: 1rem;
+  }
+  .faq-item .toggle-icon {
+    margin-left: auto;
+    font-size: 1.2rem;
+    transition: transform 0.3s;
+  }
+  .faq-item.open .toggle-icon {
+    transform: rotate(180deg);
+  }
+  .faq-question-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3rem;
+    padding: 12px 24px;
+    background: white;
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .back-link:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    transform: translateX(-4px);
+  }
+
+  /* МОДАЛЬНОЕ ОКНО */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .modal-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    max-width: 450px;
+    width: 90%;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.active .modal-container {
+    transform: scale(1);
+  }
+  .modal-container h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .modal-container p {
+    color: var(--text-secondary);
+    margin-bottom: 1.8rem;
+  }
+  .modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .modal-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    border: 1px solid var(--border-light);
+    background: white;
+    color: var(--text-primary);
+  }
+  .modal-btn.telegram-lead {
+    background: #0088cc;
+    color: white;
+    border: none;
+  }
+  .modal-btn.telegram-group {
+    background: #26a5e4;
+    color: white;
+    border: none;
+  }
+  .modal-btn.contact-main {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+  }
+  .modal-btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+    box-shadow: var(--shadow-md);
+  }
+  .close-modal {
+    margin-top: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: var(--transition);
+  }
+  .close-modal:hover {
+    color: var(--accent-primary);
+  }
+
+  footer {
+    background: var(--bg-dark);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2.5rem 6%;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  footer .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+  footer .footer-logo span {
+    color: var(--accent-mint);
+  }
+  footer p {
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+    .faq-categories {
+      flex-direction: row;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      justify-content: flex-start;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ (как в запросе) -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Collepse<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html" data-i18n="nav_home">Главная</a></li>
+    <li><a href="index.html#services" data-i18n="nav_services">Услуги</a></li>
+    <li><a href="index.html#team" data-i18n="nav_team">Команда</a></li>
+    <li><a href="index.html#projects" data-i18n="nav_projects">Проекты</a></li>
+    <li><a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a></li>
+    <li><a href="faq.html" data-i18n="nav_faq">FAQ</a></li>
+    <li><a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a></li>
+    <li><a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">Начать проект</a></li>
+  </ul>
+  <div class="lang-switch">
+    <button class="lang-btn" data-lang="ru">РУ</button>
+    <button class="lang-btn" data-lang="uz">UZ</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- МОБИЛЬНОЕ МЕНЮ -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" data-i18n="nav_home">Главная</a>
+  <a href="index.html#services" data-i18n="nav_services">Услуги</a>
+  <a href="index.html#team" data-i18n="nav_team">Команда</a>
+  <a href="index.html#projects" data-i18n="nav_projects">Проекты</a>
+  <a href="index.html#testimonials" data-i18n="nav_testimonials">Отзывы</a>
+  <a href="faq.html" data-i18n="nav_faq">FAQ</a>
+  <a href="collepse-documentation.html" target="_blank" data-i18n="nav_docs">Документация Collepse</a>
+  <a href="index.html#contact" data-i18n="nav_cta">Начать проект</a>
+</div>
+
+<!-- HERO -->
+<section class="faq-hero">
+  <h1 data-i18n="faq_title">Часто задаваемые вопросы</h1>
+  <p data-i18n="faq_subtitle">Ответы на главные вопросы о сотрудничестве, разработке и услугах Collepse</p>
+</section>
+
+<div class="faq-container">
+  <div class="faq-categories" id="categoryFilters">
+    <button class="cat-btn active" data-cat="all" data-i18n="cat_all">Все вопросы</button>
+    <button class="cat-btn" data-cat="general" data-i18n="cat_general">Общие</button>
+    <button class="cat-btn" data-cat="dev" data-i18n="cat_dev">Разработка</button>
+    <button class="cat-btn" data-cat="legal" data-i18n="cat_legal">Юридические</button>
+    <button class="cat-btn" data-cat="payment" data-i18n="cat_payment">Оплата</button>
+  </div>
+
+  <div class="faq-grid" id="faqGrid">
+    <!-- Вопросы динамически через JS -->
+  </div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <button id="askQuestionBtn" class="back-link" data-i18n="ask_question">✉️ Задать свой вопрос</button>
+    <a href="index.html" class="back-link" style="margin-left: 1rem;" data-i18n="back_home">🏠 На главную</a>
+  </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО С 3 КНОПКАМИ -->
+<div id="contactModal" class="modal-overlay">
+  <div class="modal-container">
+    <h3 data-i18n="modal_title">Свяжитесь с нами</h3>
+    <p data-i18n="modal_subtitle">Выберите удобный способ связи</p>
+    <div class="modal-buttons">
+      <a href="https://t.me/Vohidov_I" target="_blank" class="modal-btn telegram-lead" data-i18n="modal_lead">📨 Lead Telegram (Исфандиёр)</a>
+      <a href="https://t.me/collepse_official" target="_blank" class="modal-btn telegram-group" data-i18n="modal_group">👥 Telegram Group Collepse</a>
+      <a href="index.html#contact" class="modal-btn contact-main" data-i18n="modal_contact">📝 Перейти в контакты на главной</a>
+    </div>
+    <button class="close-modal" data-i18n="modal_close">Закрыть</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Collepse<span>.</span></div>
+  <p data-i18n="footer_text">Создаём цифровое будущее — технологии, дизайн, результат</p>
+  <p>© 2024 Collepse. Все права защищены.</p>
+</footer>
+
+<script>
+  // Навигация при скролле
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Мобильное меню
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMenu() { mobileMenu.classList.remove('open'); }
+  document.querySelectorAll('.mobile-menu a').forEach(link => link.addEventListener('click', closeMenu));
+
+  // Данные FAQ (многоязычные)
+  const faqData = {
+    ru: [
+      { id: 1, cat: "general", q: "Какие услуги предоставляет Collepse?", a: "Мы разрабатываем веб-приложения, игры, AI-интеграции, ботов, а также занимаемся профессиональной сборкой и оптимизацией ПК. Полный цикл — от идеи до поддержки." },
+      { id: 2, cat: "general", q: "Как начать сотрудничество?", a: "Оставьте заявку через форму на сайте или напишите в Telegram. Мы обсудим идею, подготовим КП и подпишем договор." },
+      { id: 3, cat: "dev", q: "Сколько времени занимает разработка?", a: "Сроки зависят от сложности: лендинг — 1-2 недели, интернет-магазин — 4-6 недель, сложные AI-платформы — от 3 месяцев." },
+      { id: 4, cat: "dev", q: "Какие технологии вы используете?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 и другие современные инструменты." },
+      { id: 5, cat: "dev", q: "Предоставляете ли вы техническую поддержку после сдачи?", a: "Да, мы даём гарантию 90 дней на все работы. Также можно заключить договор на долгосрочное сопровождение." },
+      { id: 6, cat: "legal", q: "Заключается ли официальный договор?", a: "Да, мы работаем по договору (публичная оферта или двусторонний). Все права, сроки и ответственность прописаны в документации." },
+      { id: 7, cat: "legal", q: "Кому принадлежат исключительные права на код?", a: "По умолчанию права передаются Заказчику после полной оплаты. Возможны индивидуальные условия." },
+      { id: 8, cat: "payment", q: "Какие способы оплаты?", a: "Безналичный расчет на счет ИП/ООО, также принимаем криптовалюту (USDT, BTC) по согласованию." },
+      { id: 9, cat: "payment", q: "Нужна ли предоплата?", a: "Стандартно — предоплата 50%, остаток 50% после подписания акта. Для крупных проектов возможна поэтапная оплата." },
+      { id: 10, cat: "general", q: "Есть ли у вас отзывы или портфолио?", a: "Да, посмотрите раздел «Проекты» и «Отзывы» на главной странице. Также можем предоставить контакты клиентов для связи." },
+      { id: 11, cat: "dev", q: "Можете ли вы доработать существующий проект?", a: "Да, мы занимаемся рефакторингом, оптимизацией и добавлением нового функционала в готовые проекты." },
+      { id: 12, cat: "legal", q: "Что такое NDA и подписываете ли вы его?", a: "Да, мы подписываем соглашение о неразглашении (NDA) перед обсуждением деталей проекта, если это необходимо." }
+    ],
+    uz: [
+      { id: 1, cat: "general", q: "Collepse qanday xizmatlar ko‘rsatadi?", a: "Biz veb-ilovalar, o‘yinlar, AI-integratsiyalar, botlar yaratamiz, shuningdek professional kompyuter yig‘ish va optimallashtirish bilan shug‘ullanamiz." },
+      { id: 2, cat: "general", q: "Hamkorlikni qanday boshlash mumkin?", a: "Saytdagi forma orqali yoki Telegramda so‘rov qoldiring. G‘oyani muhokama qilamiz, taklif tayyorlaymiz va shartnoma imzolaymiz." },
+      { id: 3, cat: "dev", q: "Ishlab chiqish qancha vaqt oladi?", a: "Murakkablikka bog‘liq: lending — 1-2 hafta, onlayn-do‘kon — 4-6 hafta, murakkab AI platformalar — 3 oydan." },
+      { id: 4, cat: "dev", q: "Qanday texnologiyalardan foydalanasiz?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 va boshqalar." },
+      { id: 5, cat: "dev", q: "Yetkazib berishdan keyin texnik qo‘llab-quvvatlaysizmi?", a: "Ha, barcha ishlarga 90 kun kafolat beramiz. Uzoq muddatli hamkorlik shartnomasi ham mumkin." },
+      { id: 6, cat: "legal", q: "Rasmiy shartnoma tuziladimi?", a: "Ha, shartnoma (ommaviy oferta yoki ikki tomonlama) asosida ishlaymiz. Barcha huquqlar, muddatlar hujjatlarda belgilangan." },
+      { id: 7, cat: "legal", q: "Kodga bo‘lgan eksklyuziv huquqlar kimga tegishli?", a: "Standartda huquqlar to‘liq to‘lovdan keyin Buyurtmachiga o‘tadi. Individual shartlar mumkin." },
+      { id: 8, cat: "payment", q: "To‘lov usullari qanday?", a: "Naqd pulsiz hisob-kitob, shuningdek kelishuvga ko‘ra kriptovalyuta (USDT, BTC) qabul qilinadi." },
+      { id: 9, cat: "payment", q: "Oldindan to‘lov kerakmi?", a: "Standart — 50% oldindan, qolgan 50% dalolatnoma imzolangandan keyin. Katta loyihalar uchun bosqichli to‘lov." },
+      { id: 10, cat: "general", q: "Fikr-mulohazalar yoki portfoliongiz bormi?", a: "Ha, bosh sahifadagi «Loyihalar» va «Fikrlar» bo‘limlarini ko‘ring. Mijozlar bilan bog‘lanish uchun maʼlumot berishimiz mumkin." },
+      { id: 11, cat: "dev", q: "Mavjud loyihani takomillashtira olasizmi?", a: "Ha, biz refaktoring, optimallashtirish va tayyor loyihalarga yangi funksiyalar qo‘shish bilan shug‘ullanamiz." },
+      { id: 12, cat: "legal", q: "NDA nima va uni imzolaysizmi?", a: "Ha, agar kerak bo‘lsa, loyiha tafsilotlarini muhokama qilishdan oldin maxfiylik shartnomasini (NDA) imzolaymiz." }
+    ],
+    en: [
+      { id: 1, cat: "general", q: "What services does Collepse provide?", a: "We develop web applications, games, AI integrations, bots, and also provide professional PC assembly and optimization. Full cycle from idea to support." },
+      { id: 2, cat: "general", q: "How to start cooperation?", a: "Leave a request via the form on the website or write to Telegram. We will discuss the idea, prepare a proposal and sign a contract." },
+      { id: 3, cat: "dev", q: "How long does development take?", a: "Timelines depend on complexity: landing page — 1-2 weeks, online store — 4-6 weeks, complex AI platforms — from 3 months." },
+      { id: 4, cat: "dev", q: "What technologies do you use?", a: "React, Vue, Node.js, Python, Unity, Unreal Engine, PostgreSQL, MongoDB, Docker, Kubernetes, GPT-4 and other modern tools." },
+      { id: 5, cat: "dev", q: "Do you provide technical support after delivery?", a: "Yes, we provide a 90-day warranty on all work. Long-term maintenance contracts are also available." },
+      { id: 6, cat: "legal", q: "Is an official contract concluded?", a: "Yes, we work under a contract (public offer or bilateral). All rights, deadlines and responsibilities are specified in the documentation." },
+      { id: 7, cat: "legal", q: "Who owns the exclusive rights to the code?", a: "By default, the rights are transferred to the Customer after full payment. Individual terms are possible." },
+      { id: 8, cat: "payment", q: "What payment methods are available?", a: "Bank transfer to individual entrepreneur/LLC account, also accept cryptocurrency (USDT, BTC) upon agreement." },
+      { id: 9, cat: "payment", q: "Is a prepayment required?", a: "Standard — 50% prepayment, remaining 50% after signing the act. For large projects, stage-by-stage payment is possible." },
+      { id: 10, cat: "general", q: "Do you have reviews or a portfolio?", a: "Yes, check the 'Projects' and 'Testimonials' sections on the main page. We can also provide client contacts for reference." },
+      { id: 11, cat: "dev", q: "Can you improve an existing project?", a: "Yes, we do refactoring, optimization and adding new functionality to existing projects." },
+      { id: 12, cat: "legal", q: "What is an NDA and do you sign it?", a: "Yes, we sign a non-disclosure agreement (NDA) before discussing project details if necessary." }
+    ]
+  };
+
+  let currentLang = 'ru';
+  let currentCategory = 'all';
+
+  function renderFaq(lang, category) {
+    const grid = document.getElementById('faqGrid');
+    const data = faqData[lang] || faqData.ru;
+    let filtered = category === 'all' ? data : data.filter(item => item.cat === category);
+    if (!filtered.length) filtered = [{ id: 0, cat: "general", q: "—", a: "Нет вопросов в этой категории / Bu kategoriyada savollar yo‘q / No questions in this category" }];
+    
+    grid.innerHTML = '';
+    filtered.forEach(item => {
+      const faqDiv = document.createElement('div');
+      faqDiv.className = 'faq-item';
+      faqDiv.setAttribute('data-id', item.id);
+      faqDiv.innerHTML = `
+        <div class="faq-question-wrapper">
+          <div class="faq-question">
+            <span class="q-icon">❓</span>
+            <span class="q-text">${escapeHtml(item.q)}</span>
+          </div>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">${escapeHtml(item.a)}</div>
+      `;
+      faqDiv.addEventListener('click', (e) => {
+        if (e.target.closest('.faq-question-wrapper') || e.target.closest('.faq-item')) {
+          faqDiv.classList.toggle('open');
+        }
+      });
+      grid.appendChild(faqDiv);
+    });
+  }
+
+  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  function updateUIByLang(lang) {
+    currentLang = lang;
+    renderFaq(lang, currentCategory);
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const translations = {
+        ru: { nav_home:"Главная", nav_services:"Услуги", nav_team:"Команда", nav_projects:"Проекты", nav_testimonials:"Отзывы", nav_docs:"Документация Collepse", nav_cta:"Начать проект", faq_title:"Часто задаваемые вопросы", faq_subtitle:"Ответы на главные вопросы о сотрудничестве, разработке и услугах Collepse", cat_all:"Все вопросы", cat_general:"Общие", cat_dev:"Разработка", cat_legal:"Юридические", cat_payment:"Оплата", ask_question:"✉️ Задать свой вопрос", back_home:"🏠 На главную", footer_text:"Создаём цифровое будущее — технологии, дизайн, результат", modal_title:"Свяжитесь с нами", modal_subtitle:"Выберите удобный способ связи", modal_lead:"📨 Lead Telegram (Исфандиёр)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Перейти в контакты на главной", modal_close:"Закрыть" },
+        uz: { nav_home:"Bosh sahifa", nav_services:"Xizmatlar", nav_team:"Jamoa", nav_projects:"Loyihalar", nav_testimonials:"Fikrlar", nav_docs:"Collepse hujjatlari", nav_cta:"Loyihani boshlash", faq_title:"Ko‘p so‘raladigan savollar", faq_subtitle:"Hamkorlik, ishlab chiqish va Collepse xizmatlari haqida asosiy savollarga javoblar", cat_all:"Barcha savollar", cat_general:"Umumiy", cat_dev:"Ishlab chiqish", cat_legal:"Yuridik", cat_payment:"To‘lov", ask_question:"✉️ Savolingizni bering", back_home:"🏠 Bosh sahifaga", footer_text:"Raqamli kelajakni yaratamiz — texnologiya, dizayn, natija", modal_title:"Biz bilan bog‘laning", modal_subtitle:"Qulay aloqa usulini tanlang", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Bosh sahifadagi kontaktlarga o‘tish", modal_close:"Yopish" },
+        en: { nav_home:"Home", nav_services:"Services", nav_team:"Team", nav_projects:"Projects", nav_testimonials:"Testimonials", nav_docs:"Collepse Documentation", nav_cta:"Start Project", faq_title:"Frequently Asked Questions", faq_subtitle:"Answers to key questions about cooperation, development and Collepse services", cat_all:"All questions", cat_general:"General", cat_dev:"Development", cat_legal:"Legal", cat_payment:"Payment", ask_question:"✉️ Ask a question", back_home:"🏠 Back to home", footer_text:"Building digital future — technology, design, result", modal_title:"Contact us", modal_subtitle:"Choose a convenient way to reach us", modal_lead:"📨 Lead Telegram (Isfandiyor)", modal_group:"👥 Telegram Group Collepse", modal_contact:"📝 Go to contacts on main page", modal_close:"Close" }
+      };
+      if (translations[lang] && translations[lang][key]) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = translations[lang][key];
+        else el.innerHTML = translations[lang][key];
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+    localStorage.setItem('collepse_faq_lang', lang);
+  }
+
+  // Обработка категорий
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.getAttribute('data-cat');
+      renderFaq(currentLang, currentCategory);
+    });
+  });
+
+  // Переключение языка
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lang = btn.getAttribute('data-lang');
+      updateUIByLang(lang);
+    });
+  });
+
+  // МОДАЛЬНОЕ ОКНО
+  const modal = document.getElementById('contactModal');
+  const askBtn = document.getElementById('askQuestionBtn');
+  const closeModalBtn = document.querySelector('.close-modal');
+
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  askBtn.addEventListener('click', openModal);
+  closeModalBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  const savedLang = localStorage.getItem('collepse_faq_lang') || 'ru';
+  updateUIByLang(savedLang);
+  renderFaq(savedLang, 'all');
+</script>
+</body>
+</html>
